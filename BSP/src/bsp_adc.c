@@ -140,34 +140,34 @@ int32_t Huidu_va(uint8_t ch)
             Huidu_value = Filter(5);
             break;
         case 2:
-            Huidu_value = Filter(7);
-            break;
-        case 3:
             Huidu_value = Filter(6);
             break;
+        case 3:
+            Huidu_value = Filter(7);
+            break;
         case 4:
-            Huidu_value = Filter(11);
+            Huidu_value = Filter(0);
             break;
         case 5:
-            Huidu_value = Filter(3);
-            break;
-        case 6:
-            Huidu_value = Filter(10);
-            break;
-        case 7:
-            Huidu_value = Filter(2);
-            break;
-        case 8:
-            Huidu_value = Filter(9);
-            break;
-        case 9:
             Huidu_value = Filter(1);
             break;
-        case 10:
+        case 6:
+            Huidu_value = Filter(2);
+            break;
+        case 7:
+            Huidu_value = Filter(3);
+            break;
+        case 8:
             Huidu_value = Filter(8);
             break;
+        case 9:
+            Huidu_value = Filter(9);
+            break;
+        case 10:
+            Huidu_value = Filter(10);
+            break;
         case 11:
-            Huidu_value = Filter(0);
+            Huidu_value = Filter(11);
             break;
         default:
             Huidu_value = 0;

@@ -12,7 +12,7 @@
 #include "bsp_servo.h"
 #include "basic.h"
 
-uint8_t prog_num_hope = 1;
+uint8_t prog_num_hope = 8;
 
 uint8_t progg;
 
@@ -68,12 +68,12 @@ int main(void)
         Run_delay(50, 400);
     }
     if (progg == 8) {
-        Run_delay(60,300);
-        Run_delay(120,300);
-        Run_delay(190, 1500);
-        Run_delay(100, 100);
-        Run_delay(50, 400);
-        //Show_SensorPage_All();
+        // Run_delay(60,300);
+        // Run_delay(120,300);
+        // Run_delay(190, 1500);
+        // Run_delay(100, 100);
+        // Run_delay(50, 400);
+        Show_SensorPage_All();
     }
     stop();
     while (1) {};
