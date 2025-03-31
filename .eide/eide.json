@@ -162,6 +162,12 @@
         "files": [
           {
             "path": "Motion/src/basic.c"
+          },
+          {
+            "path": "Motion/src/trace.c"
+          },
+          {
+            "path": "Motion/src/reset.c"
           }
         ],
         "folders": []

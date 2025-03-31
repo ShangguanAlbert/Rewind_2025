@@ -175,3 +175,4 @@ int32_t Huidu_va(uint8_t ch)
     }
     return Huidu_value;
 }
+

@@ -57,7 +57,7 @@ void TIM2_Servo_Init(void)
 
     // 使能PWM输出
     TIM2->CCR1 = 500;
-    TIM2->CCR4 = 2155;
+    TIM2->CCR4 = 2145;
 }
 
 void Servo_SetAngle(uint8_t channel, uint16_t angle)

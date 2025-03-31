@@ -7,10 +7,13 @@
 #include "bsp_lcd.h"
 #include "bsp_led.h"
 #include "bsp_compass.h"
+#include "bsp_timer.h"
 #include "bsp_motor.h"
 #include "bsp_vision.h"
 #include "bsp_servo.h"
 #include "basic.h"
+#include "trace.h"
+#include "reset.h"
 
 uint8_t prog_num_hope = 8;
 
@@ -28,41 +31,44 @@ int main(void)
     USART2_COMPASS_Init();
     USART3_OpenMV_Init();
     TIM2_Servo_Init();
+    TIM3_TurnPID_Init();
+    TIM7_Reset_Init();
     LED_Init();
     KEY_Init();
     progg = Function_Mode();
 
     if (progg == 1) {
-        Run_delay(110, 2000);
+        Reset(5000, 50);
+        // Run_delay(110, 2000);
     }
     if (progg == 2) {
-        Run_delay(60,500);
+        Run_delay(60, 500);
         Run_delay(120, 1900);
         Run_delay(60, 500);
     }
     if (progg == 3) {
-        Run_delay(60,400);
+        Run_delay(60, 400);
         Run_delay(135, 1900);
         Run_delay(60, 400);
     }
     if (progg == 4) {
-        Run_delay(60,400);
+        Run_delay(60, 400);
         Run_delay(150, 1800);
         Run_delay(60, 400);
     }
     if (progg == 5) {
-        Run_delay(60,400);
+        Run_delay(60, 400);
         Run_delay(160, 1700);
         Run_delay(60, 400);
     }
     if (progg == 6) {
-        Run_delay(60,400);
+        Run_delay(60, 400);
         Run_delay(170, 1600);
         Run_delay(100, 100);
         Run_delay(50, 300);
     }
     if (progg == 7) {
-        Run_delay(60,400);
+        Run_delay(60, 400);
         Run_delay(180, 1600);
         Run_delay(100, 100);
         Run_delay(50, 400);
