@@ -60,7 +60,7 @@ void Trace(void)
                    Huidu_va(5) * (1) + Huidu_va(6) * (-1) +
                    Huidu_va(7) * (-2) + Huidu_va(8) * (-3) + Huidu_va(9) * (-4) + Huidu_va(10) * (-5) +
                    Huidu_va(11) * (-3);
-        error = Gray_sum * 1.0 * (2500.0 / sum * 1.0);
+        error = Gray_sum * 1.0 * (2800.0 / sum * 1.0);
     }
 
     motorSpeed   = KP * error + KD * (error - lastError);
@@ -70,20 +70,34 @@ void Trace(void)
     lastm1Speed  = mSpeed_right;
     lastm2Speed  = mSpeed_left;
     // 限幅
-    if (speed < 160) {
+    if (speed <= 125) {
         if (mSpeed_right < 0) {
             mSpeed_right = 0;
-        } else if (mSpeed_right > (1.5 * speed)) {
-            mSpeed_right = 1.5 * speed;
+        } else if (mSpeed_right > (1.6 * speed)) {
+            mSpeed_right = 1.6 * speed;
         }
 
         if (mSpeed_left < 0) {
             mSpeed_left = 0;
-        } else if (mSpeed_left > (1.5 * speed)) {
-            mSpeed_left = 1.5 * speed;
+        } else if (mSpeed_left > 1.6 * speed) {
+            mSpeed_left = 1.6 * speed;
         }
     }
-    if (speed >= 160) {
+
+    if (speed > 125 && speed <= 160) {
+        if (mSpeed_right < 0) {
+            mSpeed_right = 0;
+        } else if (mSpeed_right > (1.35 * speed)) {
+            mSpeed_right = 1.35 * speed;
+        }
+
+        if (mSpeed_left < 0) {
+            mSpeed_left = 0;
+        } else if (mSpeed_left > (1.35 * speed)) {
+            mSpeed_left = 1.35 * speed;
+        }
+    }
+    if (speed > 160) {
         if (mSpeed_right < 0) {
             mSpeed_right = 0;
         } else if (mSpeed_right > (1.25 * speed)) {
@@ -101,29 +115,51 @@ void Trace(void)
     set_pwm(2, mSpeed_left, speed);
 }
 
-/**
- * @brief 高速巡线, 速度可调范围90 - 200
- * @param N 设定速度
- */
+void slow_run(int N)
+{
+    get_huidu_va();
+    speed = N;
+    if (speed < 50) {
+        KP = 0.0035;
+        KD = 0.05;
+    } else if (speed >= 50 && speed < 60) { // 50
+        KP = 0.002;
+        KD = 0.007;
+    } else if (speed >= 60 && speed < 70) { // 60
+        KP = 0.00225;
+        KD = 0.005;
+    } else if (speed >= 70 && speed < 80) { // 70
+        KP = 0.00234;
+        KD = 0.0055;
+    } else if (speed >= 80 && speed < 90) { // 80
+        KP = 0.0024;
+        KD = 0.00665;
+    } else if (speed >= 90) { // 90
+        KP = 0.0025;
+        KD = 0.0073;
+    }
+    Trace();
+}
+
 void high_run(int N)
 {
     get_huidu_va();
     speed = N;
     if (speed > 90 && speed < 100) {
-        KP = 0.00413;  // p大会抽会扭
-        KD = 0.005565; // d小回到白线的速度就慢
+        KP = 0.002;  // p大会抽会扭
+        KD = 0.0055; // d小回到白线的速度就慢
     } else if (speed >= 100 && speed < 110) {
         KP = 0.0020;
         KD = 0.0264;
     } else if (speed >= 110 && speed < 120) {
-        KP = 0.001988;
-        KD = 0.02644;
+        KP = 0.001985;
+        KD = 0.02645;
     } else if (speed >= 120 && speed < 130) {
-        KP = 0.0019889;
+        KP = 0.001974;
         KD = 0.02644;
     } else if (speed >= 130 && speed < 140) {
-        KP = 0.0019845;
-        KD = 0.026422;
+        KP = 0.0019735;
+        KD = 0.02647;
     } else if (speed >= 140 && speed < 150) {
         KP = 0.001984;
         KD = 0.02643;
@@ -146,49 +182,23 @@ void high_run(int N)
     Trace();
 }
 
-void slow_run(int N)
-{
-    get_huidu_va();
-    speed = N;
-    if (speed < 50) {
-        KP = 0.0077;
-        KD = 0.05;
-    } else if (speed >= 50 && speed < 60) { // 50
-        KP = 0.004;
-        KD = 0.007;
-    } else if (speed >= 60 && speed < 70) { // 60
-        KP = 0.0045;
-        KD = 0.005;
-    } else if (speed >= 70 && speed < 80) { // 70
-        KP = 0.00428;
-        KD = 0.0055;
-    } else if (speed >= 80 && speed < 90) { // 80
-        KP = 0.00425;
-        KD = 0.005565;
-    } else { // 90
-        KP = 0.00413;
-        KD = 0.005565;
-    }
-    Trace();
-}
-
 void speed_up(int start, int end)
 {
-    KP = 0.001;
+    KP = 0.00225;
     KD = 0.025;
     for (; start < end; start++) {
         if (speed < 100) {
-            KP = 0.007;
-            KD = 0.018;
+            KP = 0.006;
+            KD = 0.02;
         } else {
             KP = 0.003;
-            KD = 0.08;
+            KD = 0.05;
         }
         speed = start;
         get_huidu_va();
         Trace();
         if (start % 10 == 0) {
-            delay_ms(1);
+            Delay_ms(1);
         }
     }
 }
@@ -227,6 +237,6 @@ void speed_down(int high, int low)
         speed = high;
         get_huidu_va();
         if (high % 5 == 0) Trace();
-        delay_ms(1);
+        Delay_ms(1);
     }
 }
