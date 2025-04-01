@@ -3,6 +3,8 @@
 /.settings
 /.eide/log
 /.eide.usr.ctx.json
+.DS_Store
+**/.DS_Store
 
 # project out
 /build
