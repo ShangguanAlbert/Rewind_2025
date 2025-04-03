@@ -60,7 +60,7 @@ void Trace(void)
                    Huidu_va(5) * (1) + Huidu_va(6) * (-1) +
                    Huidu_va(7) * (-2) + Huidu_va(8) * (-3) + Huidu_va(9) * (-4) + Huidu_va(10) * (-5) +
                    Huidu_va(11) * (-3);
-        error = Gray_sum * 1.0 * (2800.0 / sum * 1.0);
+        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0);
     }
 
     motorSpeed   = KP * error + KD * (error - lastError);
@@ -100,14 +100,14 @@ void Trace(void)
     if (speed > 160) {
         if (mSpeed_right < 0) {
             mSpeed_right = 0;
-        } else if (mSpeed_right > (1.25 * speed)) {
-            mSpeed_right = 1.25 * speed;
+        } else if (mSpeed_right > (1.35 * speed)) {
+            mSpeed_right = 1.35 * speed;
         }
 
         if (mSpeed_left < 0) {
             mSpeed_left = 0;
-        } else if (mSpeed_left > (1.25 * speed)) {
-            mSpeed_left = 1.25 * speed;
+        } else if (mSpeed_left > (1.35 * speed)) {
+            mSpeed_left = 1.35 * speed;
         }
     }
 
@@ -120,23 +120,23 @@ void slow_run(int N)
     get_huidu_va();
     speed = N;
     if (speed < 50) {
-        KP = 0.0035;
+        KP = 0.0077;
         KD = 0.05;
     } else if (speed >= 50 && speed < 60) { // 50
-        KP = 0.002;
-        KD = 0.007;
+        KP = 0.0070;
+        KD = 0.005;
     } else if (speed >= 60 && speed < 70) { // 60
-        KP = 0.00225;
+        KP = 0.0045;
         KD = 0.005;
     } else if (speed >= 70 && speed < 80) { // 70
-        KP = 0.00234;
+        KP = 0.00428;
         KD = 0.0055;
     } else if (speed >= 80 && speed < 90) { // 80
-        KP = 0.0024;
-        KD = 0.00665;
-    } else if (speed >= 90) { // 90
-        KP = 0.0025;
-        KD = 0.0073;
+        KP = 0.00425;
+        KD = 0.005565;
+    } else { // 90
+        KP = 0.00413;
+        KD = 0.005565;
     }
     Trace();
 }
@@ -146,53 +146,53 @@ void high_run(int N)
     get_huidu_va();
     speed = N;
     if (speed > 90 && speed < 100) {
-        KP = 0.002;  // p大会抽会扭
-        KD = 0.0055; // d小回到白线的速度就慢
+        KP = 0.00413;  // p大会抽会扭
+        KD = 0.005565; // d小回到白线的速度就慢
     } else if (speed >= 100 && speed < 110) {
         KP = 0.0020;
         KD = 0.0264;
     } else if (speed >= 110 && speed < 120) {
-        KP = 0.001985;
-        KD = 0.02645;
+        KP = 0.001988;
+        KD = 0.02644;
     } else if (speed >= 120 && speed < 130) {
-        KP = 0.001974;
+        KP = 0.0019889;
         KD = 0.02644;
     } else if (speed >= 130 && speed < 140) {
-        KP = 0.0019735;
-        KD = 0.02647;
+        KP = 0.001974;
+        KD = 0.02655;
     } else if (speed >= 140 && speed < 150) {
-        KP = 0.001984;
-        KD = 0.02643;
-    } else if (speed >= 150 && speed < 160) {
-        KP = 0.001980;
-        KD = 0.02643;
-    } else if (speed >= 160 && speed < 170) {
-        KP = 0.0019808;
-        KD = 0.026441;
+        KP = 0.0016;
+        KD = 0.035;
+    } else if (speed >= 150 && speed <= 160) {
+        KP = 0.0013;
+        KD = 0.035;
+    } else if (speed > 160 && speed < 170) {
+        KP = 0.0013;
+        KD = 0.035;
     } else if (speed >= 170 && speed < 180) {
-        KP = 0.00197;
-        KD = 0.026477;
-    } else if (speed >= 180 && speed < 190) {
-        KP = 0.002315;
-        KD = 0.0264;
-    } else if (speed >= 190 && speed < 200) {
-        KP = 0.002360;
-        KD = 0.02653;
+        KP = 0.0013;
+        KD = 0.035;
+    } else if (speed >= 180 && speed <= 190) {
+        KP = 0.0006;//0.001
+        KD = 0.031;//0.3
+    } else if (speed > 190 && speed < 200) {
+        KP = 0.0006;
+        KD = 0.03;
     }
     Trace();
 }
 
 void speed_up(int start, int end)
 {
-    KP = 0.00225;
+    KP = 0.0006;
     KD = 0.025;
     for (; start < end; start++) {
-        if (speed < 100) {
-            KP = 0.006;
-            KD = 0.02;
+        if (speed <= 100) {
+            KP = 0.001;
+            KD = 0.04;
         } else {
-            KP = 0.003;
-            KD = 0.05;
+            KP = 0.0006;
+            KD = 0.03;
         }
         speed = start;
         get_huidu_va();

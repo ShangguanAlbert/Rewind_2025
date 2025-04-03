@@ -131,7 +131,7 @@ void Motor(uint8_t port, int speed)
 void set_pwm(uint8_t port, int speed, int set_speed)
 {
     if (speed >= 0) {
-        if (speed > 210) speed = 210;
+        if (speed > 220) speed = 220;
         switch (port) {
             case 1: // 右边轮子正转
                 TIM8->CCR1 = speed * m_diff(set_speed);
@@ -143,7 +143,7 @@ void set_pwm(uint8_t port, int speed, int set_speed)
                 break;
         }
     } else {
-        if (speed < -210) speed = -210;
+        if (speed < -220) speed = -220;
         switch (port) {
             case 1: // 右边轮子反转
                 TIM8->CCR1 = 0;
@@ -166,7 +166,7 @@ float m_diff(int speed)
     if (speed <= 50) {
         mdif_res = 0.985;
     } else if (speed > 50 && speed <= 60) {
-        mdif_res = 0.998;
+        mdif_res = 0.99;
     } else if (speed > 60 && speed <= 75) {
         mdif_res = 0.99;
     } else if (speed > 75 && speed <= 80) {
@@ -184,11 +184,11 @@ float m_diff(int speed)
     } else if (speed > 130 && speed <= 140) {
         mdif_res = 1.0;
     } else if (speed > 140 && speed < 160) {
-        mdif_res = 1.0;
+        mdif_res = 0.97;
     } else if (speed >= 160 && speed < 170) {
-        mdif_res = 1.0;
+        mdif_res = 0.97;
     } else if (speed >= 170 && speed < 180) {
-        mdif_res = 0.995;
+        mdif_res = 0.975;
     } else if (speed >= 180 && speed < 185) {
         mdif_res = 0.994;
     } else if (speed >= 185 && speed < 190) {

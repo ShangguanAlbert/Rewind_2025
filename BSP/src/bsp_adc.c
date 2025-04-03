@@ -104,10 +104,7 @@ uint32_t Filter(uint16_t num)
     int filter_buf[5];
     for (i = 0; i < 5; i++) {
         filter_buf[i] = ADCValue[num]; // 连续测量同一通道的值5次
-        // 此处的延时 得科没有 行知有 具体有待实测
-        // 从理论上 有这个延时能够匹配adc的采集速度
-        // 从实验效果上 有这个延时好像数据更新更快 波动更小
-        delay_us(20);
+        Delay_us(10);
     }
     for (j = 0; j < 4; j++) { // 冒泡排序 从小到大
         for (i = 0; i < 4 - j; i++) {
@@ -118,10 +115,10 @@ uint32_t Filter(uint16_t num)
             }
         }
     }
-    for (i = 1; i < 5 - 1; i++) {
+    for (i = 1; i < 4; i++) {
         filter_sum += filter_buf[i]; // 取中间三次求平均
     }
-    return filter_sum / (5 - 2);
+    return filter_sum / 6;
 }
 
 /**
@@ -175,4 +172,3 @@ int32_t Huidu_va(uint8_t ch)
     }
     return Huidu_value;
 }
-

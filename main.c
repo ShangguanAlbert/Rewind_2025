@@ -38,19 +38,21 @@ int main(void)
     progg = Function_Mode();
     if (progg == 1) {
         Stop(3000);
-        speed_up(60, 120);
-        Reset(3300, 120);
-        speed_down(120, 50);
+        Reset(2800, 140);
+        speed_down(140, 50);
     }
     if (progg == 2) {
         Stop(3000);
-        speed_up(60, 130);
-        Reset(3500, 130);
-        speed_down(130, 50);
+        //Reset(50, 30);
+        //speed_up(40, 120);
+        Reset(100,60);
+        Reset(80,110);
+        Reset(2700, 170);
+        //Run_delay(170,2700);
+        speed_down(120, 30);
     }
     if (progg == 3) {
         speed_up(60, 120);
-        // Reset(500, 120);
         speed_down(120, 50);
     }
     if (progg == 4) {
