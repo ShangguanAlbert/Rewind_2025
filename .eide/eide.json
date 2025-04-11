@@ -153,6 +153,9 @@
           },
           {
             "path": "BSP/src/bsp_servo.c"
+          },
+          {
+            "path": "BSP/src/bsp_sensor.c"
           }
         ],
         "folders": []
@@ -168,6 +171,18 @@
           },
           {
             "path": "Motion/src/reset.c"
+          },
+          {
+            "path": "Motion/src/pid_turn.c"
+          },
+          {
+            "path": "Motion/src/posture.c"
+          },
+          {
+            "path": "Motion/src/route.c"
+          },
+          {
+            "path": "Motion/src/turn.c"
           }
         ],
         "folders": []

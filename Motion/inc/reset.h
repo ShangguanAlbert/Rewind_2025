@@ -8,5 +8,6 @@
 #include "bsp_timer.h"
 
 void Reset(int time_last, int goal_speed);
+void Reset_bridge(int time_last, int goal_speed, uint8_t mode);
 
 #endif

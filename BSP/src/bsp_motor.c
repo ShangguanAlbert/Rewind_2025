@@ -176,13 +176,13 @@ float m_diff(int speed)
     } else if (speed > 90 && speed <= 95) {
         mdif_res = 1.0;
     } else if (speed > 95 && speed <= 105) {
-        mdif_res = 1.0;
+        mdif_res = 0.986;
     } else if (speed > 105 && speed < 120) {
         mdif_res = 1.0;
     } else if (speed >= 120 && speed <= 130) {
-        mdif_res = 1.0;
+        mdif_res = 0.985;
     } else if (speed > 130 && speed <= 140) {
-        mdif_res = 1.0;
+        mdif_res = 0.985;//
     } else if (speed > 140 && speed < 160) {
         mdif_res = 0.97;
     } else if (speed >= 160 && speed < 170) {

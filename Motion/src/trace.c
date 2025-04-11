@@ -149,11 +149,11 @@ void high_run(int N)
         KP = 0.00413;  // p大会抽会扭
         KD = 0.005565; // d小回到白线的速度就慢
     } else if (speed >= 100 && speed < 110) {
-        KP = 0.0020;
-        KD = 0.0264;
+        KP = 0.001982;
+        KD = 0.02899;
     } else if (speed >= 110 && speed < 120) {
-        KP = 0.001988;
-        KD = 0.02644;
+        KP = 0.001982;
+        KD = 0.02650;
     } else if (speed >= 120 && speed < 130) {
         KP = 0.0019889;
         KD = 0.02644;
@@ -239,4 +239,64 @@ void speed_down(int high, int low)
         if (high % 5 == 0) Trace();
         Delay_ms(1);
     }
+}
+
+/**
+ * @brief 桥巡线函数
+ * @param mode 模式
+ */
+void bridge_Trace(uint8_t mode)
+{
+    if (mode == 1) {
+        Gray_sum = Huidu_va(0) * (1) + Huidu_va(1) * (2) + Huidu_va(2) * (3) + Huidu_va(3) * (4) + Huidu_va(4) * (5) + Huidu_va(5) * (6) +
+                   Huidu_va(11) * (-1) + Huidu_va(10) * (-2) + Huidu_va(9) * (-3) + Huidu_va(8) * (-4) + Huidu_va(7) * (-5) + Huidu_va(6) * (-6);
+        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0);
+    } else if (mode == 2) {
+        Gray_sum = Huidu_va(0) * (2) + Huidu_va(1) * (2) + Huidu_va(2) * (2) + Huidu_va(3) * (2) + Huidu_va(4) * (3) + Huidu_va(5) * (3) +
+                   Huidu_va(11) * (-2) + Huidu_va(10) * (-2) + Huidu_va(9) * (-2) + Huidu_va(8) * (-2) + Huidu_va(7) * (-3) + Huidu_va(6) * (-3);
+        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0);
+    }
+
+    motorSpeed = KP * error + KD * (error - lastError);
+    lastError  = error;
+
+    mSpeed_right = speed + motorSpeed; // 右轮速度
+    mSpeed_left  = speed - motorSpeed; // 左轮速度
+    lastm1Speed  = mSpeed_right;
+    lastm2Speed  = mSpeed_left;
+    // 限幅
+    if (mSpeed_right < 0) {
+        mSpeed_right = 0;
+    } else if (mSpeed_right > (1.5 * speed)) {
+        mSpeed_right = 1.5 * speed;
+    }
+
+    if (mSpeed_left < 0) {
+        mSpeed_left = 0;
+    } else if (mSpeed_left > (1.5 * speed)) {
+        mSpeed_left = 1.5 * speed;
+    }
+    set_pwm(1, mSpeed_right, speed);
+    set_pwm(2, mSpeed_left, speed);
+}
+
+/**
+ * @brief 桥上巡线
+ *
+ * @param N 速度
+ * @param mode 模式,不同权值
+ */
+void bridge_PD(int N, uint8_t mode)
+{
+    get_huidu_va();
+    speed = N;
+    if (mode == 1) {
+        KP = 0.015;
+        KD = 0.008;
+    } else if (mode == 2) {
+        KP = 0.009;
+        KD = 0.2;
+    }
+    bridge_Trace(mode);
+    
 }

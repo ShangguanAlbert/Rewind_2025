@@ -17,5 +17,7 @@ void high_run(int N);
 void slow_run(int N);
 void speed_up(int start, int end);
 void speed_down(int high, int low);
+void bridge_Trace(uint8_t mode);
+void bridge_PD(int N, uint8_t mode);
 
 #endif

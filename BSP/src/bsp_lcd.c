@@ -2,6 +2,7 @@
 #include "bsp_key.h"
 #include "bsp_adc.h"
 #include "bsp_compass.h"
+#include "bsp_sensor.h"
 
 uint8_t page = 1;
 extern uint8_t prog_num_hope;
@@ -86,6 +87,7 @@ void Sensor_Test_Page1(void)
     //     LCD_DisplayString(160, 215, "None");
     // }
     // LCD_DisplayNumber(155, 220, openmv[2], 2);
+
 }
 
 void Sensor_Test_Page2(void)
@@ -95,14 +97,14 @@ void Sensor_Test_Page2(void)
     LCD_DisplayString(50, 0, "Digital Sensor");
     LCD_DrawLine(0, 25, 240, 25);
     LCD_SetAsciiFont(&ASCII_Font20);
-    // LCD_DisplayString(5, 35, "hwl:");
-    // LCD_DisplayNumber(100, 35, hwl, 1);
-    // LCD_DisplayString(5, 60, "hwr:");
-    // LCD_DisplayNumber(100, 60, hwr, 1);
-    // LCD_DisplayString(5, 85, "qhdl:");
-    // LCD_DisplayNumber(100, 85, qhdl, 1);
-    // LCD_DisplayString(5, 110, "qhdr:");
-    // LCD_DisplayNumber(100, 110, qhdr, 1);
+    LCD_DisplayString(5, 35, "hwl:");
+    LCD_DisplayNumber(100, 35, hwl, 1);
+    LCD_DisplayString(5, 60, "hwr:");
+    LCD_DisplayNumber(100, 60, hwr, 1);
+    LCD_DisplayString(5, 85, "hdxl:");
+    LCD_DisplayNumber(100, 85, hdxl, 1);
+    LCD_DisplayString(5, 110, "hdxr:");
+    LCD_DisplayNumber(100, 110, hdxr, 1);
     // LCD_DisplayString(5, 135, "hdl:");
     // LCD_DisplayNumber(100, 135, hdl, 1);
     // LCD_DisplayString(5, 160, "hdr:");
