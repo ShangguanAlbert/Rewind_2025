@@ -43,10 +43,29 @@ int main(void)
     KEY_Init();
     GPIO_HW_Init();
     GPIO_HDLR_Init();
+    pid_init(&pid_yaw, 55, 10, 4, 2, 3);
+    Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
-    Bridge_Travel();
+        down_pt1_6();//下台
+        Front_mid();
+        Reset(30, 60);
+        while (hdxl != 0) {
+            drift_right(70, 0);
+        }
+        Reset(400,70);
+
+        while (hdxl != 0) {
+            slow_run(50);
+        }
+        Reset(1600,50);
+        TurnRight_155_Longline();
+        Reset(600,60);
+        Reset(1200,135);
+        Reset(400,70);
+        UP_Tai2_6();
+    
         
        
     }
@@ -60,12 +79,26 @@ int main(void)
         //Run_delay(170,2700);
         speed_down(120, 30);
         */
-       Tai1_Tai2();
+       down_pt1_6();//下台
+    Front_mid();
+    Reset(30, 60);
+    while (hdxl != 0) {
+        drift_right(70, 0);
+    }
+    Reset(400,70);
+
+     while (hdxl != 0) {
+        slow_run(50);
+    }
+    Reset(1600,50);
+    Reset_drift_left(70,0,500);
+    Reset(100,70);
+    Reset(1500,130);
+    Reset(650,60);
+    UP_Tai2_6();
     }
     if (progg == 3) {
-        down_pt1_6();
-    // 矫正
-    Reset(650,60);//
+        Tai1_Tai2();
     }
     if (progg == 4) {
         Bridge_Travel();

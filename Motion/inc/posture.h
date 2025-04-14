@@ -9,5 +9,9 @@ void Front_up_High(void);
 void down_pt1_6(void);
 void UP_Tai2_6(void);
 void Bridge_Travel(void);
+void drift_left(int speed, uint8_t model);
+void drift_right(int speed, uint8_t model);
+void Drift_Rightpass_BLB(void);
+
 
 #endif

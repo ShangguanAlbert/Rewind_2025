@@ -2,6 +2,7 @@
 #include "bsp_compass.h"
 #include "bsp_led.h"
 #include "posture.h"
+#include "basic.h"
 
 pid_t_robomaster pid_yaw = {0};
 
@@ -142,12 +143,12 @@ void Deg_IN(void)
 void zpid(int time_turn)
 {
     t3_i = 0;
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
         speed_adj = pid_calc(&pid_yaw, JD, MJD);
-        run(-speed_adj * 0.9, speed_adj);
+        run(-speed_adj , speed_adj);
     } while (t3_i < time_turn);
-    TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 }
 /**
@@ -157,12 +158,12 @@ void zpid(int time_turn)
 void fpid(int time_turn)
 {
     t3_i = 0;
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
         speed_adj = pid_calc(&pid_yaw, XJD, MJD);
-        run(-speed_adj * 0.9, speed_adj);
+        run(-speed_adj, speed_adj);
     } while (t3_i < time_turn);
-    TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 }
 /**

@@ -11,6 +11,10 @@
 #define thr_white {200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200}
 #define thr_green {130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130}
 
+extern int32_t white[];
+extern int32_t green[];
+extern int32_t thr_whiteline[];
+
 void get_huidu_va(void);
 void Trace(void);
 void high_run(int N);

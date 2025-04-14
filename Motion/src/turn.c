@@ -8,6 +8,26 @@
 #include "pid_turn.h"
 #include "bsp_servo.h"
 #include "bsp_sensor.h"
+#include "basic.h"
+
+void TurnRight_155_Longline(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 115, 3);
+    Right_Speed_Down(50, -90, 4);
+    while (1) {
+        run(85, -65);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+
 
 void Tai1_6_zhuan(void)
 {
@@ -16,15 +36,11 @@ void Tai1_6_zhuan(void)
     Stop(250);
     Front_up_High();
     Deg_IN();
-    for (int x = 50; x < 105; x++) {
-        run(x * 0.95, -x * 0.98);
-        delay_ms(8); //
+    for (int x = 55; x < 110; x++) {
+        run(x * 1.0, -x * 0.92);
+        Delay_ms(8); //
     }
-    for (int x = 50; x > 105; x--) {
-        run(x * 0.95, -x * 0.98);
-        delay_ms(8);
-    }
-    pid_Turn(960);
-    stop();
+    pid_Turn(500);
+    Stop(50);
     Front_down();
 }

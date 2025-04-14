@@ -9,5 +9,7 @@
 
 void Reset(int time_last, int goal_speed);
 void Reset_bridge(int time_last, int goal_speed, uint8_t mode);
+void Reset_drift_left(int speed, uint8_t model, int time_last);
+void Reset_drift_right(int speed, uint8_t model, int time_last);
 
 #endif

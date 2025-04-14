@@ -38,3 +38,39 @@ void Reset_bridge(int time_last, int goal_speed, uint8_t mode)
     TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
     t7_i = 0;
 }
+
+/**
+ * @brief 卡时间向左飘
+ *
+ * @param speed 速度
+ * @param model 模式，低速还是高速
+ * @param time_last 持续时间 1000为1秒
+ */
+void Reset_drift_left(int speed, uint8_t model, int time_last)
+{
+    t7_i = 0;
+    TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
+    do {
+        drift_left(speed, model);
+    } while (t7_i < time_last);
+    TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
+    t7_i = 0;
+}
+
+/**
+ * @brief 卡时间向右飘
+ *
+ * @param speed 速度
+ * @param model 模式，低速还是高速
+ * @param time_last 持续时间 1000为1秒
+ */
+void Reset_drift_right(int speed, uint8_t model, int time_last)
+{
+    t7_i = 0;
+    TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
+    do {
+        drift_right(speed, model);
+    } while (t7_i < time_last);
+    TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
+    t7_i = 0;
+}
