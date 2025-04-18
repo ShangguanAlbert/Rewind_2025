@@ -90,7 +90,7 @@ void UP_Tai2_6(void)
     Stop(30);
     Front_mid();
     run_delay(50, 50, 350);
-    Tai1_6_zhuan();
+    //Tai1_6_zhuan();
 }
 
 void Bridge_Travel(void)

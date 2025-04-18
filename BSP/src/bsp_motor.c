@@ -97,7 +97,7 @@ void TIM8_Motor_Init(void)
 void Motor(uint8_t port, int speed)
 {
     if (speed >= 0) {
-        if (speed > 210) speed = 210;
+        if (speed > 220) speed = 220;
         switch (port) {
             case 1: // 右边轮子正转
                 TIM8->CCR1 = speed * m_diff(speed);
@@ -109,7 +109,7 @@ void Motor(uint8_t port, int speed)
                 break;
         }
     } else {
-        if (speed < -210) speed = -210;
+        if (speed < -220) speed = -220;
         switch (port) {
             case 1: // 右边轮子反转
                 TIM8->CCR1 = 0;
@@ -131,7 +131,7 @@ void Motor(uint8_t port, int speed)
 void set_pwm(uint8_t port, int speed, int set_speed)
 {
     if (speed >= 0) {
-        if (speed > 220) speed = 220;
+        if (speed > 225) speed = 225;
         switch (port) {
             case 1: // 右边轮子正转
                 TIM8->CCR1 = speed * m_diff(set_speed);
@@ -143,7 +143,7 @@ void set_pwm(uint8_t port, int speed, int set_speed)
                 break;
         }
     } else {
-        if (speed < -220) speed = -220;
+        if (speed < -225) speed = -225;
         switch (port) {
             case 1: // 右边轮子反转
                 TIM8->CCR1 = 0;
@@ -164,37 +164,37 @@ void set_pwm(uint8_t port, int speed, int set_speed)
 float m_diff(int speed)
 {
     if (speed <= 50) {
-        mdif_res = 0.985;
+        mdif_res = 0.958;//
     } else if (speed > 50 && speed <= 60) {
-        mdif_res = 0.99;
+        mdif_res = 0.96;
     } else if (speed > 60 && speed <= 75) {
-        mdif_res = 0.99;
+        mdif_res = 0.967;
     } else if (speed > 75 && speed <= 80) {
-        mdif_res = 0.99;
+        mdif_res = 0.976;//
     } else if (speed > 80 && speed <= 90) {
-        mdif_res = 0.99;
+        mdif_res = 0.968;
     } else if (speed > 90 && speed <= 95) {
-        mdif_res = 1.0;
+        mdif_res = 0.966;
     } else if (speed > 95 && speed <= 105) {
-        mdif_res = 0.986;
+        mdif_res = 0.965;
     } else if (speed > 105 && speed < 120) {
-        mdif_res = 1.0;
+        mdif_res = 0.964;
     } else if (speed >= 120 && speed <= 130) {
-        mdif_res = 0.985;
+        mdif_res = 0.958;
     } else if (speed > 130 && speed <= 140) {
-        mdif_res = 0.985;//
+        mdif_res = 0.965;//
     } else if (speed > 140 && speed < 160) {
-        mdif_res = 0.97;
+        mdif_res = 0.96;
     } else if (speed >= 160 && speed < 170) {
-        mdif_res = 0.97;
+        mdif_res = 0.9676;
     } else if (speed >= 170 && speed < 180) {
         mdif_res = 0.975;
     } else if (speed >= 180 && speed < 185) {
-        mdif_res = 0.994;
+        mdif_res = 0.9792;
     } else if (speed >= 185 && speed < 190) {
-        mdif_res = 0.994;
+        mdif_res = 0.978;
     } else if (speed >= 190 && speed < 200) {
-        mdif_res = 0.99;
+        mdif_res = 0.985;
     }
     return mdif_res;
 }

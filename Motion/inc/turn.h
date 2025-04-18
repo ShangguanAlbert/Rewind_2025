@@ -7,5 +7,7 @@ void Tai1_6_zhuan(void);
 void TurnRight_90_Rdetect(void);
 void TurnLeft_90_Rdetect(void);
 void TurnLeft_90_Ldetect(void);
+void TurnRight_90_hdxrDetect(void);
+void TurnRight_90_Rdetect_in(void);
 
 #endif 

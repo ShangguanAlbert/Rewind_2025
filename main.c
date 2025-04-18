@@ -48,63 +48,52 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        down_pt1_6();//下台
-        Front_mid();
-        Reset(30, 60);
-        while (hdxl != 0) {
-            drift_right(70, 0);
-        }
-        Reset(400,70);
-
-        while (hdxl != 0) {
-            slow_run(50);
-        }
-        Reset(1600,50);
-        TurnRight_135_Longline();
-        Reset(600,60);
-        Reset(1200,135);
-        Reset(400,70);
-        UP_Tai2_6();
-    
-        
-       
+        // Stop(1000); 
+        // Run_delay(50,200);
+        // Run_delay(80,500);
+        // Run_delay(100,200);
+        // Run_delay(180,1000);
+        // Run_delay(80,200);
+        // Run_delay(50,200);
+        speed_up(50,190);
+        Reset(1900,190);
+        Reset(100,120);
+        Reset(100,80);
+        Reset(200,50);
     }
     if (progg == 2) {
-       /* Stop(3000);
-        //Reset(50, 30);
-        //speed_up(40, 120);
-        Reset(100,60);
-        Reset(80,110);
-        Reset(1000, 170);
-        //Run_delay(170,2700);
-        speed_down(120, 30);
-        */
-       down_pt1_6();//下台
-    Front_mid();
-    Reset(30, 60);
-    while (hdxl != 0) {
-        drift_right(70, 0);
-    }
-    Reset(400,70);
-
-     while (hdxl != 0) {
-        slow_run(50);
-    }
-    Reset(1600,50);
-    Reset_drift_left(70,0,500);
-    Reset(100,70);
-    Reset(1500,130);
-    Reset(650,60);
-    UP_Tai2_6();
+    //    Reset(200,50);
+    //    Reset(200,80);
+    //     Reset(1000,160);
+    //     Reset(200,80);
+    //     Reset(300,50);
+        Reset(200,50);
+        Reset(100,80);
+        Reset(100,100);
+        Reset(1900,170);
+        Reset(100,100);
+        Reset(100,80);
+        Reset(200,50);
+        
     }
     if (progg == 3) {
-        Tai1_Tai2();
+        speed_up(50,170);
+        Reset(1900,170);
+        Reset(100,120);
+        Reset(100,80);
+        Reset(200,50);
     }
     if (progg == 4) {
-        Bridge_Travel();
+        Run_delay(50,200);
+        Run_delay(80,100);
+        Run_delay(120,100);
+        Run_delay(190,1700);
+        Run_delay(120,100);
+        Run_delay(80,100);
+        Run_delay(50,200);
     }
     if (progg == 5) {
-         bridge_PD(30,1);
+        
     }
     if (progg == 6) {
         UP_Tai2_6();
