@@ -4,7 +4,7 @@
 
 void Tai1_Tai2(void);
 void Tai2_Tai3(void);
-void tai2_tai4(void);
+void Tai2_Tai4(void);
 void Tai3_door1_Tai5(void);
 void Tai3_door2_Tai5(void);
 void Tai3_door3_Tai5(void);

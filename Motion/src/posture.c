@@ -48,18 +48,14 @@ void Front_up_High(void)
 void down_pt1_6(void)
 {
     Front_down();
-    while (1) {
-        slow_run(40);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }
-    }
+    Stop(300);
+    Reset(100,40);
     while (hwr != 0) {
         slow_run(40);
     }
     Front_mid();
-    Reset(60, 45);//
-    stop();
+    Reset(100, 45);//
+    // stop();
 }
 
 /**
@@ -90,7 +86,8 @@ void UP_Tai2_6(void)
     Stop(30);
     Front_mid();
     run_delay(50, 50, 350);
-    //Tai1_6_zhuan();
+    Tai1_6_zhuan();
+    
 }
 
 void Bridge_Travel(void)

@@ -17,6 +17,7 @@ extern int32_t thr_whiteline[];
 
 void get_huidu_va(void);
 void Trace(void);
+void Trace_transVelocity(void);
 void high_run(int N);
 void slow_run(int N);
 void speed_up(int start, int end);

@@ -55,11 +55,15 @@ int main(void)
         // Run_delay(180,1000);
         // Run_delay(80,200);
         // Run_delay(50,200);
-        speed_up(50,190);
-        Reset(1900,190);
-        Reset(100,120);
-        Reset(100,80);
-        Reset(200,50);
+        // speed_up(50,190);
+        // speed_down(190,50);
+        // Reset(1600,190);
+        // Reset(100,120);
+        // Reset(100,80);
+        // Reset(200,50);
+        Tai1_Tai2();
+        Tai2_Tai4();
+        
     }
     if (progg == 2) {
     //    Reset(200,50);
