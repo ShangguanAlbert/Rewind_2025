@@ -60,7 +60,7 @@ int main(void)
             slow_run(50);
         }
         Reset(1600,50);
-        TurnRight_155_Longline();
+        TurnRight_135_Longline();
         Reset(600,60);
         Reset(1200,135);
         Reset(400,70);
