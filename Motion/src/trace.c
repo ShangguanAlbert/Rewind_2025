@@ -52,7 +52,7 @@ void Trace(void)
     } else if ((Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) &&
                (Huidu_va(11) > white[11] || Huidu_va(10) > white[10])) {
         error = 0;
-    } else if (cnt_whiteline >= 3) {
+    } else if (cnt_whiteline >= 3||(cnt_whiteline>=2&&(Huidu_va(5) > white[5] || Huidu_va(6) > white[6]))) {
         error = 0;
     } else {
         Gray_sum = Huidu_va(0) * (3) +
@@ -129,11 +129,11 @@ void slow_run(int N)
         KP = 0.0045;
         KD = 0.005;
     } else if (speed >= 70 && speed < 80) { // 70
-        KP = 0.00428;
-        KD = 0.0055;
+        KP = 0.00400;
+        KD = 0.00558;
     } else if (speed >= 80 && speed < 90) { // 80
-        KP = 0.00425;
-        KD = 0.005565;
+        KP = 0.0041;
+        KD = 0.005;
     } else { // 90
         KP = 0.00413;
         KD = 0.005565;
@@ -146,59 +146,60 @@ void high_run(int N)
     get_huidu_va();
     speed = N;
     if (speed > 90 && speed < 100) {
-        KP = 0.00413;  // p大会抽会扭
-        KD = 0.005565; // d小回到白线的速度就慢
+        KP = 0.001982;  // p大会抽会扭 0.00413
+        KD = 0.028; // d小回到白线的速度就慢 0.005565 72
     } else if (speed >= 100 && speed < 110) {
-        KP = 0.001982;
-        KD = 0.02899;
+        KP = 0.00199;//0.001982
+        KD = 0.18;// 0.02899
     } else if (speed >= 110 && speed < 120) {
-        KP = 0.001982;
-        KD = 0.02650;
+        KP = 0.001985;
+        KD = 0.0270;//0.0265
     } else if (speed >= 120 && speed < 130) {
-        KP = 0.0019889;
-        KD = 0.02644;
+        KP = 0.0022;//0.00198
+        KD = 0.18;//0.02644
     } else if (speed >= 130 && speed < 140) {
-        KP = 0.001974;
-        KD = 0.02655;
+        KP = 0.00198;//0.001974
+        KD = 0.16;//0.02655
     } else if (speed >= 140 && speed < 150) {
         KP = 0.0016;
-        KD = 0.035;
-    } else if (speed >= 150 && speed <= 160) {
+        KD = 0.15;//0.16
+    } else if (speed >= 150 && speed <160) {
         KP = 0.0013;
-        KD = 0.035;
-    } else if (speed > 160 && speed < 170) {
-        KP = 0.0013;
-        KD = 0.035;
+        KD = 0.13;
+    } else if (speed >= 160 && speed < 170) {
+        KP = 0.00125;
+        KD = 0.10;
     } else if (speed >= 170 && speed < 180) {
-        KP = 0.0013;
-        KD = 0.035;
-    } else if (speed >= 180 && speed <= 190) {
+        KP = 0.00128;
+        KD = 0.105;
+    } else if (speed >= 180 && speed <190) {
         KP = 0.0006;//0.001
-        KD = 0.031;//0.3
-    } else if (speed > 190 && speed < 200) {
-        KP = 0.0006;
-        KD = 0.03;
+        KD = 0.105;//0.3
+    } else if (speed >= 190 && speed < 200) {
+        // KP = 0.00075;
+        KP = 0.00125;
+        KD = 0.09;
     }
     Trace();
 }
 
 void speed_up(int start, int end)
 {
-    KP = 0.0006;
-    KD = 0.025;
+    KP = 0.0019;
+    KD = 0.15;
     for (; start < end; start++) {
         if (speed <= 100) {
-            KP = 0.001;
-            KD = 0.04;
+            KP = 0.0018;
+            KD = 0.15;
         } else {
-            KP = 0.0006;
-            KD = 0.03;
+            KP = 0.0012;
+            KD = 0.11;
         }
         speed = start;
         get_huidu_va();
         Trace();
-        if (start % 10 == 0) {
-            Delay_ms(1);
+        if (start % 5 == 0) {
+            Delay_ms(2);
         }
     }
 }

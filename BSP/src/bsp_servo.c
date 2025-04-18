@@ -56,7 +56,7 @@ void TIM2_Servo_Init(void)
     TIM_Cmd(TIM2, ENABLE);
 
     // 使能PWM输出
-    TIM2->CCR1 = 500;
+    TIM2->CCR1 = 1100;//500
     TIM2->CCR4 = 2145;
 }
 
