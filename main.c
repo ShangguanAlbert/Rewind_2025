@@ -61,8 +61,8 @@ int main(void)
         // Reset(100,120);
         // Reset(100,80);
         // Reset(200,50);
-        Tai1_Tai2();
-        Tai2_Tai4();
+        // UP_Tai2_6();
+        Tai4_Tai5();
         
     }
     if (progg == 2) {
@@ -71,21 +71,17 @@ int main(void)
     //     Reset(1000,160);
     //     Reset(200,80);
     //     Reset(300,50);
-        Reset(200,50);
-        Reset(100,80);
-        Reset(100,100);
-        Reset(1900,170);
-        Reset(100,100);
-        Reset(100,80);
-        Reset(200,50);
-        
+        // Reset(200,50);
+        // Reset(100,80);
+        // Reset(100,100);
+        // Reset(1900,170);
+        // Reset(100,100);
+        // Reset(100,80);
+        // Reset(200,50);
+        Tai5_Tai7();
     }
     if (progg == 3) {
-        speed_up(50,170);
-        Reset(1900,170);
-        Reset(100,120);
-        Reset(100,80);
-        Reset(200,50);
+        UP_Tai7();
     }
     if (progg == 4) {
         Run_delay(50,200);

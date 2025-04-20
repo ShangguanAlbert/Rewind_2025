@@ -9,5 +9,7 @@ void Tai3_door1_Tai5(void);
 void Tai3_door2_Tai5(void);
 void Tai3_door3_Tai5(void);
 void Tai3_door4_Tai5(void);
+void Tai4_Tai5(void);
+void Tai5_Tai7(void);
 
 #endif

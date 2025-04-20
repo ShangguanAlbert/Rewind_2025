@@ -58,6 +58,7 @@ void down_pt1_6(void)
     // stop();
 }
 
+void down_Tai7();
 /**
  * @brief 上台2到台6动作
  *
@@ -71,7 +72,7 @@ void UP_Tai2_6(void)
 
 
     while (1) {
-         slow_run(55);
+         slow_run(50);
         if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])
         {
             run(48, 45);
@@ -79,15 +80,72 @@ void UP_Tai2_6(void)
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
-        
     }
-
-    
-    Stop(30);
     Front_mid();
-    run_delay(50, 50, 350);
+    Run_delay(45,100);
+    while (1)
+    {
+        slow_run(45);
+        if(hdxl==0 ||hdxr==0){
+            break;
+        }
+    }
+    while (1)
+    {
+        slow_run(45);
+        if(hdxl==1 ||hdxr==1){
+            break;
+        }
+    }
+    
     Tai1_6_zhuan();
     
+}
+/**
+ * @brief 上台7动作
+ *
+ */
+void UP_Tai7(void)
+{
+    while (1)
+    {
+        slow_run(50);
+        if(hwr==0){
+            break;
+        }
+    }
+    Reset(300,50);
+    speed_up(50,105);
+    speed_down(105,50);
+
+    while (1) {
+        slow_run(50);
+       if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])
+       {
+           run(48, 45);
+       }
+       if (hdxl == 0 || hdxr == 0) {
+           break;
+       }
+   }
+   Front_mid();
+   Run_delay(45,100);
+//    while (1)
+//    {
+//        slow_run(45);
+//        if(hdxl==0 ||hdxr==0){
+//            break;
+//        }
+//    }
+//    while (1)
+//    {
+//        slow_run(45);
+//        if(hdxl==1 ||hdxr==1){
+//            break;
+//        }
+//    }
+   
+   //Tai1_6_zhuan();
 }
 
 void Bridge_Travel(void)

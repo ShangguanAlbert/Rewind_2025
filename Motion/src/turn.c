@@ -79,11 +79,11 @@ void TurnLeft_90_Rdetect(void)
         }
     }
     // 左转
-    Right_Speed_Up(50, 96, 5);
-    Left_Speed_Down(50, -90, 5);
+    Right_Speed_Up(50, 80, 5);
+    Left_Speed_Down(50, -80, 5);
     while (1) {
-        run(-75, 80);
-        if (Huidu_va(6) > white [6]|| Huidu_va(5) > white[5]) {
+        run(-85, 80);
+        if (Huidu_va(6) > white [6]|| Huidu_va(7) > white[7]) {
             break;
         }
     }
@@ -155,4 +155,35 @@ void TurnRight_90_Rdetect_in(void)
         }
     }
     
+}
+
+/**
+ * @brief 左转90度 右灰度检测
+ *
+ */
+void TurnLeft_90_Rdetect_in(void)
+{
+    // 检测左转
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(11) > white [11]|| Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
+            break;
+        }
+    }
+    // 左转
+    Right_Speed_Up(50, 80, 5);
+    Left_Speed_Down(50, -80, 5);
+    while (1) {
+        run(-75, 70);
+        if (Huidu_va(6) > white [6]|| Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
+    run_delay(-75,70,50);
+    while (1) {
+        run(-75, 70);
+        if (Huidu_va(6) > white [6]|| Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
 }
