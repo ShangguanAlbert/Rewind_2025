@@ -147,7 +147,57 @@ void UP_Tai7(void)
    
    //Tai1_6_zhuan();
 }
+/**
+ * @brief 上台7动作
+ *
+ */
+void UP_Tai8(void)
+{
+    while (1)
+    {
+        slow_run(50);
+        if(hwr==0){
+            break;
+        }
+    }
+    Reset(500,50);
+    speed_up_high(50,135);
+    speed_down_high(135,50);
+    
 
+    // speed_up(50,135);
+    // speed_down(135,70);
+    // Reset(300,70);
+
+    while (1) {
+        slow_run(50);
+       if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])
+       {
+           run(48, 45);
+       }
+       if (hdxl == 0 || hdxr == 0) {
+           break;
+       }
+   }
+   Front_mid();
+   Run_delay(45,100);
+   while (1)
+   {
+       slow_run(45);
+       if(hdxl==0 ||hdxr==0){
+           break;
+       }
+   }
+   while (1)
+   {
+       slow_run(45);
+       if(hdxl==1 ||hdxr==1){
+           break;
+       }
+   }
+   
+   //Tai1_6_zhuan();
+}
 void Bridge_Travel(void)
 {
     while (hwr !=0) {

@@ -37,7 +37,7 @@ void Tai1_6_zhuan(void)
     Front_up_High();
     Deg_IN();
     for (int x = 55; x < 110; x++) {
-        run(x * 1.0, -x * 0.92);
+        run(x * 0.86, -x * 0.94);
         Delay_ms(8); //
     }
     pid_Turn(500);
@@ -61,6 +61,26 @@ void TurnRight_90_Rdetect(void)
     while (1) {
         run(70, -73);
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+/**
+ * @brief 右转90度,左灰度
+ */
+void TurnRight_90_Ldetect(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 85, 5);
+    Right_Speed_Down(50, -75, 5);
+    while (1) {
+        run(75, -70);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
             break;
         }
     }
@@ -165,7 +185,7 @@ void TurnLeft_90_Rdetect_in(void)
 {
     // 检测左转
     while (1) {
-        slow_run(50);
+        slow_run(60);
         if (Huidu_va(11) > white [11]|| Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
             break;
         }
@@ -179,9 +199,40 @@ void TurnLeft_90_Rdetect_in(void)
             break;
         }
     }
-    run_delay(-75,70,50);
+    run_delay(-75,76,50);
+    while (1) {
+        run(-75, 76);
+        if (Huidu_va(6) > white [6]|| Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
+}
+
+/**
+ * @brief 左转90度 右灰度检测(2)
+ *
+ */
+void TurnLeft_90_Rdetect_in2(void)
+{
+    // 检测左转
+    while (1) {
+        slow_run(60);
+        if (Huidu_va(11) > white [11]|| Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
+            break;
+        }
+    }
+    // 左转
+    Right_Speed_Up(50, 80, 5);
+    Left_Speed_Down(50, -80, 5);
     while (1) {
         run(-75, 70);
+        if (Huidu_va(6) > white [6]|| Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
+    run_delay(-75,72,50);
+    while (1) {
+        run(-75, 72);
         if (Huidu_va(6) > white [6]|| Huidu_va(7) > white[7]) {
             break;
         }

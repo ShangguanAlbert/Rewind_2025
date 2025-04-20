@@ -125,19 +125,19 @@ void Tai3_door2_Tai5(void)
 /*
 下台三右转进门1
 */
-void Tai3_door1_Tai5(void)
-{
-    down_pt1_6();
-    Reset(200,70);
-    Reset(1000,120);
-    Reset(300,70);
-    //右转90度
-    TurnRight_90_Rdetect_in();
-    Stop(50);
-    Reset(200,50);
-    Reset(200,70);
-    Reset(850,115);
-    Reset(300,70);
+// void Tai3_door1_Tai5(void)
+// {
+//     down_pt1_6();
+//     Reset(200,70);
+//     Reset(1000,120);
+//     Reset(300,70);
+//     //右转90度
+//     TurnRight_90_Rdetect_in();
+//     Stop(50);
+//     Reset(200,50);
+//     Reset(200,70);
+//     Reset(850,115);
+//     Reset(300,70);
     // TurnLeft_90_Ldetect();
     // Stop(30);
     // Reset(200,70);
@@ -152,7 +152,7 @@ void Tai3_door1_Tai5(void)
     // while (hdxl != 0) {
     //    slow_run(50);}
 
-}
+// }
 
 
 /*
@@ -193,12 +193,21 @@ void Tai3_door4_Tai5(void)
 */
 void Tai4_Tai5(void)
 {
-    // down_pt1_6();
-    // Reset(100,70);
-    // speed_up(70,170);
-    // speed_down(170,70);
+    down_pt1_6();
+    Reset(100,70);
+    speed_up(70,170);
+    speed_down(170,70);
     TurnLeft_90_Rdetect_in();
     Stop(40);
+    Reset(250,70);
+    speed_up(70,150);
+    speed_down(150,50);
+    TurnLeft_90_Rdetect_in2();
+    Stop(50);
+    Reset(350,70);
+    speed_up(70,160);
+    speed_down(160,70);
+    UP_Tai2_6();
 }
 
 void Tai5_Tai7(void)
@@ -230,5 +239,36 @@ void Tai5_Tai7(void)
     speed_up(60,185);
     speed_down(185,50);
     UP_Tai7();
+
+}
+void Tai5_Tai8(void)
+{
+    // down_pt1_6();
+    // Reset(200,50);
+    // speed_up(50,190);
+    // Reset(200,190);
+    // speed_down(190,50);
+    // TurnLeft_90_Rdetect();
+    // Stop(40);
+    // while (1)
+    // {
+    //     slow_run(50);
+    //     if (hwr==0)
+    //     {
+    //         break;
+    //     }
+    // }
+    // Front_down();
+    // Reset(1400,50);
+    // Front_mid();
+    // Reset(200,50);
+    // speed_up(50,100);
+    // speed_down(100,50);
+    TurnRight_90_Ldetect();
+    Stop(40);
+    Reset(250,70);
+    speed_up(70,140);
+    speed_down(140,50);
+    UP_Tai8();
 
 }

@@ -345,6 +345,74 @@ void speed_down(int high, int low)
     }
 }
 
+void speed_up_high(int start, int end)
+{
+    KP = 0.019;
+    KD = 0.15;
+    for (; start < end; start++) {
+        if (speed <= 100) {
+            KP = 0.04;
+            KD = 0.15;
+        } else {
+            KP = 0.06;
+            KD = 0.14;
+        }
+        speed = start;
+        // KP    = 0.0016;
+        // KD    = 0.13;
+        get_huidu_va();
+        // Trace();
+        Trace_transVelocity();
+        if (start % 2 == 0) {
+            Delay_ms(5);
+        }
+    }
+}
+
+void speed_down_high(int high, int low)
+{
+    for (; high > low; high--) {
+        // if (speed < 50) {
+        //     KP = 0.004;  // 0.005
+        //     KD = 0.0025; // 0.05
+        // } else if (speed >= 50 && speed < 70) {
+        //     KP = 0.00197; // 0.025
+        //     KD = 0.0130;
+        // } else if (speed >= 70 && speed <= 85) {
+        //     KP = 0.00186;
+        //     KD = 0.0130;
+        // } else if (speed >= 86 && speed < 100) {
+        //     KP = 0.00172;
+        //     KD = 0.0140;
+        // } else if (speed >= 100 && speed < 140) {
+        //     KP = 0.0016;
+        //     KD = 0.0160;
+        // } else if (speed >= 140 && speed < 160) {
+        //     KP = 0.00157;
+        //     KD = 0.0180;
+        // } else if (speed >= 160 && speed <= 180) {
+        //     KP = 0.00154;
+        //     KD = 0.0200;
+        // } else if (speed > 180 && speed <= 200) {
+        //     KP = 0.00148;
+        //     KD = 0.0255;
+        // } else if (speed > 200 && speed <= 220) {
+        //     KP = 0.00055;
+        //     KD = 0.04;
+        // }
+        speed = high;
+        if (speed <= 100) {
+            KP = 0.02;
+            KD = 0.16;
+        } else {
+            KP    = 0.012;
+            KD    = 0.12;
+        }
+        get_huidu_va();
+        if (high % 2 == 0) Trace_transVelocity();
+        Delay_ms(5);
+    }
+}
 /**
  * @brief 桥巡线函数
  * @param mode 模式
