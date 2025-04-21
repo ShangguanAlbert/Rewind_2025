@@ -19,7 +19,7 @@
 #include "posture.h"
 #include "route.h"
 #include "turn.h"
-
+#include "bsp_qr.h"
 
 uint8_t prog_num_hope = 8;
 
@@ -36,6 +36,7 @@ int main(void)
     SPI_LCD_Init();
     USART2_COMPASS_Init();
     USART3_OpenMV_Init();
+    UART4_QRCode_Init();
     TIM2_Servo_Init();
     TIM3_TurnPID_Init();
     TIM7_Reset_Init();
@@ -48,51 +49,28 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        // Stop(1000); 
-        // Run_delay(50,200);
-        // Run_delay(80,500);
-        // Run_delay(100,200);
-        // Run_delay(180,1000);
-        // Run_delay(80,200);
-        // Run_delay(50,200);
-        // speed_up(50,190);
-        // speed_down(190,50);
-        // Reset(1600,190);
-        // Reset(100,120);
-        // Reset(100,80);
-        // Reset(200,50);
-        // UP_Tai2_6();
         UP_Tai8();
-        
     }
     if (progg == 2) {
-    //    Reset(200,50);
-    //    Reset(200,80);
-    //     Reset(1000,160);
-    //     Reset(200,80);
-    //     Reset(300,50);
-        // Reset(200,50);
-        // Reset(100,80);
-        // Reset(100,100);
-        // Reset(1900,170);
-        // Reset(100,100);
-        // Reset(100,80);
-        // Reset(200,50);
-    Tai1_6_zhuan();
-  
+        Tai1_6_zhuan();
     }
     if (progg == 3) {
         UP_Tai7();
     }
     if (progg == 4) {
-        Run_delay(50,200);
-        Run_delay(80,100);
-        Run_delay(110,1400);
-        Run_delay(80,100);
-        Run_delay(50,200);
+        Run_delay(50, 200);
+        Run_delay(80, 100);
+        Run_delay(110, 1400);
+        Run_delay(80, 100);
+        Run_delay(50, 200);
     }
     if (progg == 5) {
-        
+        // 二维码扫描模式
+        LCD_Clear(); // 清屏，黑色背景
+        while (1) {
+            QR_Process();  // 处理二维码数据
+            delay_ms(100); // 延时100ms，避免刷新过快
+        }
     }
     if (progg == 6) {
         UP_Tai2_6();
@@ -100,8 +78,8 @@ int main(void)
     if (progg == 7) {
         Stop(3000);
         speed_up(30, 60);
-        Reset(2500,105);
-        speed_down(60,30);
+        Reset(2500, 105);
+        speed_down(60, 30);
     }
     if (progg == 8) {
         Show_SensorPage_All();

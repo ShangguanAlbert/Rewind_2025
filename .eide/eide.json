@@ -156,6 +156,9 @@
           },
           {
             "path": "BSP/src/bsp_sensor.c"
+          },
+          {
+            "path": "BSP/src/bsp_qr.c"
           }
         ],
         "folders": []

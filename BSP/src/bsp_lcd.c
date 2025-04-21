@@ -3,9 +3,11 @@
 #include "bsp_adc.h"
 #include "bsp_compass.h"
 #include "bsp_sensor.h"
+#include "bsp_qr.h"
 
 uint8_t page = 1;
 extern uint8_t prog_num_hope;
+extern uint8_t res[];
 
 void Show_SensorPage_All(void)
 {
@@ -87,7 +89,6 @@ void Sensor_Test_Page1(void)
     //     LCD_DisplayString(160, 215, "None");
     // }
     // LCD_DisplayNumber(155, 220, openmv[2], 2);
-
 }
 
 void Sensor_Test_Page2(void)
@@ -105,16 +106,16 @@ void Sensor_Test_Page2(void)
     LCD_DisplayNumber(100, 85, hdxl, 1);
     LCD_DisplayString(5, 110, "hdxr:");
     LCD_DisplayNumber(100, 110, hdxr, 1);
-    // LCD_DisplayString(5, 135, "hdl:");
-    // LCD_DisplayNumber(100, 135, hdl, 1);
-    // LCD_DisplayString(5, 160, "hdr:");
-    // LCD_DisplayNumber(100, 160, hdr, 1);
-    // LCD_DisplayString(5, 185, "bhwl:");
-    // LCD_DisplayNumber(100, 185, bhwl, 1);
+    LCD_DisplayString(5, 135, "bpt:");
+    // LCD_DisplayNumber(100, 135, code_info, 8);
+    // LCD_DisplayString(5, 160, "bpt:");
+    // LCD_DisplayNumber(100, 160, (int)(res[1]), 1);
+    // LCD_DisplayString(5, 185, "bpt:");
+    // LCD_DisplayNumber(100, 185, (int)(res[2]), 1);
     // LCD_DisplayString(5, 210, "bhwr:");
     // LCD_DisplayNumber(100, 210, bhwr, 1);
 
-    LCD_DrawLine_V(120, 25, 220);
+    // LCD_DrawLine_V(120, 25, 220);
 }
 uint8_t Function_Mode(void)
 {
