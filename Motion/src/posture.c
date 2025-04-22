@@ -145,10 +145,22 @@ void UP_Tai7(void)
 //        }
 //    }
    
-   //Tai1_6_zhuan();
+   //Tai7_zhuan();
 }
 /**
- * @brief 上台7动作
+ * @brief 下台7动作
+ *
+ */
+void Down_Tai7(void)
+{
+   Reset(200, 50);
+   while (hwr == 1) {
+       slow_run(50);
+   }
+   Front_mid();
+}
+/**
+ * @brief 上台8动作
  *
  */
 void UP_Tai8(void)
@@ -196,8 +208,20 @@ void UP_Tai8(void)
        }
    }
    
-   //Tai1_6_zhuan();
+   //Tai8_zhuan();
 }
+/**
+ * @brief 下台8动作
+ *
+ */
+void Down_Tai8(void)
+ {
+    Reset(400,40);
+    while (hwr == 1) {
+        slow_run(40);
+    }
+    Front_mid();
+ }
 void Bridge_Travel(void)
 {
     while (hwr !=0) {

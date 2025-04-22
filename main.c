@@ -49,13 +49,15 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        UP_Tai8();
+        Tai2_zhuan90();
+        Stop(3000);
+        Tai2_zhuan90();
     }
     if (progg == 2) {
-        Tai1_6_zhuan();
+        Tai7_zhuan();
     }
     if (progg == 3) {
-        UP_Tai7();
+        Tai8_zhuan();
     }
     if (progg == 4) {
         Run_delay(50, 200);

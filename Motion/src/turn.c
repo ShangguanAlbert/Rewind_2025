@@ -44,6 +44,68 @@ void Tai1_6_zhuan(void)
     Stop(50);
     Front_down();
 }
+void Tai2_zhuan90(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Front_up_High();
+    Deg_IN();
+    for (int x = 55; x < 85; x++) {
+        run(x * 0.94, -x * 0.89);
+        Delay_ms(8); //
+    }
+    pid_Turn_Right90(500);
+    Stop(50);
+    Front_down();
+}
+/**
+ * @brief 中平台掉头转180
+ *
+ */
+void Tai7_zhuan(void)
+{
+    Front_up_High();
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Deg_IN();
+    for (int x = 40; x < 95; x++) {
+        run(x * 1, -x * 1.05);
+        delay_ms(8);
+    }
+    for (int x = 40; x > 95; x--) {
+        run(x * 1, -x * 1.05);
+        delay_ms(8);
+    }
+    pid_Turn(1040);
+    stop();
+    Front_down();
+}
+/**
+ * @brief 高平台掉头转180
+ *
+ */
+void Tai8_zhuan(void)
+{
+    Front_up_High();
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+
+    Deg_IN();
+    for (int x = 40; x < 95; x++) {
+        run(x * 0.96, -x * 0.95);//1.05
+        delay_ms(9);
+    }
+    for (int x = 40; x > 95; x--) {
+        run(x * 0.96, -x * 0.95);
+        delay_ms(9);
+    }
+    pid_Turn(1100);
+    stop();
+    Front_down();
+}
 
 /**
  * @brief 右转90度

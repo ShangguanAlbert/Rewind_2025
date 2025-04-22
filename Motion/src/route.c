@@ -272,3 +272,24 @@ void Tai5_Tai8(void)
     UP_Tai8();
 
 }
+/*
+台7回家
+*/
+void Tai7_Home(void){
+    Front_down();
+    Down_Tai7();
+    Reset(200,50);
+    while (hdxl != 0) {
+        drift_right(70, 0);
+    }
+    Reset(200,50);
+
+}
+/*
+台7回家
+*/
+void Tai8_Home(void)
+{
+    Front_down();
+    Down_Tai8();
+}

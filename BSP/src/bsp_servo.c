@@ -37,7 +37,7 @@ void TIM2_Servo_Init(void)
     TIM_OCInitStructure.TIM_OCMode      = TIM_OCMode_PWM1;
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
     // TIM_OCInitStructure.TIM_Pulse       = 1500; // 1.5ms中位脉宽
-    TIM_OCInitStructure.TIM_Pulse      = 500; // 0.5ms最小脉宽
+    TIM_OCInitStructure.TIM_Pulse      = 0; // 0.5ms最小脉宽
     TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
     TIM_OC1Init(TIM2, &TIM_OCInitStructure); // PA15
@@ -56,8 +56,10 @@ void TIM2_Servo_Init(void)
     TIM_Cmd(TIM2, ENABLE);
 
     // 使能PWM输出
-    TIM2->CCR1 = 1100;//500
+    TIM2->CCR1 = 1200;//500
+    TIM2->CCR2 =2500;//张开最大2500
     TIM2->CCR4 = 2145;
+
 }
 
 void Servo_SetAngle(uint8_t channel, uint16_t angle)

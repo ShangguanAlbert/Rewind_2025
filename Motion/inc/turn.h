@@ -4,6 +4,9 @@
 
 void TurnRight_135_Longline(void);
 void Tai1_6_zhuan(void);
+void Tai2_zhuan90(void);
+void Tai7_zhuan(void);
+void Tai8_zhuan(void);
 void TurnRight_90_Rdetect(void);
 void TurnRight_90_Ldetect(void);
 void TurnLeft_90_Rdetect(void);

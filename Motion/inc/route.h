@@ -12,6 +12,9 @@ void Tai3_door4_Tai5(void);
 void Tai4_Tai5(void);
 void Tai5_Tai7(void);
 void Tai5_Tai8(void);
+void Tai7_Home(void);
+void Tai8_Home(void);
+
 
 
 #endif

@@ -4,7 +4,7 @@
 #include "posture.h"
 #include "basic.h"
 
-pid_t_robomaster pid_yaw = {0};
+pid_t_robomaster pid_yaw = {0};//结构体：存储PID参数和计算中间值
 
 extern float JD;
 extern float XJD;
@@ -193,6 +193,110 @@ void pid_Turn(int turn_time)
     } else
         fpid(turn_time);
 }
+/**
+ * @brief 小车从0度（360度）向右转到270度
+ * @param turn_time 转动时间（毫秒）
+ */
+void pid_Turn_Right90(int turn_time)
+{
+    const int32_t TARGET_ANGLE = 271;
+    
+    
+    // 初始化计时器
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    
+    do {
+        // 获取当前角度
+        Deg_IN();
+        int32_t current_angle = (int32_t)GJD;
+        
+        // 计算角度误差（确保向右转）
+        int32_t angle_error = TARGET_ANGLE - current_angle;
+        if (angle_error > 0) {  // 如果误差为正，说明会往左转，需要调整
+            angle_error -= 360;  // 强制向右转
+        }
+        
+        // 计算PID输出
+        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        
+        // 限制最大速度
+        if (speed_adj > 80) speed_adj = 80;
+        if (speed_adj < -80) speed_adj = -80;
+        
+        // 控制电机转向
+        run(-speed_adj, speed_adj);
+        
+        // // 判断是否到达目标角度（误差小于2度）
+        // if (abs(current_angle - TARGET_ANGLE) < 2) {
+        //     stable_count++;
+        //     if (stable_count >= 10) {  // 连续10次在目标范围内，认为到达目标
+        //         break;
+        //     }
+        // } else {
+        //     stable_count = 0;
+        // }
+        
+        // 超时保护
+        if (t3_i > turn_time) {
+            break;
+        }
+        
+    } while (1);
+    
+    // 停止并清理
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+    Stop(50);
+}
+
+// /** 
+//  * @brief 90度转向（左转或右转）
+//  * @param turn_time 转向时间（毫秒）
+//  * @param direction 转向方向：1=右转90度，-1=左转90度
+//  */
+// void pid_Turn90(int turn_time, int direction) 
+// {
+//     Deg_IN(); // 更新当前角度GJD和MJD
+    
+//     float target_angle;
+    
+//     // 计算目标角度（当前角度 ± 90度）
+//     if (direction == 1) { // 右转90度
+//         target_angle = GJD + 90;
+//         if (target_angle >= 360) target_angle -= 360;
+//     } else { // 左转90度
+//         target_angle = GJD - 90;
+//         if (target_angle < 0) target_angle += 360;
+//     }
+    
+//     // 判断是否跨越0度（选择zpid或fpid）
+//     if ((GJD < 270 && target_angle > 90 && target_angle < 270) || 
+//         (GJD >= 270 && (target_angle > 90 || target_angle < 270))) {
+//         // 不跨越0度 → 用zpid
+//         t3_i = 0;
+//         TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+//         do {
+//             speed_adj = pid_calc(&pid_yaw, JD, target_angle);
+//             run(-speed_adj, speed_adj);
+//         } while (t3_i < turn_time);
+//         TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+//     } else {
+//         // 跨越0度 → 用fpid
+//         t3_i = 0;
+//         TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+//         do {
+//             speed_adj = pid_calc(&pid_yaw, XJD, target_angle);
+//             run(-speed_adj, speed_adj);
+//         } while (t3_i < turn_time);
+//         TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+//     }
+    
+//     t3_i = 0;
+//     stop(); // 转向完成后停止
+// }
+
 
 /* - PID转向 2024.7.9 - */
 PID_Turn_Params pid_comp_params;
