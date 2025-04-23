@@ -16,6 +16,8 @@ void Bridge_Travel(void);
 void drift_left(int speed, uint8_t model);
 void drift_right(int speed, uint8_t model);
 void Drift_Rightpass_BLB(void);
+void Past_Seesaw(int time_stop, int time_Seesaw);
+void Land_Protect_adjust(void);
 
 
 #endif

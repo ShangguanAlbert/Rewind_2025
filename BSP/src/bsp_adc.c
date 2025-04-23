@@ -12,8 +12,10 @@
  */
 #include "bsp_adc.h"
 #include "bsp_SysTick.h"
+#include "trace.h"
 
 volatile uint16_t ADCValue[12] = {0};
+
 
 void ADC1_Huidu_Init(void)
 {

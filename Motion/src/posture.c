@@ -8,7 +8,10 @@
 #include "trace.h"
 #include "turn.h"
 #include "basic.h"
+#include "bsp_timer.h"
 
+extern uint32_t t3_i;
+extern uint8_t cnt_whiteline;
 
 /**
  * @brief 放下前铲
@@ -303,4 +306,126 @@ void Drift_Rightpass_BLB(void)
     //加速
     Reset(480,50);
     
+}
+/**
+ * @brief 上跷跷板修正调整
+ *
+ * @param time_stop 后半程开始降速时间
+ * @param time_Seesaw 总的跷跷板时间
+ */
+void Past_Seesaw(int time_stop, int time_Seesaw)
+{
+    // int count_turn = 0;
+    t3_i           = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        run(50,48);//49
+        // Run(65);
+        // /*循环修正*/
+        // if ((bhwr == 0 && bhwl == 1) || Huidu_va(0) > 80) {
+        //     run(40, 70);
+        //     delay_ms(5);
+        //     count_turn += 3;
+        // } else if ((bhwl == 0 && bhwr == 1) || Huidu_va(11) > 80) {
+        //     run(70, 40);
+        //     delay_ms(5);
+        //     count_turn += 3;
+        // } else if ((bhwl == 1 && bhwr == 1) || (Huidu_va(0) > 90 && Huidu_va(11) > 90)) {
+        //     Run(65);
+        // }
+        if (t3_i > time_stop) {
+            run(30, 30);
+            // delay_ms(5);
+        }
+
+        if (hwr == 0 && t3_i > time_stop) {
+            Front_mid();
+            stop();
+            break;
+        }
+        /* 检测到落地点有白线停车 */
+        get_huidu_va();
+        if (cnt_whiteline > 0 && (t3_i >= time_Seesaw )) {
+            stop();
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(1000);
+}
+/**
+ * @brief 跷跷板落地扫不到白线保护程序
+ *
+ */
+void Land_Protect_adjust(void)
+{
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        get_huidu_va();
+        if (cnt_whiteline != 0) {
+            Front_down();
+            Reset(200,60);
+            break;
+        } else if (cnt_whiteline == 0) {
+            // 先向左找，限制2秒
+            t3_i = 0;  // 重置计时器
+            while (1) {
+                run(0, 50);  // 向左转
+                if (Huidu_va(11) > white[11]||Huidu_va(10) > white[10] || Huidu_va(9) > white[9] || 
+                    Huidu_va(8) > white[8] || 
+                    Huidu_va(7) > white[7]) {
+                    Stop(150);
+                    break;
+                }
+                // 如果超过2秒还没找到，跳出循环
+                if (t3_i >= 2000) {  // 假设t3_i的单位是毫秒
+                    Stop(150);
+                    break;
+                }
+            }
+            // 如果向左没找到，再向右找
+            get_huidu_va();
+            if (cnt_whiteline == 0) {
+                t3_i = 0;  // 重置计时器
+                while (1) {
+                    run(50,0 );  // 向右转
+                    if (Huidu_va(1) > white[1] || Huidu_va(2) > white[2] || 
+                        Huidu_va(3) > white[3] || Huidu_va(0) > white[0] || 
+                        Huidu_va(4) > white[4]) {
+                        Stop(150);
+                        break;
+                    }
+                    // 如果超过4秒还没找到，跳出循环
+                    if (t3_i >= 2000) {  // 假设t3_i的单位是毫秒
+                        Stop(150);
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    
+    // 根据车头偏向来决定最后的调整方向
+    if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
+        // 车头偏右，需要向左调整
+        while (1) {
+            run(0, 40);  // 向左转
+            if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
+                break;
+            }
+        }
+    } else if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
+        // 车头偏左，需要向右调整
+        while (1) {
+            run(40, 0);  // 向右转
+            if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
+                break;
+            }
+        }
+    }
 }
