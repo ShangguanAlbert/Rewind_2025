@@ -278,11 +278,29 @@ void Tai5_Tai8(void)
 void Tai7_Home(void){
     Front_down();
     Down_Tai7();
-    Reset(200,50);
+    Reset(500,50);
     while (hdxl != 0) {
-        drift_right(70, 0);
+        drift_right_2(70,1);
     }
-    Reset(200,50);
+    while(hwr==1){
+        high_run(70);
+    }
+    Past_Seesaw(1200,2600);
+    Land_Protect_adjust();
+    Reset(250,70);
+    while (1)
+    {
+        high_run(100);
+        if(Huidu_va(0)>white[0]||Huidu_va(1)>white[1]){
+            break;
+        }
+        /* code */
+    }
+    while(hdxl==1){
+        drift_right(90,1);
+    }
+    
+    Reset(300,70);
 
 }
 /*

@@ -294,6 +294,32 @@ void drift_right(int speed, uint8_t model)
         }
     }
 }
+
+void drift_right_2(int speed, uint8_t model)
+{
+    if (Huidu_va(6) > white[6]) {
+        run(speed + 15, 30);
+    } else if (Huidu_va(5) > white[5]) {
+        run(speed + 15, 30);
+    } else if (Huidu_va(4) > white[4]) {
+        run(speed + 15, 20);
+    } else if (Huidu_va(3) >white [3]) {
+        run(speed + 15, 10);
+    } else if (Huidu_va(2) > white[2]) {
+        run(speed + 15, 10);
+    } else if (Huidu_va(1) > white[1]) {
+        run(speed + 15, 0);
+    } else if (Huidu_va(0) > white[0]) {
+        run(speed + 15, 0);
+    } else {
+        if (model == 0) {
+            slow_run(speed);
+        } else {
+            high_run(speed);
+        }
+    }
+}
+
 void Drift_Rightpass_BLB(void)
 {
     Front_mid();
@@ -380,7 +406,7 @@ void Land_Protect_adjust(void)
                     break;
                 }
                 // 如果超过2秒还没找到，跳出循环
-                if (t3_i >= 2000) {  // 假设t3_i的单位是毫秒
+                if (t3_i >= 600) {  // 假设t3_i的单位是毫秒
                     Stop(150);
                     break;
                 }
@@ -390,7 +416,7 @@ void Land_Protect_adjust(void)
             if (cnt_whiteline == 0) {
                 t3_i = 0;  // 重置计时器
                 while (1) {
-                    run(50,0 );  // 向右转
+                    run(40,-40);  // 向右转
                     if (Huidu_va(1) > white[1] || Huidu_va(2) > white[2] || 
                         Huidu_va(3) > white[3] || Huidu_va(0) > white[0] || 
                         Huidu_va(4) > white[4]) {
@@ -398,7 +424,7 @@ void Land_Protect_adjust(void)
                         break;
                     }
                     // 如果超过4秒还没找到，跳出循环
-                    if (t3_i >= 2000) {  // 假设t3_i的单位是毫秒
+                    if (t3_i >= 1000) {  // 假设t3_i的单位是毫秒
                         Stop(150);
                         break;
                     }
@@ -414,7 +440,7 @@ void Land_Protect_adjust(void)
     if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
         // 车头偏右，需要向左调整
         while (1) {
-            run(0, 40);  // 向左转
+            run(10, 40);  // 向左转
             if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
                 break;
             }
@@ -422,7 +448,7 @@ void Land_Protect_adjust(void)
     } else if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
         // 车头偏左，需要向右调整
         while (1) {
-            run(40, 0);  // 向右转
+            run(40, 10);  // 向右转
             if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
                 break;
             }

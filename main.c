@@ -51,9 +51,11 @@ int main(void)
     if (progg == 1) {
         Past_Seesaw(1500,2400);
         Land_Protect_adjust();
+        Reset(150,70);
+        Reset_drift_right(50,1,800);
     }
     if (progg == 2) {
-        Tai7_zhuan();
+        Tai7_Home();
     }
     if (progg == 3) {
         Tai8_zhuan();
