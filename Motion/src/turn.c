@@ -300,3 +300,88 @@ void TurnLeft_90_Rdetect_in2(void)
         }
     }
 }
+
+/**
+ * @brief 左转90度，左腰灯检测
+ * 
+ */
+void TurnLeft_90_hdxlDetect(void)
+{
+    while (1) {
+        slow_run(50);
+        if (hdxl == 0){
+            break;
+        }
+    }
+
+    Right_Speed_Up(50,80,5);
+    Left_Speed_Down(50,-80,5);
+
+    while (1) {
+        run(-50, 50);
+        if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+
+/**
+ * @brief 下台8左转90度，左灰度检测两次
+ * 
+ */
+void TurnLeft_90_Ldetect_tai8(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(10) > white [10]) {
+            break;
+        }
+    }
+    while(1){
+        slow_run(50);
+        if (Huidu_va(10) < white [10]) {
+            break;
+        }
+    }
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(10) > white [10]) {
+            break;
+        }
+    }
+    
+    Right_Speed_Up(50, 95, 5);
+    Left_Speed_Down(50, -90, 5);
+    while (1) {
+        run(-75, 75);
+        if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
+}
+
+
+/**
+ * @brief 台8回家走完波浪板后右转
+ * 
+ */
+void TurnRight_90_Ldetect_1(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 90, 5);
+    Right_Speed_Down(50, -70, 5);
+    while (1) {
+        run(80, -65);
+
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+
+

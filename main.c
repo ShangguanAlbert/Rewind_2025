@@ -49,11 +49,14 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        Past_Seesaw(1500,2400);
-        Land_Protect_adjust();
+        // Past_Seesaw(1500,2400);
+        // Land_Protect_adjust();
+        // Reset(150,70);
+        //  Reset_drift_right(50,1,800);
+        Tai8_Home();
     }
     if (progg == 2) {
-        Tai7_zhuan();
+        Tai7_Home();
     }
     if (progg == 3) {
         Tai8_zhuan();
