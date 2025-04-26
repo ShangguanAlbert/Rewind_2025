@@ -216,10 +216,14 @@ void Tai5_Tai7(void)
     Reset(1400, 50);
     Front_mid();
     Reset(200, 50);
-    speed_up(50, 100);
-    speed_down(100, 50);
-    TurnLeft_90_Rdetect();
+    // speed_up(50, 100);
+    // speed_down(100, 50);
+    // TurnLeft_90_Rdetect();
+    // Stop(40);
+
+    
     Stop(40);
+
     Reset(250, 60);
     speed_up(60, 185);
     speed_down(185, 50);
@@ -227,28 +231,29 @@ void Tai5_Tai7(void)
 }
 void Tai5_Tai8(void)
 {
-    // down_pt1_6();
-    // Reset(200,50);
-    // speed_up(50,190);
-    // Reset(200,190);
-    // speed_down(190,50);
-    // TurnLeft_90_Rdetect();
-    // Stop(40);
-    // while (1)
-    // {
-    //     slow_run(50);
-    //     if (hwr==0)
-    //     {
-    //         break;
-    //     }
-    // }
-    // Front_down();
-    // Reset(1400,50);
-    // Front_mid();
-    // Reset(200,50);
+    down_pt1_6();
+    Reset(200,50);
+    speed_up(50,190);
+    Reset(200,190);
+    speed_down(190,50);
+    TurnLeft_90_Rdetect();
+    Stop(40);
+    while (1)
+    {
+        slow_run(50);
+        if (hwr==0)
+        {
+            break;
+        }
+    }
+    Front_down();
+    Reset(1400,50);
+    Front_mid();
+    Reset(200,50);
     // speed_up(50,100);
     // speed_down(100,50);
-    TurnRight_90_Ldetect();
+    // TurnRight_90_Ldetect();
+    Out_T_TurnRight_90();
     Stop(40);
     Reset(250, 70);
     speed_up(70, 140);
@@ -285,8 +290,8 @@ void Tai7_Home(void)
     Reset(300, 70);
     speed_up(70, 140);
     speed_down(140, 70);
-    TurnLeft_90_Ldetect_tai8();
-    Stop(40);
+    TurnLeft_90_Rdetect_tai8();
+    Stop(100);
     Reset(250, 50);
     speed_up(50, 120);
     speed_down(120, 50);
@@ -296,10 +301,7 @@ void Tai7_Home(void)
     }
     Reset(500, 45);
 
-    while (hdxr != 0) {
-        slow_run(45);
-    }
-    Reset(600, 45);
+    Back_BLB();
     TurnRight_135_Longline();
     Stop(50);
     Reset(250, 50);
@@ -320,45 +322,22 @@ void Tai8_Home(void)
     Reset(200, 40);
     speed_up(40, 140);
     speed_down(140, 50);
-    TurnLeft_90_Ldetect_tai8();
-    Stop(40);
-    Reset(200, 50);
-    speed_up(50, 100);
-    speed_down(100, 50);
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
+    TurnLeft_135_Longline();
+    Stop(50);
+    while (hwr == 1) {
+        high_run(70);
     }
-    Front_down();
-    Reset(1400, 50);
-    Front_mid();
-    TurnRight_90_Ldetect_1();
-    Stop(40);
-    Reset(200, 50);
-    speed_up(50, 110);
-    speed_down(110, 50);
-    TurnLeft_90_Ldetect_tai8();
-    Stop(40);
-    Reset(250, 70);
-    speed_up(70, 150);
-    speed_down(150, 50);
-    TurnLeft_90_Ldetect_tai8();
-    Stop(40);
-    Reset(250, 50);
-    speed_up(50, 120);
-    speed_down(120, 50);
-    Reset(60, 60);
-    while (hdxr != 0) {
-        drift_right(50, 0);
-    }
-    Reset(500, 45);
-
-    while (hdxr != 0) {
-        slow_run(45);
-    }
-    Reset(600, 45);
+    Seesaw_with_Adjustion(900, 2100);
+    Reset(350, 70);
+    Reset_drift_right(70,1,800);
+    speed_up(70,160);
+    speed_down(160,50);
+    TurnRight_90_Ldetect();
+    Stop(50);
+    speed_up(45,120);
+    speed_down(120,50);
+    TurnLeft_135_Longline2();
+    Back_BLB();
     TurnRight_135_Longline();
     Stop(50);
     Reset(250, 50);
@@ -367,4 +346,6 @@ void Tai8_Home(void)
     Bridge_Travel();
     Reset(600, 60);
     UP_Tai2_6();
+    
+  
 }

@@ -249,6 +249,53 @@ void pid_Turn_Right90(int turn_time)
     stop();
     Stop(50);
 }
+/**
+ * @brief 左转90度
+ * @param turn_time 转动时间（毫秒）
+ */
+void pid_Turn_Left90(int turn_time)
+{
+    const int32_t TARGET_ANGLE = 89;  // 左转90度的目标角度
+
+    // 初始化计时器
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+
+    do {
+        // 获取当前角度
+        Deg_IN();
+        int32_t current_angle = (int32_t)GJD;
+
+        // 计算角度误差（确保向左转）
+        int32_t angle_error = TARGET_ANGLE - current_angle;
+        if (angle_error < 0) {  // 如果误差为负，说明会往右转，需要调整
+            angle_error += 360; // 强制向左转
+        }
+
+        // 计算PID输出
+        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+
+        // 限制最大速度
+        if (speed_adj > 80) speed_adj = 80;
+        if (speed_adj < -80) speed_adj = -80;
+
+        // 控制电机转向（注意：这里和右转相反）
+        run(speed_adj, -speed_adj);
+
+        // 超时保护
+        if (t3_i > turn_time) {
+            break;
+        }
+
+    } while (1);
+
+    // 停止并清理
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+    Stop(50);
+}
+
 
 // /**
 //  * @brief 90度转向（左转或右转）

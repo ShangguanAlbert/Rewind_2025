@@ -3,6 +3,8 @@
 #include "stm32f10x.h"
 
 void TurnRight_135_Longline(void);
+void TurnLeft_135_Longline(void);
+void TurnLeft_135_Longline2(void);
 void Tai1_6_zhuan(void);
 void Tai2_zhuan90(void);
 void Tai7_zhuan(void);
@@ -17,5 +19,8 @@ void TurnRight_90_hdxrDetect(void);
 void TurnLeft_90_Rdetect_in(void);
 void TurnLeft_90_Rdetect_in2(void);
 void TurnLeft_90_Ldetect_tai8(void);
+void TurnLeft_90_Rdetect_tai8(void);
+void Out_T_TurnRight_90(void);
+void Out_T_TurnLeft_90(void);
 
 #endif 

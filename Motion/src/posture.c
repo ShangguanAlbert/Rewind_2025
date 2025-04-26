@@ -42,7 +42,7 @@ void Front_up(void)
 void Front_up_High(void)
 {
 
-    Servo_SetAngle(4, 165);
+    Servo_SetAngle(4, 175);
 }
 
 /**
@@ -146,7 +146,7 @@ void UP_Tai7(void)
             break;
         }
     }
-    Run_delay(45, 100);
+    Run_delay(45, 150);
     while (1) {
         run(48, 45);
         if (hdxl == 0 || hdxr == 0) {
@@ -182,24 +182,26 @@ void UP_Tai8(void)
     Reset(500, 50);
     speed_up_high(50, 135);
     speed_down_high(135, 50);
+    Front_down();
 
     // speed_up(50,135);
     // speed_down(135,70);
     // Reset(300,70);
 
     while (1) {
-        slow_run(50);
-        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
+        get_huidu_va();
+        if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
+            slow_run(50);
+        } else if (cnt_whiteline == 0) {
             run(48, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    Front_mid();
     Run_delay(45, 100);
     while (1) {
-        slow_run(45);
+        run(48, 45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
@@ -210,7 +212,7 @@ void UP_Tai8(void)
             break;
         }
     }
-    Run_delay(45, 100);
+    Run_delay(45, 300);
     while (1) {
         slow_run(45);
         if (hdxl == 0 || hdxr == 0) {
@@ -505,4 +507,11 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
     Stop(1000);
+}
+void Back_BLB(void)
+{
+    while (hdxr != 0) {
+        slow_run(45);
+    }
+    Reset(600, 45);
 }

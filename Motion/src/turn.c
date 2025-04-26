@@ -27,6 +27,41 @@ void TurnRight_135_Longline(void)
         }
     }
 }
+void TurnLeft_135_Longline(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10]) {
+            break;
+        }
+    }
+    Right_Speed_Up(50, 115, 3);
+    Left_Speed_Down(50, -90, 4);
+    while (1) {
+        run(-65, 85);
+        if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+void TurnLeft_135_Longline2(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10]) {
+            break;
+        }
+    }
+    Right_Speed_Up(50, 115, 4);
+    Left_Speed_Down(50, -90, 4);
+    while (1) {
+        run(-65, 90);
+        if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+    
+}
 
 void Tai1_6_zhuan(void)
 {
@@ -70,7 +105,7 @@ void Tai7_zhuan(void)
     Stop(250);
     Deg_IN();
     for (int x = 45; x <= 118; x++) {
-        run(x * 0.95, -x * 1.2);
+        run(x * 0.92, -x * 1.25);//0.95,1.2
         delay_ms(8);
     }
     pid_Turn(1200);
@@ -90,16 +125,17 @@ void Tai8_zhuan(void)
 
     Deg_IN();
     for (int x = 40; x < 95; x++) {
-        run(x * 0.96, -x * 0.95); // 1.05
+        run(x * 0.8, -x * 2); // 1.05
         delay_ms(9);
     }
     for (int x = 40; x > 95; x--) {
-        run(x * 0.96, -x * 0.95);
+        run(x * 0.8, -x * 2);
         delay_ms(9);
     }
     pid_Turn(1100);
     stop();
     Front_down();
+    Stop(300);
 }
 
 /**
@@ -353,7 +389,28 @@ void TurnLeft_90_Ldetect_tai8(void)
         }
     }
 }
+/**
+ * @brief 下台8左转90度，右灰度检测
+ *
+ */
+void TurnLeft_90_Rdetect_tai8(void)
+{
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(1) > white[1]||Huidu_va(0) > white[0]) {
+            break;
+        }
+    }
 
+    Right_Speed_Up(50, 95, 5);
+    Left_Speed_Down(50, -90, 5);
+    while (1) {
+        run(-75, 75);
+        if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
+}
 /**
  * @brief 台8回家走完波浪板后右转
  *
@@ -376,3 +433,71 @@ void TurnRight_90_Ldetect_1(void)
         }
     }
 }
+/**
+ * @brief 出t型山，转90度
+ *
+ */
+void Out_T_TurnRight_90(void)
+{
+    while (1)
+    {
+        Run(50);
+        if(Huidu_va(10)>white[10]||Huidu_va(11)>white[11]){
+            break;
+        }
+    }
+    Left_Speed_Up(50, 90, 5);
+    Right_Speed_Down(50, -85, 5);
+    while (1) {
+        run(70, -73);
+        if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+
+/**
+ * @brief 出t型山，转90度
+ *
+ */
+void Out_T_TurnLeft_90(void)
+{
+    while (1)
+    {
+        Run(50);
+        if(Huidu_va(10)>white[10]||Huidu_va(11)>white[11]){
+            break;
+        }
+    }
+    Right_Speed_Up(50, 95, 5);
+    Left_Speed_Down(50, -90, 5);
+    while (1) {
+        run(-75, 75);
+        if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
+            break;
+        }
+    }
+}
+/**
+ * @brief 转90度,进t型山
+ *
+ */
+void In_T_TurnLeft_90(void)
+{
+    while (1)
+    {
+        Run(50);
+        if(Huidu_va(0)>white[0]||Huidu_va(1)>white[1]){
+            break;
+        }
+    }
+    Left_Speed_Up(50, 90, 5);
+    Right_Speed_Down(50, -85, 5);
+    while (1) {
+        run(70, -73);
+        if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+
