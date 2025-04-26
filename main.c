@@ -44,7 +44,7 @@ int main(void)
     KEY_Init();
     GPIO_HW_Init();
     GPIO_HDLR_Init();
-    pid_init(&pid_yaw, 55, 10, 4, 2, 3);
+    pid_init(&pid_yaw, 60, 10, 4, 2, 3);
     Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();

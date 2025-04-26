@@ -464,3 +464,7 @@ void Land_Protect_adjust(void)
         }
     }
 }
+
+void Seesaw_with_Adjustion(void)
+{
+}
