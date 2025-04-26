@@ -278,7 +278,6 @@ void Tai7_Home(void)
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
             break;
         }
-        /* code */
     }
     while (hdxl == 1) {
         drift_right(90, 1);

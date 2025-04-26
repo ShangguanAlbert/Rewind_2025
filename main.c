@@ -61,7 +61,10 @@ int main(void)
     }
     if (progg == 2) {
         UP_Tai7();
-        Tai7_Home();
+        Front_down();
+        Stop(300);
+        Down_Tai7();
+        // Tai7_Home();
     }
     if (progg == 3) {
         UP_Tai7();
