@@ -35,7 +35,7 @@ int main(void)
     TIM8_Motor_Init();
     SPI_LCD_Init();
     USART2_COMPASS_Init();
-    USART3_OpenMV_Init();
+    USART5_OpenMV_Init();
     UART4_QRCode_Init();
     TIM2_Servo_Init();
     TIM3_TurnPID_Init();
@@ -49,24 +49,26 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        // Past_Seesaw(1500,2400);
-        // Land_Protect_adjust();
+        //Past_Seesaw(1500,2400);
+        //Land_Protect_adjust();
         // Reset(150,70);
         //  Reset_drift_right(50,1,800);
-        Tai8_Home();
+        Tai1_Tai2();
+        Tai2_Tai3();
+        Tai3_door2_Tai5();
+        Tai5_Tai7();
+        Tai7_Home();
     }
     if (progg == 2) {
+        UP_Tai7();
         Tai7_Home();
     }
     if (progg == 3) {
-        Tai8_zhuan();
+        UP_Tai7();
+        //Tai8_zhuan();
     }
     if (progg == 4) {
-        Run_delay(50, 200);
-        Run_delay(80, 100);
-        Run_delay(110, 1400);
-        Run_delay(80, 100);
-        Run_delay(50, 200);
+        UP_Tai8();
     }
     if (progg == 5) {
         // 二维码扫描模式
@@ -77,7 +79,7 @@ int main(void)
         }
     }
     if (progg == 6) {
-        UP_Tai2_6();
+        Tai8_zhuan();
     }
     if (progg == 7) {
         Stop(3000);

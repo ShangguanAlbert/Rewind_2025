@@ -70,15 +70,15 @@ void Tai7_zhuan(void)
     HWT101_to_0();
     Stop(250);
     Deg_IN();
-    for (int x = 40; x < 95; x++) {
-        run(x * 1, -x * 1.05);
+    for (int x = 45; x < 95; x++) {
+        run(x * 1,-x * 0.98) ;
         delay_ms(8);
     }
-    for (int x = 40; x > 95; x--) {
-        run(x * 1, -x * 1.05);
+    for (int x = 45; x > 95; x--) {
+        run(x * 1, -x * 0.98);
         delay_ms(8);
     }
-    pid_Turn(1040);
+    pid_Turn(1000);
     stop();
     Front_down();
 }

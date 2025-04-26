@@ -18,7 +18,7 @@ extern uint8_t cnt_whiteline;
  */
 void Front_down(void)
 {
-    Servo_SetAngle(4,135);//放下多少
+    Servo_SetAngle(4,125);//放下多少
 }
 /**
  * @brief 悬空前铲
@@ -100,6 +100,14 @@ void UP_Tai2_6(void)
             break;
         }
     }
+    Run_delay(45,100);
+    while (1)
+    {
+        slow_run(45);
+        if(hdxl==0 ||hdxr==0){
+            break;
+        }
+    }
     
     Tai1_6_zhuan();
     
@@ -120,35 +128,45 @@ void UP_Tai7(void)
     Reset(300,50);
     speed_up(50,105);
     speed_down(105,50);
-
+    Front_down();
     while (1) {
         slow_run(50);
-       if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])
-       {
-           run(48, 45);
-       }
+    //    if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])
+    //    {
+    //        run(48, 45);
+    //    }
        if (hdxl == 0 || hdxr == 0) {
            break;
        }
    }
-   Front_mid();
+   Front_down();
+
    Run_delay(45,100);
-//    while (1)
-//    {
-//        slow_run(45);
-//        if(hdxl==0 ||hdxr==0){
-//            break;
-//        }
-//    }
-//    while (1)
-//    {
-//        slow_run(45);
-//        if(hdxl==1 ||hdxr==1){
-//            break;
-//        }
-//    }
+   while (1)
+   {
+       Run(45);
+       if(hdxl==0 ||hdxr==0){
+           break;
+       }
+   }
+   while (1)
+   {
+       Run(45);
+       if(hdxl==1 ||hdxr==1){
+           break;
+       }
+   }
+   Run_delay(45,50);
+   while (1)
+   {
+       Run(35);
+       if(hdxl==0 ||hdxr==0){
+           break;
+       }
+   }
    
-   //Tai7_zhuan();
+   
+    Tai7_zhuan();
 }
 /**
  * @brief 下台7动作
@@ -210,8 +228,16 @@ void UP_Tai8(void)
            break;
        }
    }
+   Run_delay(45,100);
+   while (1)
+   {
+       slow_run(45);
+       if(hdxl==0 ||hdxr==0){
+           break;
+       }
+   }
    
-   //Tai8_zhuan();
+   Tai8_zhuan();
 }
 /**
  * @brief 下台8动作
@@ -349,7 +375,7 @@ void Past_Seesaw(int time_stop, int time_Seesaw)
     t3_i           = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (1) {
-        run(50,48);//49
+        run(50,46);//49
         // Run(65);
         // /*循环修正*/
         // if ((bhwr == 0 && bhwl == 1) || Huidu_va(0) > 80) {
@@ -364,7 +390,7 @@ void Past_Seesaw(int time_stop, int time_Seesaw)
         //     Run(65);
         // }
         if (t3_i > time_stop) {
-            run(30, 30);
+            run(30, 28);
             // delay_ms(5);
         }
 

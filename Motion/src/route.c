@@ -277,6 +277,7 @@ void Tai5_Tai8(void)
 */
 void Tai7_Home(void){
     Front_down();
+    Stop(300);
     Down_Tai7();
     Reset(500,50);
     while (hdxl != 0) {
@@ -287,10 +288,10 @@ void Tai7_Home(void){
     }
     Past_Seesaw(1200,2600);
     Land_Protect_adjust();
-    Reset(250,70);
+    Reset(400,70);
     while (1)
     {
-        high_run(100);
+        high_run(90);
         if(Huidu_va(0)>white[0]||Huidu_va(1)>white[1]){
             break;
         }
@@ -301,6 +302,31 @@ void Tai7_Home(void){
     }
     
     Reset(300,70);
+    speed_up(70,140);
+    speed_down(140,70);
+    TurnLeft_90_Ldetect_tai8();
+    Stop(40);
+    Reset(250,50);
+    speed_up(50,120);
+    speed_down(120,50);
+    Reset(60, 60);
+    while (hdxr != 0) {
+        drift_right(50, 0);
+    }
+    Reset(500,45);
+
+    while (hdxr != 0) {
+        slow_run(45);
+    }
+    Reset(600,45);
+    TurnRight_135_Longline();
+    Stop(50);
+    Reset(250,50);
+    speed_up(50,100);
+    speed_down(100,50);
+    Bridge_Travel();
+    Reset(600,60);
+    UP_Tai2_6();
 
 }
 /*
@@ -309,6 +335,7 @@ void Tai7_Home(void){
 void Tai8_Home(void)
 {
     Front_down();
+    Stop(300);
     Down_Tai8();
     Reset(200,40);
     speed_up(40,140);
@@ -348,17 +375,18 @@ void Tai8_Home(void)
     while (hdxr != 0) {
         drift_right(50, 0);
     }
-    Reset(320,45);
+    Reset(500,45);
 
     while (hdxr != 0) {
         slow_run(45);
     }
-    Reset(1000,45);
+    Reset(600,45);
     TurnRight_135_Longline();
     Stop(50);
     Reset(250,50);
     speed_up(50,100);
     speed_down(100,50);
-     Bridge_Travel();
-     Reset(600,60);
+    Bridge_Travel();
+    Reset(600,60);
+    UP_Tai2_6();
 }

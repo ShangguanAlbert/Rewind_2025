@@ -6,7 +6,7 @@
 #define treasure openmv[2]
 
 extern int openmv[];
-void USART3_OpenMV_Init(void);
+void USART5_OpenMV_Init(void);
 void Openmv_Data(void);
 void Openmv_Receive_Data(int16_t data);
 void Detect_Color(void);
