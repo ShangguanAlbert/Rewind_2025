@@ -281,7 +281,7 @@ void Tai7_Home(void){
     Down_Tai7();
     Reset(500,50);
     while (hdxl != 0) {
-        drift_right_2(70, 1);
+        drift_right_2(70,1);
     }
     while(hwr==1){
         high_run(70);

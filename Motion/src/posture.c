@@ -446,7 +446,7 @@ void Land_Protect_adjust(void)
             if (cnt_whiteline == 0) {
                 t3_i = 0;  // 重置计时器
                 while (1) {
-                    run(40,-40 );  // 向右转
+                    run(40,-40);  // 向右转
                     if (Huidu_va(1) > white[1] || Huidu_va(2) > white[2] || 
                         Huidu_va(3) > white[3] || Huidu_va(0) > white[0] || 
                         Huidu_va(4) > white[4]) {
