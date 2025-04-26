@@ -49,8 +49,9 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        Past_Seesaw(1500,2400);
-        Land_Protect_adjust();
+        // Past_Seesaw(1500,2400);
+        // Land_Protect_adjust();
+        UP_Tai7();
     }
     if (progg == 2) {
         Tai7_zhuan();

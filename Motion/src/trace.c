@@ -229,7 +229,7 @@ void slow_run(int N)
         KD = 0.005;
     } else { // 90
         KP = 0.00413;
-        KD = 0.005565;
+        KD = 0.17;
     }
     Trace();
 }
@@ -336,8 +336,8 @@ void speed_down(int high, int low)
             KP = 0.002;
             KD = 0.16;
         } else {
-            KP    = 0.0012;
-            KD    = 0.12;
+            KP = 0.0012;
+            KD = 0.12;
         }
         get_huidu_va();
         if (high % 2 == 0) Trace_transVelocity();
@@ -405,8 +405,8 @@ void speed_down_high(int high, int low)
             KP = 0.02;
             KD = 0.16;
         } else {
-            KP    = 0.012;
-            KD    = 0.12;
+            KP = 0.012;
+            KD = 0.12;
         }
         get_huidu_va();
         if (high % 2 == 0) Trace_transVelocity();
