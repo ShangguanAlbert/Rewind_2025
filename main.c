@@ -49,10 +49,6 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        // Past_Seesaw(1500,2400);
-        // Land_Protect_adjust();
-        //  Reset(150,70);
-        //   Reset_drift_right(50,1,800);
         Tai1_Tai2();
         Tai2_Tai3();
         Tai3_door2_Tai5();
@@ -62,13 +58,12 @@ int main(void)
     if (progg == 2) {
         UP_Tai7();
         Front_down();
-        Stop(300);
+        Stop(400);
         Down_Tai7();
         // Tai7_Home();
     }
     if (progg == 3) {
         UP_Tai7();
-        // Tai8_zhuan();
     }
     if (progg == 4) {
         UP_Tai8();

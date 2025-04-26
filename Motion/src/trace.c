@@ -214,10 +214,10 @@ void slow_run(int N)
     speed = N;
     if (speed < 50) {
         KP = 0.0077;
-        KD = 0.05;
+        KD = 0.15;
     } else if (speed >= 50 && speed < 60) { // 50
         KP = 0.0070;
-        KD = 0.005;
+        KD = 0.1;
     } else if (speed >= 60 && speed < 70) { // 60
         KP = 0.0045;
         KD = 0.005;
@@ -229,7 +229,7 @@ void slow_run(int N)
         KD = 0.005;
     } else { // 90
         KP = 0.00413;
-        KD = 0.005565;
+        KD = 0.17;
     }
     Trace();
 }

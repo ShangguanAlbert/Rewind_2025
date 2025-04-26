@@ -123,38 +123,36 @@ void UP_Tai7(void)
     speed_down(105, 50);
     Front_down();
     while (1) {
-        slow_run(50);
-        //    if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])
-        //    {
-        //        run(48, 45);
-        //    }
+        get_huidu_va();
+        if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
+            slow_run(50);
+        } else if (cnt_whiteline == 0) {
+            run(48, 45);
+        }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    Front_down();
-
     Run_delay(45, 100);
     while (1) {
-        Run(45);
+        run(48, 45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
     while (1) {
-        Run(45);
+        run(48, 45);
         if (hdxl == 1 || hdxr == 1) {
             break;
         }
     }
-    Run_delay(45, 50);
+    Run_delay(45, 100);
     while (1) {
-        Run(35);
+        run(48, 45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-
     Tai7_zhuan();
 }
 /**
@@ -164,10 +162,10 @@ void UP_Tai7(void)
 void Down_Tai7(void)
 {
     Reset(200, 50);
+    Front_mid();
     while (hwr == 1) {
         slow_run(50);
     }
-    Front_mid();
 }
 /**
  * @brief 上台8动作
