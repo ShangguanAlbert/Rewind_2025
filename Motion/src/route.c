@@ -261,7 +261,7 @@ void Tai5_Tai8(void)
 void Tai7_Home(void)
 {
     Front_down();
-    Stop(300);
+    Stop(400);
     Down_Tai7();
     Reset(500, 50);
     while (hdxl != 0) {
@@ -270,8 +270,7 @@ void Tai7_Home(void)
     while (hwr == 1) {
         high_run(70);
     }
-    Past_Seesaw(1200, 2600);
-    Land_Protect_adjust();
+    Seesaw_with_Adjustion(900, 2100);
     Reset(400, 70);
     while (1) {
         high_run(90);

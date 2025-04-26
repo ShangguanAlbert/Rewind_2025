@@ -465,6 +465,44 @@ void Land_Protect_adjust(void)
     }
 }
 
-void Seesaw_with_Adjustion(void)
+void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
 {
+    int count_turn = 0;
+    t3_i           = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        get_huidu_va();
+        Run(65);
+        /*循环修正*/
+        if (hwr == 1 && hwl == 1) {
+            run(40, 65);
+            Delay_ms(5);
+            count_turn += 3;
+        } else if (hwr == 1 && hwl == 0) {
+            run(65, 40);
+            Delay_ms(5);
+            count_turn += 3;
+        } else if (cnt_whiteline == 0 && hwr == 0) {
+            Run(65);
+        }
+        if (t3_i > time_stop) {
+            run(40, 35);
+            Delay_ms(5);
+        }
+        /* 下跷跷板停车 红外检测到 */
+        if (hwr != 0 && t3_i > time_stop) {
+            Front_mid();
+            stop();
+            break;
+        }
+        /* 检测到落地点有白线停车 */
+        get_huidu_va();
+        if (cnt_whiteline > 0 && (t3_i >= (time_Seesaw + count_turn))) {
+            stop();
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(1000);
 }

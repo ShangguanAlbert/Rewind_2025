@@ -23,6 +23,6 @@ void drift_right_2(int speed, uint8_t model);
 void Drift_Rightpass_BLB(void);
 void Past_Seesaw(int time_stop, int time_Seesaw);
 void Land_Protect_adjust(void);
-void Seesaw_with_Adjustion(void);
+void Seesaw_with_Adjustion(int time_stop, int time_Seesaw);
 
 #endif
