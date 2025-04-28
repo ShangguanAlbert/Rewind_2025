@@ -60,7 +60,6 @@ void TurnLeft_135_Longline2(void)
             break;
         }
     }
-    
 }
 
 void Tai1_6_zhuan(void)
@@ -105,7 +104,7 @@ void Tai7_zhuan(void)
     Stop(250);
     Deg_IN();
     for (int x = 45; x <= 118; x++) {
-        run(x * 0.92, -x * 1.25);//0.95,1.2
+        run(x * 0.92, -x * 1.25); // 0.95,1.2
         delay_ms(8);
     }
     pid_Turn(1200);
@@ -397,7 +396,7 @@ void TurnLeft_90_Rdetect_tai8(void)
 {
     while (1) {
         slow_run(50);
-        if (Huidu_va(1) > white[1]||Huidu_va(0) > white[0]) {
+        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
             break;
         }
     }
@@ -439,10 +438,9 @@ void TurnRight_90_Ldetect_1(void)
  */
 void Out_T_TurnRight_90(void)
 {
-    while (1)
-    {
+    while (1) {
         Run(50);
-        if(Huidu_va(10)>white[10]||Huidu_va(11)>white[11]){
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
             break;
         }
     }
@@ -462,10 +460,9 @@ void Out_T_TurnRight_90(void)
  */
 void Out_T_TurnLeft_90(void)
 {
-    while (1)
-    {
+    while (1) {
         Run(50);
-        if(Huidu_va(10)>white[10]||Huidu_va(11)>white[11]){
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
             break;
         }
     }
@@ -484,10 +481,9 @@ void Out_T_TurnLeft_90(void)
  */
 void In_T_TurnLeft_90(void)
 {
-    while (1)
-    {
+    while (1) {
         Run(50);
-        if(Huidu_va(0)>white[0]||Huidu_va(1)>white[1]){
+        if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
             break;
         }
     }
@@ -500,4 +496,3 @@ void In_T_TurnLeft_90(void)
         }
     }
 }
-

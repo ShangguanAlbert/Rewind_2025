@@ -221,7 +221,6 @@ void Tai5_Tai7(void)
     // TurnLeft_90_Rdetect();
     // Stop(40);
 
-    
     Stop(40);
 
     Reset(250, 60);
@@ -232,24 +231,22 @@ void Tai5_Tai7(void)
 void Tai5_Tai8(void)
 {
     down_pt1_6();
-    Reset(200,50);
-    speed_up(50,190);
-    Reset(200,190);
-    speed_down(190,50);
+    Reset(200, 50);
+    speed_up(50, 190);
+    Reset(200, 190);
+    speed_down(190, 50);
     TurnLeft_90_Rdetect();
     Stop(40);
-    while (1)
-    {
+    while (1) {
         slow_run(50);
-        if (hwr==0)
-        {
+        if (hwr == 0) {
             break;
         }
     }
     Front_down();
-    Reset(1400,50);
+    Reset(1400, 50);
     Front_mid();
-    Reset(200,50);
+    Reset(200, 50);
     // speed_up(50,100);
     // speed_down(100,50);
     // TurnRight_90_Ldetect();
@@ -329,13 +326,13 @@ void Tai8_Home(void)
     }
     Seesaw_with_Adjustion(900, 2100);
     Reset(350, 70);
-    Reset_drift_right(70,1,800);
-    speed_up(70,160);
-    speed_down(160,50);
+    Reset_drift_right(70, 1, 800);
+    speed_up(70, 160);
+    speed_down(160, 50);
     TurnRight_90_Ldetect();
     Stop(50);
-    speed_up(45,120);
-    speed_down(120,50);
+    speed_up(45, 120);
+    speed_down(120, 50);
     TurnLeft_135_Longline2();
     Back_BLB();
     TurnRight_135_Longline();
@@ -346,6 +343,4 @@ void Tai8_Home(void)
     Bridge_Travel();
     Reset(600, 60);
     UP_Tai2_6();
-    
-  
 }

@@ -71,35 +71,30 @@ int main(void)
         // Out_T_TurnLeft_90();
         // Stop(40);
 
-
-
-
-
-    TurnLeft_135_Longline();
-    Stop(50);
-    while (hwr == 1) {
-        high_run(70);
-    }
-    Seesaw_with_Adjustion(900, 2100);
-    Reset(350, 70);
-    Reset_drift_right(70,1,800);
-    speed_up(70,160);
-    speed_down(160,50);
-    TurnRight_90_Ldetect();
-    Stop(50);
-    speed_up(45,120);
-    speed_down(120,50);
-    TurnLeft_135_Longline2();
-    Back_BLB();
-    TurnRight_135_Longline();
-    Stop(50);
-    Reset(250, 50);
-    speed_up(50, 100);
-    speed_down(100, 50);
-    Bridge_Travel();
-    Reset(600, 60);
-    UP_Tai2_6();
-        
+        TurnLeft_135_Longline();
+        Stop(50);
+        while (hwr == 1) {
+            high_run(70);
+        }
+        Seesaw_with_Adjustion(900, 2100);
+        Reset(350, 70);
+        Reset_drift_right(70, 1, 800);
+        speed_up(70, 160);
+        speed_down(160, 50);
+        TurnRight_90_Ldetect();
+        Stop(50);
+        speed_up(45, 120);
+        speed_down(120, 50);
+        TurnLeft_135_Longline2();
+        Back_BLB();
+        TurnRight_135_Longline();
+        Stop(50);
+        Reset(250, 50);
+        speed_up(50, 100);
+        speed_down(100, 50);
+        Bridge_Travel();
+        Reset(600, 60);
+        UP_Tai2_6();
     }
     if (progg == 3) {
         UP_Tai8();
