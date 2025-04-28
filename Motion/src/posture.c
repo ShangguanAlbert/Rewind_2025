@@ -18,7 +18,7 @@ extern uint8_t cnt_whiteline;
  */
 void Front_down(void)
 {
-    Servo_SetAngle(4, 135); // 放下多少
+    Servo_SetAngle(4, 125); // 放下多少
 }
 /**
  * @brief 悬空前铲
@@ -42,7 +42,7 @@ void Front_up(void)
 void Front_up_High(void)
 {
 
-    Servo_SetAngle(4, 165);
+    Servo_SetAngle(4, 175);
 }
 
 /**
@@ -96,6 +96,13 @@ void UP_Tai2_6(void)
             break;
         }
     }
+    Run_delay(45, 100);
+    while (1) {
+        slow_run(45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
 
     Tai1_6_zhuan();
 }
@@ -114,34 +121,39 @@ void UP_Tai7(void)
     Reset(300, 50);
     speed_up(50, 105);
     speed_down(105, 50);
-
+    Front_down();
     while (1) {
-        slow_run(50);
-        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
+        get_huidu_va();
+        if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
+            slow_run(50);
+        } else if (cnt_whiteline == 0) {
             run(48, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    Front_mid();
     Run_delay(45, 100);
-    //    while (1)
-    //    {
-    //        slow_run(45);
-    //        if(hdxl==0 ||hdxr==0){
-    //            break;
-    //        }
-    //    }
-    //    while (1)
-    //    {
-    //        slow_run(45);
-    //        if(hdxl==1 ||hdxr==1){
-    //            break;
-    //        }
-    //    }
-
-    // Tai7_zhuan();
+    while (1) {
+        run(48, 45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    while (1) {
+        run(48, 45);
+        if (hdxl == 1 || hdxr == 1) {
+            break;
+        }
+    }
+    Run_delay(45, 150);
+    while (1) {
+        run(48, 45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    Tai7_zhuan();
 }
 /**
  * @brief 下台7动作
@@ -150,10 +162,10 @@ void UP_Tai7(void)
 void Down_Tai7(void)
 {
     Reset(200, 50);
+    Front_mid();
     while (hwr == 1) {
         slow_run(50);
     }
-    Front_mid();
 }
 /**
  * @brief 上台8动作
@@ -170,24 +182,26 @@ void UP_Tai8(void)
     Reset(500, 50);
     speed_up_high(50, 135);
     speed_down_high(135, 50);
+    Front_down();
 
     // speed_up(50,135);
     // speed_down(135,70);
     // Reset(300,70);
 
     while (1) {
-        slow_run(50);
-        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
+        get_huidu_va();
+        if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
+            slow_run(50);
+        } else if (cnt_whiteline == 0) {
             run(48, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    Front_mid();
     Run_delay(45, 100);
     while (1) {
-        slow_run(45);
+        run(48, 45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
@@ -198,8 +212,15 @@ void UP_Tai8(void)
             break;
         }
     }
+    Run_delay(45, 300);
+    while (1) {
+        slow_run(45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
 
-    // Tai8_zhuan();
+    Tai8_zhuan();
 }
 /**
  * @brief 下台8动作
@@ -207,12 +228,15 @@ void UP_Tai8(void)
  */
 void Down_Tai8(void)
 {
-    Reset(400, 40);
+    Reset(800, 40);
+    speed_up_high(40, 100);
+    speed_down_high(100, 40);
     while (hwr == 1) {
         slow_run(40);
     }
     Front_mid();
 }
+
 void Bridge_Travel(void)
 {
     while (hwr != 0) {
@@ -282,6 +306,32 @@ void drift_right(int speed, uint8_t model)
         }
     }
 }
+
+void drift_right_2(int speed, uint8_t model)
+{
+    if (Huidu_va(6) > white[6]) {
+        run(speed + 15, 30);
+    } else if (Huidu_va(5) > white[5]) {
+        run(speed + 15, 30);
+    } else if (Huidu_va(4) > white[4]) {
+        run(speed + 15, 20);
+    } else if (Huidu_va(3) > white[3]) {
+        run(speed + 15, 10);
+    } else if (Huidu_va(2) > white[2]) {
+        run(speed + 15, 10);
+    } else if (Huidu_va(1) > white[1]) {
+        run(speed + 15, 0);
+    } else if (Huidu_va(0) > white[0]) {
+        run(speed + 15, 0);
+    } else {
+        if (model == 0) {
+            slow_run(speed);
+        } else {
+            high_run(speed);
+        }
+    }
+}
+
 void Drift_Rightpass_BLB(void)
 {
     Front_mid();
@@ -306,7 +356,7 @@ void Past_Seesaw(int time_stop, int time_Seesaw)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (1) {
-        run(50, 48); // 49
+        run(50, 46); // 49
         // Run(65);
         // /*循环修正*/
         // if ((bhwr == 0 && bhwl == 1) || Huidu_va(0) > 80) {
@@ -321,7 +371,7 @@ void Past_Seesaw(int time_stop, int time_Seesaw)
         //     Run(65);
         // }
         if (t3_i > time_stop) {
-            run(30, 30);
+            run(30, 28);
             // delay_ms(5);
         }
 
@@ -367,7 +417,7 @@ void Land_Protect_adjust(void)
                     break;
                 }
                 // 如果超过2秒还没找到，跳出循环
-                if (t3_i >= 2000) { // 假设t3_i的单位是毫秒
+                if (t3_i >= 600) { // 假设t3_i的单位是毫秒
                     Stop(150);
                     break;
                 }
@@ -377,7 +427,7 @@ void Land_Protect_adjust(void)
             if (cnt_whiteline == 0) {
                 t3_i = 0; // 重置计时器
                 while (1) {
-                    run(50, 0); // 向右转
+                    run(40, -40); // 向右转
                     if (Huidu_va(1) > white[1] || Huidu_va(2) > white[2] ||
                         Huidu_va(3) > white[3] || Huidu_va(0) > white[0] ||
                         Huidu_va(4) > white[4]) {
@@ -385,7 +435,7 @@ void Land_Protect_adjust(void)
                         break;
                     }
                     // 如果超过4秒还没找到，跳出循环
-                    if (t3_i >= 2000) { // 假设t3_i的单位是毫秒
+                    if (t3_i >= 1000) { // 假设t3_i的单位是毫秒
                         Stop(150);
                         break;
                     }
@@ -401,7 +451,7 @@ void Land_Protect_adjust(void)
     if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
         // 车头偏右，需要向左调整
         while (1) {
-            run(0, 40); // 向左转
+            run(10, 40); // 向左转
             if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
                 break;
             }
@@ -409,10 +459,59 @@ void Land_Protect_adjust(void)
     } else if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
         // 车头偏左，需要向右调整
         while (1) {
-            run(40, 0); // 向右转
+            run(40, 10); // 向右转
             if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
                 break;
             }
         }
     }
+}
+
+void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
+{
+    int count_turn = 0;
+    t3_i           = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        get_huidu_va();
+        Run(65);
+        /*循环修正*/
+        if (hwr == 1 && hwl == 1) {
+            run(40, 65);
+            Delay_ms(5);
+            count_turn += 3;
+        } else if (hwr == 1 && hwl == 0) {
+            run(65, 40);
+            Delay_ms(5);
+            count_turn += 3;
+        } else if (cnt_whiteline == 0 && hwr == 0) {
+            Run(65);
+        }
+        if (t3_i > time_stop) {
+            run(40, 35);
+            Delay_ms(5);
+        }
+        /* 下跷跷板停车 红外检测到 */
+        if (hwr != 0 && t3_i > time_stop) {
+            Front_mid();
+            stop();
+            break;
+        }
+        /* 检测到落地点有白线停车 */
+        get_huidu_va();
+        if (cnt_whiteline > 0 && (t3_i >= (time_Seesaw + count_turn))) {
+            stop();
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(1000);
+}
+void Back_BLB(void)
+{
+    while (hdxr != 0) {
+        slow_run(45);
+    }
+    Reset(600, 45);
 }

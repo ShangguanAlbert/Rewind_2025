@@ -7,26 +7,26 @@ int m = 0;
 /**
  * @brief 串口3初始化函数, 并且开启NVIC中断配置 115200
  */
-void USART3_OpenMV_Init(void)
+void USART5_OpenMV_Init(void)
 {
     // GPIO端口设置
     GPIO_InitTypeDef GPIO_InitStructure;
     USART_InitTypeDef USART_InitStructure;
     NVIC_InitTypeDef NVIC_InitStructure;
 
-    // 串口3对应引脚复用映射
+    // 串口5对应引脚复用映射
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);  // 使能GPIOD时钟
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE); // 使能USART3时钟
-    GPIO_PinRemapConfig(GPIO_FullRemap_USART3, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);  // 使能GPIOc时钟
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE); // 使能UART5时钟
 
-    // USART3端口配置
+    // USART5端口配置
     /* PD8用于TX数据输出, PD9用于RX数据输入 */
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_12;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOD, &GPIO_InitStructure);
+    GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOD, &GPIO_InitStructure);
@@ -38,14 +38,14 @@ void USART3_OpenMV_Init(void)
     USART_InitStructure.USART_Parity              = USART_Parity_No;                // 无奇偶校验位
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None; // 无硬件数据流控制
     USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;  // 收发模式
-    USART_Init(USART3, &USART_InitStructure);                                       // 初始化串口3
+    USART_Init(UART5, &USART_InitStructure);                                       // 初始化串口3
 
-    USART_Cmd(USART3, ENABLE); // 使能串口3
+    USART_Cmd(UART5, ENABLE); // 使能串口2
 
     // Usart3 NVIC 配置
-    USART_ITConfig(USART3, USART_IT_RXNE, ENABLE); // 开启接收中断
+    USART_ITConfig(UART5, USART_IT_RXNE, ENABLE); // 开启接收中断
 
-    NVIC_InitStructure.NVIC_IRQChannel                   = USART3_IRQn; // 串口3中断通道
+    NVIC_InitStructure.NVIC_IRQChannel                   = UART5_IRQn; // 串口3中断通道
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;           // 抢占优先级3
     NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 2;           // 子优先级3
     NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;      // IRQ通道使能
@@ -125,12 +125,12 @@ void Openmv_Receive_Data(int16_t data)
 }
 #endif
 
-void USART3_IRQHandler(void) // 串口3中断服务程序
+void UART5_IRQHandler(void) // 串口5中断服务程序
 {
     uint8_t com_data;
-    if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) {
-        USART_ClearFlag(USART3, USART_FLAG_RXNE);
-        com_data = USART_ReceiveData(USART3);
+    if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET) {
+        USART_ClearFlag(UART5, USART_FLAG_RXNE);
+        com_data = USART_ReceiveData(USART2);
         Openmv_Receive_Data(com_data);
         Openmv_Data();
         com_data = 0;
@@ -142,14 +142,14 @@ void USART3_IRQHandler(void) // 串口3中断服务程序
  */
 void Detect_Color(void)
 {
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0xb3);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0xb2);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0x00);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0Xb5);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb3);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb2);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0x00);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0Xb5);
 }
 
 /**
@@ -157,14 +157,14 @@ void Detect_Color(void)
  */
 void Locate_treasure(void)
 {
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0xb3);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0xb2);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0x11);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0Xb5);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb3);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb2);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0x11);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5,0Xb5);
 }
 
 /**
@@ -172,12 +172,12 @@ void Locate_treasure(void)
  */
 void SHUT_UP(void)
 {
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0xb3);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0xb2);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0x22);
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-    USART_SendData(USART3, 0Xb5);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb3);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb2);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0x22);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0Xb5);
 }

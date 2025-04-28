@@ -25,6 +25,8 @@ uint8_t prog_num_hope = 8;
 
 uint8_t progg;
 
+extern int32_t white[];
+
 int main(void)
 {
     SysTick_Init();
@@ -35,7 +37,7 @@ int main(void)
     TIM8_Motor_Init();
     SPI_LCD_Init();
     USART2_COMPASS_Init();
-    USART3_OpenMV_Init();
+    USART5_OpenMV_Init();
     UART4_QRCode_Init();
     TIM2_Servo_Init();
     TIM3_TurnPID_Init();
@@ -44,27 +46,66 @@ int main(void)
     KEY_Init();
     GPIO_HW_Init();
     GPIO_HDLR_Init();
-    pid_init(&pid_yaw, 55, 10, 4, 2, 3);
+    pid_init(&pid_yaw, 60, 10, 4, 2, 3);
     Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
-        // Past_Seesaw(1500,2400);
-        // Land_Protect_adjust();
-        UP_Tai7();
+        Tai1_Tai2();
+        Tai2_Tai3();
+        Tai3_door2_Tai5();
+        Tai5_Tai7();
+        Tai7_Home();
     }
     if (progg == 2) {
-        Tai7_zhuan();
+        // while (1) {
+        //     slow_run(50);
+        //     if (hwr == 0) {
+        //         break;
+        //     }
+        // }
+        // Front_down();
+        // Reset(1400, 50);
+        // Front_mid();
+        // Reset(200, 50);
+        // Out_T_TurnLeft_90();
+        // Stop(40);
+
+
+
+
+
+    TurnLeft_135_Longline();
+    Stop(50);
+    while (hwr == 1) {
+        high_run(70);
+    }
+    Seesaw_with_Adjustion(900, 2100);
+    Reset(350, 70);
+    Reset_drift_right(70,1,800);
+    speed_up(70,160);
+    speed_down(160,50);
+    TurnRight_90_Ldetect();
+    Stop(50);
+    speed_up(45,120);
+    speed_down(120,50);
+    TurnLeft_135_Longline2();
+    Back_BLB();
+    TurnRight_135_Longline();
+    Stop(50);
+    Reset(250, 50);
+    speed_up(50, 100);
+    speed_down(100, 50);
+    Bridge_Travel();
+    Reset(600, 60);
+    UP_Tai2_6();
+        
     }
     if (progg == 3) {
-        Tai8_zhuan();
+        UP_Tai8();
     }
     if (progg == 4) {
-        Run_delay(50, 200);
-        Run_delay(80, 100);
-        Run_delay(110, 1400);
-        Run_delay(80, 100);
-        Run_delay(50, 200);
+        Front_up_High();
     }
     if (progg == 5) {
         // 二维码扫描模式
@@ -75,7 +116,7 @@ int main(void)
         }
     }
     if (progg == 6) {
-        UP_Tai2_6();
+        Tai8_zhuan();
     }
     if (progg == 7) {
         Stop(3000);

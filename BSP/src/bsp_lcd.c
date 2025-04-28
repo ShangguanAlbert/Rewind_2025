@@ -8,6 +8,7 @@
 uint8_t page = 1;
 extern uint8_t prog_num_hope;
 extern uint8_t res[];
+extern int8_t openmv[2];
 
 void Show_SensorPage_All(void)
 {
@@ -77,18 +78,18 @@ void Sensor_Test_Page1(void)
 
     LCD_DrawLine(120, 185, 240, 185);
 
-    // LCD_DisplayString(150, 190, "-Door-");
+    LCD_DisplayString(150, 190, "-color-");
 
-    // if (openmv[2] == 1) {
-    //     LCD_DisplayString(160, 215, "Blak");
-    // } else if (openmv[2] == 2) {
-    //     LCD_DisplayString(160, 215, "Blue");
-    // } else if (openmv[2] == 3) {
-    //     LCD_DisplayString(160, 215, "Gren");
-    // } else if (openmv[2] == 0) {
-    //     LCD_DisplayString(160, 215, "None");
-    // }
-    // LCD_DisplayNumber(155, 220, openmv[2], 2);
+    if (openmv[2] == 1) {
+        LCD_DisplayString(160, 215, "red");
+    } else if (openmv[2] == 2) {
+        LCD_DisplayString(160, 215, "green");
+    } else if (openmv[2] == 3) {
+        LCD_DisplayString(160, 215, "blue");
+    } else if (openmv[2] == 0) {
+        LCD_DisplayString(160, 215, "None");
+    }
+    LCD_DisplayNumber(155, 220, openmv[2], 2);
 }
 
 void Sensor_Test_Page2(void)
