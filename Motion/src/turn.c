@@ -121,18 +121,18 @@ void Tai8_zhuan(void)
     Front_up_High();
     Stop(100);
     HWT101_to_0();
-    Stop(250);
+    Stop(400);
 
     Deg_IN();
     for (int x = 40; x < 95; x++) {
-        run(x * 0.8, -x * 2); // 1.05
+        run(x * 0.8, -x * 1.3); // 1.05
         delay_ms(9);
     }
     for (int x = 40; x > 95; x--) {
-        run(x * 0.8, -x * 2);
+        run(x * 0.8, -x * 1.3);
         delay_ms(9);
     }
-    pid_Turn(1100);
+    pid_Turn(1000);
     stop();
     Front_down();
     Stop(300);

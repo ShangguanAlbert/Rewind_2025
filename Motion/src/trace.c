@@ -282,11 +282,11 @@ void speed_up(int start, int end)
     KD = 0.15;
     for (; start < end; start++) {
         if (speed <= 100) {
-            KP = 0.004;
-            KD = 0.15;
+            KP = 0.003;
+            KD = 0.16;
         } else {
             KP = 0.0016;
-            KD = 0.14;
+            KD = 0.15;
         }
         speed = start;
         // KP    = 0.0016;
@@ -463,7 +463,7 @@ void bridge_PD(int N, uint8_t mode)
     get_huidu_va();
     speed = N;
     if (mode == 1) {
-        KP = 0.015;
+        KP = 0.015;//0.015
         KD = 0.15;
     } else if (mode == 2) {
         KP = 0.009;
