@@ -1,4 +1,6 @@
 #include "trace.h"
+#include "bsp_compass.h"
+#include "pid_turn.h"
 
 int Gray_sum;
 int speed;
@@ -13,6 +15,7 @@ float sum = 0.0;
 float error;
 float KP;
 float KD;
+extern float JD;
 
 int32_t thr_whiteline[] = thr_line;
 int32_t white[]         = thr_white;
@@ -471,3 +474,54 @@ void bridge_PD(int N, uint8_t mode)
     }
     bridge_Trace(mode);
 }
+/**
+ * @brief 无线直走
+ */
+void Straight_run(int speed)
+{
+    if(JD > 180){
+        JD = JD - 360;
+    }
+    if(-2 < JD && JD < 2){
+       Run(speed);
+    }else if (JD > 0)
+    {
+        if (JD < 6)
+        {
+            run(speed+3,speed);
+        }else if (JD <10)
+        {
+            run(speed+10,speed);
+        } 
+    } else if (JD < 0)
+    {
+        if (JD > -6)
+        {
+            run(speed,speed+3);
+        }
+        else if (JD > -10)
+        {
+            run(speed,speed+10);
+        } 
+    }
+
+}
+
+
+/**
+ * @brief 无白线直走
+ */
+void Straight(int time)
+{
+    HWT101_to_0();
+    Stop(40);
+    Deg_IN();
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        Straight_run(50);
+    } while (Huidu_va(10)<white[10]||Huidu_va(11)<white[11]||t3_i >time);
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+}
+

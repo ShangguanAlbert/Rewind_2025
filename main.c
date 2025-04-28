@@ -51,32 +51,12 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-
+        Tai5_Tai8();
+ 
     }
     if (progg == 2) {
-        // while (1) {
-        //     slow_run(50);
-        //     if (hwr == 0) {
-        //         break;
-        //     }
-        // }
-        // Front_down();
-        // Reset(1400, 50);
-        // Front_mid();
-        // Reset(200, 50);
-        // Out_T_TurnLeft_90();
-        // Stop(40);
-        speed_up(50,170);
-        speed_down(170,50);
-        // UP_Tai8();
-
-
-
-
-
-
-    
-        
+        //Tai8_Home();
+        Straight_run(50);
     }
     if (progg == 3) {
         while (hwr != 0) {
