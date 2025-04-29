@@ -51,6 +51,7 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
+        Tai5_Tai8();
 
     }
     if (progg == 2) {

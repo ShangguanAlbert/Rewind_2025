@@ -515,10 +515,27 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     t3_i = 0;
     Stop(1000);
 }
+/**
+ * @brief 回程过波浪板
+ *
+ */
 void Back_BLB(void)
 {
     while (hdxr != 0) {
         slow_run(45);
     }
     Reset(600, 45);
+}
+/**
+ * @brief 出发过波浪板
+ *
+ */
+void Go_BLB(void)
+{
+    //巡线直到扫到黄线
+    while (hdxl != 0) {
+        slow_run(45);
+    }
+    //过波浪板
+    Reset(1600, 45);
 }

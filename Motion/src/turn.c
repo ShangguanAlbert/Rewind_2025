@@ -439,7 +439,7 @@ void TurnRight_90_Ldetect_1(void)
 void Out_T_TurnRight_90(void)
 {
     while (1) {
-        Run(50);
+        run(48,50);
         if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
             break;
         }
