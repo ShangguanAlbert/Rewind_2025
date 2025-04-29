@@ -125,12 +125,12 @@ void Tai4_door4_Tai5(void)
     Reset(100, 70);
     speed_up(70, 170);
     speed_down(170, 70);
-    TurnLeft_90_Rdetect_in();
+    TurnLeft_90_Ldetect_4();
     Stop(40);
     Reset(250, 70);
     speed_up(70, 150);
     speed_down(150, 50);
-    TurnLeft_90_Rdetect_in2();
+    TurnLeft_90_Ldetect_5();
     Stop(50);
     Reset(350, 70);
     speed_up(70, 160);
@@ -145,7 +145,7 @@ void Tai5_Tai7(void)
     speed_up(50, 190);
     Reset(200, 190);
     speed_down(190, 50);
-    TurnLeft_90_Rdetect();
+    TurnLeft_90_Ldetect_Mountain();
     Stop(40);
     while (1) {
         slow_run(50);
@@ -171,12 +171,12 @@ void Tai5_Tai7(void)
 }
 void Tai5_Tai8(void)
 {
-    // down_pt1_6();
-    // Reset(200, 50);
-    // speed_up(50, 190);
-    // Reset(200, 190);
-    // speed_down(190, 50);
-    TurnLeft_90_Rdetect();
+    down_pt1_6();
+    Reset(200, 50);
+    speed_up(50, 190);
+    Reset(200, 190);
+    speed_down(190, 50);
+    TurnLeft_90_Ldetect_Mountain();
     Stop(40);
     while (1) {
         slow_run(50);
@@ -184,7 +184,8 @@ void Tai5_Tai8(void)
             break;
         }
     }
-    Reset(900, 50);
+    Straight(5000);
+    Stop(40);
     Out_T_TurnRight_90();
     Stop(40);
     Reset(250, 70);
@@ -233,7 +234,7 @@ void Tai7_Home(void)
     speed_up(70, 140);
     speed_down(140, 70);
     //左转90度
-    TurnLeft_90_Rdetect_tai8();
+    TurnLeft_90_Rdetect_4();
     Stop(100);
     //修正
     Reset(250, 50);

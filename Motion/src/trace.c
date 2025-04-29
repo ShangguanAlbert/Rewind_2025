@@ -474,7 +474,9 @@ void bridge_PD(int N, uint8_t mode)
     }
     bridge_Trace(mode);
 }
-
+/**
+ * @brief 无线直走
+ */
 void Straight_run(int speed)
 {
     if(JD > 180){
@@ -504,13 +506,15 @@ void Straight_run(int speed)
     }
 
 }
+
+
 /**
  * @brief 无白线直走
  */
 void Straight(int time)
 {
     HWT101_to_0();
-    Stop(400);
+    Stop(40);
     Deg_IN();
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
@@ -520,3 +524,4 @@ void Straight(int time)
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 }
+
