@@ -107,17 +107,30 @@ void Tai2_zhuan90(void)
  */
 void Tai7_zhuan(void)
 {
-    Front_up_High();
+    // Front_up_High();
+    // Stop(100);
+    // HWT101_to_0();
+    // Stop(250);
+    // Deg_IN();
+    // for (int x = 45; x <= 118; x++) {
+    //     run(x * 0.90, -x * 1.4); // 0.95,1.2
+    //     delay_ms(8);
+    // }
+    // pid_Turn(1200);
+    // stop();
+    // Front_down();
+
     Stop(100);
     HWT101_to_0();
     Stop(250);
+    Front_up_High();
     Deg_IN();
-    for (int x = 45; x <= 118; x++) {
-        run(x * 0.92, -x * 1.25); // 0.95,1.2
-        delay_ms(8);
+    for (int x = 55; x < 110; x++) {
+        run(x * 0.86, -x * 0.94);
+        Delay_ms(8); //
     }
-    pid_Turn(1200);
-    stop();
+    pid_Turn(500);
+    Stop(50);
     Front_down();
 }
 /**
@@ -126,25 +139,91 @@ void Tai7_zhuan(void)
  */
 void Tai8_zhuan(void)
 {
-    Front_up_High();
+    // Front_up_High();
+    // Stop(100);
+    // HWT101_to_0();
+    // Stop(400);
+
+    // Deg_IN();
+    // for (int x = 40; x < 80; x++) {
+    //     run(x * 0.8, -x * 1.8); // 1.05
+    //     delay_ms(20);
+    // }
+    // for (int x = 40; x > 80; x--) {
+    //     run(x * 0.8, -x * 1.8);
+    //     delay_ms(20);
+    // }
+    // pid_Turn(1000);
+    // stop();
+    // Front_down();
+    // Stop(300);
     Stop(100);
     HWT101_to_0();
-    Stop(400);
-
+    Stop(250);
+    Front_up_High();
     Deg_IN();
-    for (int x = 40; x < 80; x++) {
-        run(x * 0.8, -x * 1.8); // 1.05
-        delay_ms(20);
+    for (int x = 55; x < 110; x++) {
+        run(x * 0.86, -x * 0.94);
+        Delay_ms(8); //
     }
-    for (int x = 40; x > 80; x--) {
-        run(x * 0.8, -x * 1.8);
-        delay_ms(20);
-    }
-    // pid_Turn(1000);
-    stop();
+    pid_Turn(800);
+    Stop(50);
     Front_down();
-    Stop(300);
 }
+
+
+// void Tai8_zhuan(void) {
+//      int g = 0;
+//      //static int gqJD;
+//      float gqJD = compass_b();
+//      stop();
+//      Front_up_High();
+//      delay_ms(200);
+//      //run(20, -20);
+//      //delay_ms(450);
+//      while (g < 1)
+//      {
+//       if (gqJD <= 180 && gqJD>=0)
+//       {
+//        run_delay(-60,60,450);
+//        while (compass_b() < (170+gqJD))
+//        {
+//         if(compass_b() - gqJD < 120)
+//         run(-60,60);
+//         else if(compass_b() - gqJD > 140)
+//         run(-40,40);
+//         else
+//         run((compass_b() - gqJD) - 180 ,180 - (compass_b() - gqJD));
+//        }
+//        g++;
+//       }
+//       else if (gqJD > 180 && gqJD <= 360)
+//       {
+//        run_delay(60,-60,450);
+//        while (compass_b() > (gqJD-170))
+//        {
+//         if(gqJD - compass_b() < 120)
+//         run(60,-60);
+//         else if(gqJD - compass_b() > 140)
+//         run(40,-40);
+//         else
+//         run(180-(gqJD - compass_b()) , (gqJD - compass_b())-180);
+//        }
+//        g++;
+//       }
+//       else
+//        while (compass_b() < 180)
+//        {
+//         run(40, -40);
+//        }
+//       g++;
+//      }
+//      stop();
+//      Front_down();
+//      Delay_ms(200);
+//     }
+
+
 
 /**
  * @brief 右转90度
@@ -200,10 +279,10 @@ void TurnLeft_90_Ldetect_Mountain(void)
         }
     }
     // 左转
-    Right_Speed_Up(50, 80, 5);
-    Left_Speed_Down(50, -80, 5);
+    Right_Speed_Up(50, 85, 5);
+    Left_Speed_Down(50, -75, 5);
     while (1) {
-        run(-85, 80);
+        run(-80, 85);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
             break;
         }
@@ -211,14 +290,14 @@ void TurnLeft_90_Ldetect_Mountain(void)
 }
 
 /**
- * @brief 左转90度 左灰度检测
- *
+ * @brief 左转90度上台7 左灰度检测
+ * 
  */
 void TurnLeft_90_Ldetect(void)
 {
     while (1) {
         slow_run(50);
-        if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1] || Huidu_va(2) > white[2]) {
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11] || Huidu_va(9) > white[9]) {
             break;
         }
     }
@@ -458,9 +537,9 @@ void Out_T_TurnRight_90(void)
     //     }
     // }
     Left_Speed_Up(50, 90, 5);
-    Right_Speed_Down(50, -85, 5);
+    Right_Speed_Down(50, -88, 5);
     while (1) {
-        run(70, -73);
+        run(70, -75);
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
             break;
         }

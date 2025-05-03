@@ -8,6 +8,7 @@
 #include "bsp_sensor.h"
 #include "bsp_SysTick.h"
 #include "turn.h"
+#include "bsp_compass.h"
 
 void Tai1_Tai2(void)
 {
@@ -142,21 +143,26 @@ void Tai5_Tai7(void)
     speed_down(190, 50);
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    Front_down();
-    Reset(1400, 50);
-    Front_mid();
-    Reset(200, 50);
-    // speed_up(50, 100);
-    // speed_down(100, 50);
-    // TurnLeft_90_Rdetect();
-    // Stop(40);
 
+
+
+    // // while (1) {
+    // //     slow_run(50);
+    // //     if (hwr == 0) {
+    // //         break;
+    // //     }
+    // // }
+    // // Front_down();
+    // // Reset(1400, 50);
+    // // Front_mid();
+    // // Reset(200, 50);
+    // // speed_up(50, 100);
+    // // speed_down(100, 50);
+
+
+    
+    txs();
+    TurnLeft_90_Ldetect();
     Stop(40);
 
     Reset(250, 60);
@@ -173,14 +179,19 @@ void Tai5_Tai8(void)
     speed_down(190, 50);
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    Straight(5000);
-    Stop(40);
+
+
+    // while (1) {
+    //     slow_run(50);
+    //     if (hwr == 0) {
+    //         break;
+    //     }
+    // }
+    // Straight(5000);
+    // Stop(40);
+
+
+    txs();
     Out_T_TurnRight_90();
     Stop(40);
     Reset(250, 70);
@@ -188,6 +199,33 @@ void Tai5_Tai8(void)
     speed_down(140, 50);
     UP_Tai8();
 }
+
+
+void txs(void){
+    while(hwr == 1){
+     slow_run(50);
+     }
+     Front_down();
+     HWT101_to_0();
+     Reset(600,50);
+     while(!outline ){
+     Reset(50,50);
+     }
+    stop();
+     Delay_ms(300);
+     while(!outline){
+     Reset(50,50);
+    }
+    Front_mid();
+     while(!(Huidu_va(10) > white[10] || Huidu_va(11) > white[11])){
+     txs_trace();
+     }
+    //  while(hdxl == 1){
+    //  Run_delay(30,10);
+    // }
+    }
+
+
 /*
 台7回家
 */

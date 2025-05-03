@@ -51,20 +51,23 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        Tai5_Tai8();
- 
+        Tai1_Tai2();
+        Tai2_Tai3();
+        Tai3_door2_Tai5();
+        Tai5_Tai7();
+        Tai7_Home();
+        // Tai5_Tai8();
     }
     if (progg == 2) {
-        //Tai8_Home();
-        Straight_run(50);
+        Tai1_Tai2();
+        Tai2_Tai4();
+        Tai4_Tai5();
+        Tai5_Tai8();
+        Tai8_Home();
+
     }
     if (progg == 3) {
-        while (hwr != 0) {
-            Run(50);
-        }
-        Front_mid();
-        Reset(300, 60);
-    
+        Tai1_6_zhuan();
     }
     if (progg == 4) {
         while (hwr != 0) {
