@@ -18,6 +18,4 @@ void Tai7_Home(void);
 void Tai8_Home(void);
 void txs(void);
 
-
-
 #endif

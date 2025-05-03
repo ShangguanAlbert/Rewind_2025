@@ -10,14 +10,13 @@
 #include "bsp_sensor.h"
 #include "basic.h"
 
-
 /**
  * @brief 右转135°后进长桥（用于回家和台2-台3）
- * 
+ *
  */
 void TurnRight_135_Longline(void)
 {
-    //低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
@@ -27,14 +26,13 @@ void TurnRight_135_Longline(void)
     Left_Speed_Up(50, 115, 3);
     Right_Speed_Down(50, -90, 4);
     while (1) {
-        //左右轮设定不同速度，直到灰度4，5扫到白线
+        // 左右轮设定不同速度，直到灰度4，5扫到白线
         run(85, -65);
         if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
             break;
         }
     }
 }
-
 
 void TurnLeft_135_Longline(void)
 {
@@ -372,7 +370,7 @@ void TurnLeft_90_Ldetect_4(void)
     // 左转
     Right_Speed_Up(50, 80, 5);
     Left_Speed_Down(50, -80, 5);
-    //扫到第一根白线继续转
+    // 扫到第一根白线继续转
     while (1) {
         run(-75, 70);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
@@ -380,7 +378,7 @@ void TurnLeft_90_Ldetect_4(void)
         }
     }
     run_delay(-75, 76, 50);
-    //左转，扫到第二根白线停止
+    // 左转，扫到第二根白线停止
     while (1) {
         run(-75, 76);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
@@ -390,7 +388,7 @@ void TurnLeft_90_Ldetect_4(void)
 }
 
 /**
- * @brief 左转90度 左灰度检测 
+ * @brief 左转90度 左灰度检测
  *        用于门4进台5
  */
 void TurnLeft_90_Ldetect_5(void)
@@ -412,7 +410,7 @@ void TurnLeft_90_Ldetect_5(void)
         }
     }
     run_delay(-75, 72, 50);
-    //左转检测到第二条白线停止转弯
+    // 左转检测到第二条白线停止转弯
     while (1) {
         run(-75, 72);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {

@@ -466,7 +466,7 @@ void bridge_PD(int N, uint8_t mode)
     get_huidu_va();
     speed = N;
     if (mode == 1) {
-        KP = 0.015;//0.015
+        KP = 0.015; // 0.015
         KD = 0.15;
     } else if (mode == 2) {
         KP = 0.009;
@@ -479,34 +479,25 @@ void bridge_PD(int N, uint8_t mode)
  */
 void Straight_run(int speed)
 {
-    if(JD > 180){
+    if (JD > 180) {
         JD = JD - 360;
     }
-    if(-2 < JD && JD < 2){
-       Run(speed);
-    }else if (JD > 0)
-    {
-        if (JD < 6)
-        {
-            run(speed+3,speed);
-        }else if (JD <10)
-        {
-            run(speed+10,speed);
-        } 
-    } else if (JD < 0)
-    {
-        if (JD > -6)
-        {
-            run(speed,speed+3);
+    if (-2 < JD && JD < 2) {
+        Run(speed);
+    } else if (JD > 0) {
+        if (JD < 6) {
+            run(speed + 3, speed);
+        } else if (JD < 10) {
+            run(speed + 10, speed);
         }
-        else if (JD > -10)
-        {
-            run(speed,speed+10);
-        } 
+    } else if (JD < 0) {
+        if (JD > -6) {
+            run(speed, speed + 3);
+        } else if (JD > -10) {
+            run(speed, speed + 10);
+        }
     }
-
 }
-
 
 /**
  * @brief 无白线直走
@@ -520,7 +511,7 @@ void Straight(int time)
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
         Straight_run(50);
-    } while (Huidu_va(10)<white[10]||Huidu_va(11)<white[11]||t3_i >time);
+    } while (Huidu_va(10) < white[10] || Huidu_va(11) < white[11] || t3_i > time);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 }

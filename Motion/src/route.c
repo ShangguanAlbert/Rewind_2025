@@ -111,7 +111,6 @@ void Tai3_door2_Tai5(void)
     UP_Tai2_6();
 }
 
-
 /*
 台4到台5
 */
@@ -231,50 +230,50 @@ void txs(void){
 */
 void Tai7_Home(void)
 {
-    //放下前铲
+    // 放下前铲
     Front_down();
     Stop(400);
-    //下台7
+    // 下台7
     Down_Tai7();
-    //巡线修正
+    // 巡线修正
     Reset(500, 50);
-    //开始向右漂移直到左腰灯检测到白线
+    // 开始向右漂移直到左腰灯检测到白线
     while (hdxl != 0) {
         drift_right_2(70, 1);
     }
-    //上跷跷板前检测
+    // 上跷跷板前检测
     while (hwr == 1) {
         high_run(70);
     }
-    //过跷跷板
+    // 过跷跷板
     Seesaw_with_Adjustion(900, 2100);
-    //修正
+    // 修正
     Reset(400, 70);
-    //巡线直到右灰度等测到白线
+    // 巡线直到右灰度等测到白线
     while (1) {
         high_run(90);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
             break;
         }
     }
-    //左侧腰灯检测到白线，向右漂移
+    // 左侧腰灯检测到白线，向右漂移
     while (hdxl == 1) {
         drift_right(90, 1);
     }
-    //修正
+    // 修正
     Reset(300, 70);
-    //加速
+    // 加速
     speed_up(70, 140);
     speed_down(140, 70);
-    //左转90度
+    // 左转90度
     TurnLeft_90_Rdetect_4();
     Stop(100);
-    //修正
+    // 修正
     Reset(250, 50);
-    //加速
+    // 加速
     speed_up(50, 120);
     speed_down(120, 50);
-    //修正
+    // 修正
     Reset(60, 60);
     while (hdxr != 0) {
         drift_right(50, 0);
@@ -296,53 +295,53 @@ void Tai7_Home(void)
 */
 void Tai8_Home(void)
 {
-    //放下前铲
+    // 放下前铲
     Front_down();
     Stop(300);
-    //下台8
+    // 下台8
     Down_Tai8();
-    //巡线
+    // 巡线
     Reset(200, 40);
     speed_up(40, 140);
     speed_down(140, 50);
-    //左转135度
+    // 左转135度
     TurnLeft_135_Longline();
     Stop(50);
-    //确认上跷跷板
+    // 确认上跷跷板
     while (hwr == 1) {
         high_run(70);
     }
-    //过跷跷板
+    // 过跷跷板
     Seesaw_with_Adjustion(900, 2100);
-    //巡线修正
+    // 巡线修正
     Reset(350, 70);
-    //向右漂移 
-    Reset_drift_right(70,1,800);
-    //加速
-    speed_up(70,160);
-    //减速
-    speed_down(160,50);
-    //向右转90度（左测灰度灯检测转弯起始点）
+    // 向右漂移
+    Reset_drift_right(70, 1, 800);
+    // 加速
+    speed_up(70, 160);
+    // 减速
+    speed_down(160, 50);
+    // 向右转90度（左测灰度灯检测转弯起始点）
     TurnRight_90_Ldetect();
     Stop(50);
-    //加速
-    speed_up(45,120);
-    //减速
-    speed_down(120,50);
-    //向左转135度
+    // 加速
+    speed_up(45, 120);
+    // 减速
+    speed_down(120, 50);
+    // 向左转135度
     TurnLeft_135_Longline2();
-    //回程过波浪板
+    // 回程过波浪板
     Back_BLB();
-    //右转135
+    // 右转135
     TurnRight_135_Longline();
     Stop(50);
-    //巡线修正
+    // 巡线修正
     Reset(250, 50);
     speed_up(50, 100);
     speed_down(100, 50);
-    //桥上巡线
+    // 桥上巡线
     Bridge_Travel();
     Reset(600, 60);
-    //上台1
+    // 上台1
     UP_Tai2_6();
 }
