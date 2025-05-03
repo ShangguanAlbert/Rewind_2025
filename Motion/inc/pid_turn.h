@@ -6,7 +6,6 @@
 #include "math.h"
 #include "stdio.h"
 
-
 enum {
     LAST = 0,
     NOW  = 1,

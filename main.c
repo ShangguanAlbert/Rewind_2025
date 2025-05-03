@@ -51,61 +51,25 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        Tai1_Tai2();
-        Tai2_Tai3();
-        Tai3_door2_Tai5();
-        Tai5_Tai7();
-        Tai7_Home();
+        Tai5_Tai8();
     }
     if (progg == 2) {
-        // while (1) {
-        //     slow_run(50);
-        //     if (hwr == 0) {
-        //         break;
-        //     }
-        // }
-        // Front_down();
-        // Reset(1400, 50);
-        // Front_mid();
-        // Reset(200, 50);
-        // Out_T_TurnLeft_90();
-        // Stop(40);
-
-
-
-
-
-    TurnLeft_135_Longline();
-    Stop(50);
-    while (hwr == 1) {
-        high_run(70);
-    }
-    Seesaw_with_Adjustion(900, 2100);
-    Reset(350, 70);
-    Reset_drift_right(70,1,800);
-    speed_up(70,160);
-    speed_down(160,50);
-    TurnRight_90_Ldetect();
-    Stop(50);
-    speed_up(45,120);
-    speed_down(120,50);
-    TurnLeft_135_Longline2();
-    Back_BLB();
-    TurnRight_135_Longline();
-    Stop(50);
-    Reset(250, 50);
-    speed_up(50, 100);
-    speed_down(100, 50);
-    Bridge_Travel();
-    Reset(600, 60);
-    UP_Tai2_6();
-        
+        // Tai8_Home();
+        Straight_run(50);
     }
     if (progg == 3) {
-        UP_Tai8();
+        while (hwr != 0) {
+            Run(50);
+        }
+        Front_mid();
+        Reset(300, 60);
     }
     if (progg == 4) {
-        Front_up_High();
+        while (hwr != 0) {
+            bridge_PD(50, 1);
+        }
+        Front_mid();
+        Reset(300, 60);
     }
     if (progg == 5) {
         // 二维码扫描模式

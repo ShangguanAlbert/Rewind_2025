@@ -247,11 +247,17 @@ void Bridge_Travel(void)
     Reset_bridge(150, 90, 1);
     Reset_bridge(200, 120, 1);
     Reset_bridge(140, 80, 1);
+    // while (hwr != 0) {
+    //     bridge_PD(50, 1);
+    // }
+    // Front_mid();
+    // Reset(300, 60);
+
     while (hwr != 0) {
-        bridge_PD(50, 1);
+        Run(50);
     }
     Front_mid();
-    Reset(200, 60);
+    Reset(300, 60);
 }
 
 /**

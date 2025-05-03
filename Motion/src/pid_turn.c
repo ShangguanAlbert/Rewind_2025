@@ -255,7 +255,7 @@ void pid_Turn_Right90(int turn_time)
  */
 void pid_Turn_Left90(int turn_time)
 {
-    const int32_t TARGET_ANGLE = 89;  // 左转90度的目标角度
+    const int32_t TARGET_ANGLE = 89; // 左转90度的目标角度
 
     // 初始化计时器
     t3_i = 0;
@@ -295,7 +295,6 @@ void pid_Turn_Left90(int turn_time)
     stop();
     Stop(50);
 }
-
 
 // /**
 //  * @brief 90度转向（左转或右转）

@@ -10,8 +10,13 @@
 #include "bsp_sensor.h"
 #include "basic.h"
 
+/**
+ * @brief 右转135°后进长桥（用于回家和台2-台3）
+ *
+ */
 void TurnRight_135_Longline(void)
 {
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
@@ -21,12 +26,14 @@ void TurnRight_135_Longline(void)
     Left_Speed_Up(50, 115, 3);
     Right_Speed_Down(50, -90, 4);
     while (1) {
+        // 左右轮设定不同速度，直到灰度4，5扫到白线
         run(85, -65);
         if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
             break;
         }
     }
 }
+
 void TurnLeft_135_Longline(void)
 {
     while (1) {
@@ -60,7 +67,6 @@ void TurnLeft_135_Longline2(void)
             break;
         }
     }
-    
 }
 
 void Tai1_6_zhuan(void)
@@ -105,7 +111,7 @@ void Tai7_zhuan(void)
     Stop(250);
     Deg_IN();
     for (int x = 45; x <= 118; x++) {
-        run(x * 0.92, -x * 1.25);//0.95,1.2
+        run(x * 0.92, -x * 1.25); // 0.95,1.2
         delay_ms(8);
     }
     pid_Turn(1200);
@@ -121,18 +127,18 @@ void Tai8_zhuan(void)
     Front_up_High();
     Stop(100);
     HWT101_to_0();
-    Stop(250);
+    Stop(400);
 
     Deg_IN();
-    for (int x = 40; x < 95; x++) {
-        run(x * 0.8, -x * 2); // 1.05
-        delay_ms(9);
+    for (int x = 40; x < 80; x++) {
+        run(x * 0.8, -x * 1.8); // 1.05
+        delay_ms(20);
     }
-    for (int x = 40; x > 95; x--) {
-        run(x * 0.8, -x * 2);
-        delay_ms(9);
+    for (int x = 40; x > 80; x--) {
+        run(x * 0.8, -x * 1.8);
+        delay_ms(20);
     }
-    pid_Turn(1100);
+    // pid_Turn(1000);
     stop();
     Front_down();
     Stop(300);
@@ -179,12 +185,12 @@ void TurnRight_90_Ldetect(void)
     }
 }
 /**
- * @brief 左转90度 右灰度检测
- *
+ * @brief 左转90度 左灰度检测
+ *        用于台5左转上梯形山
  */
-void TurnLeft_90_Rdetect(void)
+void TurnLeft_90_Ldetect_Mountain(void)
 {
-    // 检测左转
+    // 左灰度灯检测左转
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
@@ -270,12 +276,12 @@ void TurnRight_90_Rdetect_in(void)
 }
 
 /**
- * @brief 左转90度 右灰度检测
- *
+ * @brief 左转90度 左灰度检测
+ *        用于台4进门4
  */
-void TurnLeft_90_Rdetect_in(void)
+void TurnLeft_90_Ldetect_4(void)
 {
-    // 检测左转
+    // 左边白线灰度灯检测左转
     while (1) {
         slow_run(60);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
@@ -285,6 +291,7 @@ void TurnLeft_90_Rdetect_in(void)
     // 左转
     Right_Speed_Up(50, 80, 5);
     Left_Speed_Down(50, -80, 5);
+    // 扫到第一根白线继续转
     while (1) {
         run(-75, 70);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
@@ -292,6 +299,7 @@ void TurnLeft_90_Rdetect_in(void)
         }
     }
     run_delay(-75, 76, 50);
+    // 左转，扫到第二根白线停止
     while (1) {
         run(-75, 76);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
@@ -301,19 +309,19 @@ void TurnLeft_90_Rdetect_in(void)
 }
 
 /**
- * @brief 左转90度 右灰度检测(2)
- *
+ * @brief 左转90度 左灰度检测
+ *        用于门4进台5
  */
-void TurnLeft_90_Rdetect_in2(void)
+void TurnLeft_90_Ldetect_5(void)
 {
-    // 检测左转
+    // 左灰度灯检测左转
     while (1) {
         slow_run(60);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
             break;
         }
     }
-    // 左转
+    // 左转检测到第一条白线继续转
     Right_Speed_Up(50, 80, 5);
     Left_Speed_Down(50, -80, 5);
     while (1) {
@@ -323,6 +331,7 @@ void TurnLeft_90_Rdetect_in2(void)
         }
     }
     run_delay(-75, 72, 50);
+    // 左转检测到第二条白线停止转弯
     while (1) {
         run(-75, 72);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
@@ -390,14 +399,15 @@ void TurnLeft_90_Ldetect_tai8(void)
     }
 }
 /**
- * @brief 下台8左转90度，右灰度检测
+ * @brief 左转90度，右灰度检测
+ *        用于右边直接扫到水平白线
  *
  */
-void TurnLeft_90_Rdetect_tai8(void)
+void TurnLeft_90_Rdetect_4(void)
 {
     while (1) {
         slow_run(50);
-        if (Huidu_va(1) > white[1]||Huidu_va(0) > white[0]) {
+        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
             break;
         }
     }
@@ -439,13 +449,12 @@ void TurnRight_90_Ldetect_1(void)
  */
 void Out_T_TurnRight_90(void)
 {
-    while (1)
-    {
-        Run(50);
-        if(Huidu_va(10)>white[10]||Huidu_va(11)>white[11]){
-            break;
-        }
-    }
+    // while (1) {
+    //     Run(50);
+    //     if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
+    //         break;
+    //     }
+    // }
     Left_Speed_Up(50, 90, 5);
     Right_Speed_Down(50, -85, 5);
     while (1) {
@@ -462,10 +471,9 @@ void Out_T_TurnRight_90(void)
  */
 void Out_T_TurnLeft_90(void)
 {
-    while (1)
-    {
+    while (1) {
         Run(50);
-        if(Huidu_va(10)>white[10]||Huidu_va(11)>white[11]){
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
             break;
         }
     }
@@ -484,10 +492,9 @@ void Out_T_TurnLeft_90(void)
  */
 void In_T_TurnLeft_90(void)
 {
-    while (1)
-    {
+    while (1) {
         Run(50);
-        if(Huidu_va(0)>white[0]||Huidu_va(1)>white[1]){
+        if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
             break;
         }
     }
@@ -500,4 +507,3 @@ void In_T_TurnLeft_90(void)
         }
     }
 }
-
