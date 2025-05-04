@@ -258,7 +258,6 @@ void Bridge_Travel(void)
     }
     Front_mid();
     Reset(300, 60);
-
 }
 
 /**

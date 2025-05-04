@@ -54,7 +54,7 @@ int main(void)
         Tai5_Tai8();
     }
     if (progg == 2) {
-        //Tai8_Home();
+        // Tai8_Home();
         Straight_run(50);
     }
     if (progg == 3) {
@@ -63,14 +63,13 @@ int main(void)
         }
         Front_mid();
         Reset(300, 60);
-    
     }
     if (progg == 4) {
         while (hwr != 0) {
-                bridge_PD(50, 1);
-            }
-            Front_mid();
-            Reset(300, 60);
+            bridge_PD(50, 1);
+        }
+        Front_mid();
+        Reset(300, 60);
     }
     if (progg == 5) {
         // 二维码扫描模式
