@@ -229,9 +229,9 @@ void Tai5_Tai8(void)
     //上台8
     UP_Tai8();
 }
-/*
-台7回家
-*/
+/**
+ * @brief 从台7回家
+ */
 void Tai7_Home(void)
 {
     // 放下前铲
@@ -302,9 +302,9 @@ void Tai7_Home(void)
     //上台1
     UP_Tai2_6();
 }
-/*
-台8回家
-*/
+/**
+ * @brief 从台8回家
+ */
 void Tai8_Home(void)
 {
     // 放下前铲

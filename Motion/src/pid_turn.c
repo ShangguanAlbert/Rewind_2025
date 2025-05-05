@@ -6,8 +6,8 @@
 
 pid_t_robomaster pid_yaw = {0}; // 结构体：存储PID参数和计算中间值
 
-extern float JD;
-extern float XJD;
+extern float JD; //角度（单精度）
+extern float XJD; //角度（双精度）
 float GJD;
 float MJD;
 float WJD;
@@ -208,7 +208,7 @@ void pid_Turn_Right90(int turn_time)
     do {
         // 获取当前角度
         Deg_IN();
-        int32_t current_angle = (int32_t)GJD;
+        current_angle = GJD;
 
         // 计算角度误差（确保向右转）
         int32_t angle_error = TARGET_ANGLE - current_angle;
