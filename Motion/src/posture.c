@@ -9,6 +9,7 @@
 #include "turn.h"
 #include "basic.h"
 #include "bsp_timer.h"
+#include "bsp_compass.h"
 
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
@@ -521,3 +522,27 @@ void Back_BLB(void)
     }
     Reset(600, 45);
 }
+
+void txs(void){
+    while(hwr == 1){
+     slow_run(50);
+     }
+     Front_down();
+     HWT101_to_0();
+     Reset(600,50);
+     while(!outline ){
+     Reset(50,50);
+     }
+    stop();
+     Delay_ms(300);
+     while(!outline){
+     Reset(50,50);
+    }
+    Front_mid();
+     while(!(Huidu_va(10) > white[10] || Huidu_va(11) > white[11])){
+     txs_trace();
+     }
+    //  while(hdxl == 1){
+    //  Run_delay(30,10);
+    // }
+    }

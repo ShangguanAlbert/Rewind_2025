@@ -34,8 +34,13 @@ void TurnRight_135_Longline(void)
     }
 }
 
+/**
+ * @brief 左转135度（进台八回家的翘翘板）
+ * 
+ */
 void TurnLeft_135_Longline(void)
 {
+    // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10]) {
@@ -51,8 +56,14 @@ void TurnLeft_135_Longline(void)
         }
     }
 }
+
+/**
+ * @brief 左转135度进波浪板
+ * 
+ */
 void TurnLeft_135_Longline2(void)
 {
+    // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯进波浪板
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10]) {
@@ -69,6 +80,10 @@ void TurnLeft_135_Longline2(void)
     }
 }
 
+/**
+ * @brief 低平台转180度
+ * 
+ */
 void Tai1_6_zhuan(void)
 {
     Stop(100);
@@ -84,6 +99,8 @@ void Tai1_6_zhuan(void)
     Stop(50);
     Front_down();
 }
+
+
 void Tai2_zhuan90(void)
 {
     Stop(100);
@@ -170,58 +187,6 @@ void Tai8_zhuan(void)
 }
 
 
-// void Tai8_zhuan(void) {
-//      int g = 0;
-//      //static int gqJD;
-//      float gqJD = compass_b();
-//      stop();
-//      Front_up_High();
-//      delay_ms(200);
-//      //run(20, -20);
-//      //delay_ms(450);
-//      while (g < 1)
-//      {
-//       if (gqJD <= 180 && gqJD>=0)
-//       {
-//        run_delay(-60,60,450);
-//        while (compass_b() < (170+gqJD))
-//        {
-//         if(compass_b() - gqJD < 120)
-//         run(-60,60);
-//         else if(compass_b() - gqJD > 140)
-//         run(-40,40);
-//         else
-//         run((compass_b() - gqJD) - 180 ,180 - (compass_b() - gqJD));
-//        }
-//        g++;
-//       }
-//       else if (gqJD > 180 && gqJD <= 360)
-//       {
-//        run_delay(60,-60,450);
-//        while (compass_b() > (gqJD-170))
-//        {
-//         if(gqJD - compass_b() < 120)
-//         run(60,-60);
-//         else if(gqJD - compass_b() > 140)
-//         run(40,-40);
-//         else
-//         run(180-(gqJD - compass_b()) , (gqJD - compass_b())-180);
-//        }
-//        g++;
-//       }
-//       else
-//        while (compass_b() < 180)
-//        {
-//         run(40, -40);
-//        }
-//       g++;
-//      }
-//      stop();
-//      Front_down();
-//      Delay_ms(200);
-//     }
-
-
 
 /**
  * @brief 右转90度
@@ -246,8 +211,9 @@ void TurnRight_90_Rdetect(void)
 /**
  * @brief 右转90度,左灰度
  */
-void TurnRight_90_Ldetect(void)
+void TurnRight_90_Ldetect_3(void)
 {
+    // 低速巡线，当灰度9，10，11扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
@@ -293,6 +259,7 @@ void TurnLeft_90_Ldetect_Mountain(void)
  */
 void TurnLeft_90_Ldetect(void)
 {
+    // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11] || Huidu_va(9) > white[9]) {
@@ -444,7 +411,7 @@ void TurnLeft_90_hdxlDetect(void)
 }
 
 /**
- * @brief 下台8左转90度，左灰度检测两次
+ * @brief 下台8左转90度，左灰度检测两次（无法使用）
  *
  */
 void TurnLeft_90_Ldetect_tai8(void)
@@ -484,6 +451,7 @@ void TurnLeft_90_Ldetect_tai8(void)
  */
 void TurnLeft_90_Rdetect_4(void)
 {
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
@@ -501,7 +469,7 @@ void TurnLeft_90_Rdetect_4(void)
     }
 }
 /**
- * @brief 台8回家走完波浪板后右转
+ * @brief 台8回家走完波浪板后右转（无法使用）
  *
  */
 void TurnRight_90_Ldetect_1(void)
@@ -528,12 +496,12 @@ void TurnRight_90_Ldetect_1(void)
  */
 void Out_T_TurnRight_90(void)
 {
-    // while (1) {
-    //     Run(50);
-    //     if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
-    //         break;
-    //     }
-    // }
+    while (1) {
+        Run(50);
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
+            break;
+        }
+    }
     Left_Speed_Up(50, 90, 5);
     Right_Speed_Down(50, -88, 5);
     while (1) {
@@ -571,6 +539,7 @@ void Out_T_TurnLeft_90(void)
  */
 void In_T_TurnLeft_90(void)
 {
+    //低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         Run(50);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {

@@ -56,14 +56,13 @@ int main(void)
         Tai3_door2_Tai5();
         Tai5_Tai7();
         Tai7_Home();
-        // Tai5_Tai8();
     }
     if (progg == 2) {
-        Tai1_Tai2();
+        // Tai1_Tai2();
         Tai2_Tai4();
-        Tai4_Tai5();
-        Tai5_Tai8();
-        Tai8_Home();
+        // Tai4_Tai5();
+        // Tai5_Tai8();
+        // Tai8_Home();
 
     }
     if (progg == 3) {
