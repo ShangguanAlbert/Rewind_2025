@@ -45,7 +45,34 @@ void Front_up_High(void)
 
     Servo_SetAngle(4, 175);
 }
-
+/**
+ * @brief 张开爪子
+ */
+void Paw_open(void)
+{
+    Servo_SetAngle(3, 180); 
+}
+/**
+ * @brief 合上爪子
+ */
+void Paw_close(void)
+{
+    Servo_SetAngle(3,130 ); 
+}
+/**
+ * @brief 放下摄像头
+ */
+void Camera_down(void)
+{
+    Servo_SetAngle(1, 0); 
+}
+/**
+ * @brief 抬起摄像头
+ */
+void Camera_up(void)
+{
+    Servo_SetAngle(1, 63); 
+}
 /**
  * @brief 低速下平台
  */
@@ -62,7 +89,6 @@ void down_pt1_6(void)
     // stop();
 }
 
-void down_Tai7();
 /**
  * @brief 上台2到台6动作
  *
@@ -106,6 +132,48 @@ void UP_Tai2_6(void)
     }
 
     Tai1_6_zhuan();
+}
+/**
+ * @brief 上台2
+ *
+ */
+void UP_Tai2(void)
+{
+    Front_down();
+    while (hwr != 0) {
+        slow_run(50);
+    }
+
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
+            run(46, 45);
+        }
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    Front_mid();
+    Run_delay(45, 150);
+    while (1) {
+        slow_run(45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 1 || hdxr == 1) {
+    //         break;
+    //     }
+    // }
+    Run_delay(45, 100);
+    while (1) {
+        slow_run(30);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
 }
 /**
  * @brief 上台7动作
@@ -515,6 +583,10 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     t3_i = 0;
     Stop(1000);
 }
+/**
+ * @brief 回程过波浪板
+ *
+ */
 void Back_BLB(void)
 {
     while (hdxr != 0) {
@@ -546,3 +618,16 @@ void txs(void){
     //  Run_delay(30,10);
     // }
     }
+/**
+ * @brief 出发过波浪板
+ *
+ */
+void Go_BLB(void)
+{
+    //巡线直到扫到黄线
+    while (hdxl != 0) {
+        slow_run(45);
+    }
+    //过波浪板
+    Reset(1600, 45);
+}

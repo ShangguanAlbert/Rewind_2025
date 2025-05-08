@@ -11,8 +11,13 @@ void Front_down(void);
 void Front_mid(void);
 void Front_up(void);
 void Front_up_High(void);
+void Paw_open(void);
+void Paw_close(void);
+void Camera_down(void);
+void Camera_up(void);
 void down_pt1_6(void);
 void UP_Tai2_6(void);
+void UP_Tai2(void);
 void UP_Tai7(void);
 void Down_Tai7(void);
 void UP_Tai8(void);
@@ -27,5 +32,6 @@ void Land_Protect_adjust(void);
 void Seesaw_with_Adjustion(int time_stop, int time_Seesaw);
 void Back_BLB(void);
 void txs(void);
+void Go_BLB(void);
 
 #endif

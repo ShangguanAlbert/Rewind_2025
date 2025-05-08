@@ -26,6 +26,7 @@ uint8_t prog_num_hope = 8;
 uint8_t progg;
 
 extern int32_t white[];
+extern int8_t OpenMV;
 
 int main(void)
 {
@@ -68,17 +69,14 @@ int main(void)
     if (progg == 3) {
         Tai1_6_zhuan();
         Tai5_Tai8();
+        Tai2_Treasure_Detect();
     }
     if (progg == 2) {
-        // Tai8_Home();
-        Straight_run(50);
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
     }
     if (progg == 3) {
-        while (hwr != 0) {
-            Run(50);
-        }
-        Front_mid();
-        Reset(300, 60);
+        Paw_open();
     }
     if (progg == 4) {
         while (hwr != 0) {

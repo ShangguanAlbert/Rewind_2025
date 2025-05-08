@@ -1,6 +1,9 @@
 #include "bsp_servo.h"
 #include "bsp_SysTick.h"
-
+/**
+ * @brief 初始化舵机
+ *
+ */
 void TIM2_Servo_Init(void)
 {
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
@@ -56,12 +59,16 @@ void TIM2_Servo_Init(void)
     TIM_Cmd(TIM2, ENABLE);
 
     // 使能PWM输出
-    TIM2->CCR1 = 1200;//500
-    TIM2->CCR2 =2500;//张开最大2500
-    TIM2->CCR4 = 2145;
+    TIM2->CCR1 = 1200;//抓夹舵机 500
+    TIM2->CCR3 =2500;//夹子舵机 张开最大2500
+    TIM2->CCR4 = 2145;//前铲舵机
 
 }
-
+/**
+ * @brief 设置舵机角度
+ * @param channel 通道
+ * @param angle 角度
+ */
 void Servo_SetAngle(uint8_t channel, uint16_t angle)
 {
     uint16_t pulse = 500 + angle * 2000 / 180;

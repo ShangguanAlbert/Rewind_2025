@@ -56,7 +56,12 @@ void GPIO_HDLR_Init(void)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
     GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
-
+/**
+ * @brief 读取腰灯信号
+ *
+ * @param[in] LR 1-左;2-右.
+ * @return uint8_t 数字电平
+ */
 uint8_t HDLR(uint8_t LR)
 {
     if (LR == 1) {
