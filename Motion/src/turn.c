@@ -259,7 +259,7 @@ void TurnLeft_90_Ldetect_Mountain(void)
  * @brief 左转90度上台7 左灰度检测
  * 
  */
-void TurnLeft_90_Ldetect(void)
+void Out_T_TurnLeft_90_Ldetect(void)
 {
     // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯
     while (1) {
@@ -493,7 +493,7 @@ void TurnRight_90_Ldetect_1(void)
     }
 }
 /**
- * @brief 出t型山，转90度
+ * @brief 出t型山，右转90度进台8
  *
  */
 void Out_T_TurnRight_90(void)

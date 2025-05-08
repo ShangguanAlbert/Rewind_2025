@@ -28,7 +28,7 @@ void Tai1_Tai2(void)
     speed_up(60, 130);
     speed_down(130, 60);
     //上台2
-    // UP_Tai2_6();
+    UP_Tai2_6();
     //UP_Tai2();
 }
 /**
@@ -93,7 +93,7 @@ void Tai2_Tai3(void)
     Go_BLB();
     //右转135度
     TurnRight_135_Longline();
-    Stop(50);
+    Stop(100);
     //修正
     Reset(250, 70);
     //加速
@@ -222,19 +222,12 @@ void Tai5_Tai7(void)
     //T形山前，左转90度
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    //低速巡线直到前铲被抬起
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    //无白线盲走
-    Straight(5000);
-    //出T形山后左转90度
-    // TurnLeft_90_Rdetect();
+    //走梯形山后无白线直走
+    txs();
+    //左转
+    Out_T_TurnLeft_90_Ldetect();
     Stop(40);
-    //修正
+    //巡线
     Reset(250, 60);
     //加速
     speed_up(60, 185);
@@ -258,25 +251,18 @@ void Tai5_Tai8(void)
     //左转90度
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    //低速巡线直到前铲被抬起
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    //无白线盲走
-    Straight(5000);
-    Stop(40);
-    //出T形山后右转90度
+    //上梯形山后无白线直走
+    txs();
+    //右转
     Out_T_TurnRight_90();
     Stop(40);
-    //修正
+    //巡线
     Reset(250, 70);
     //加速
     speed_up(70, 140);
+    //减速
     speed_down(140, 50);
-    //上台8
+    //上台八
     UP_Tai8();
 }
 /**
@@ -322,95 +308,31 @@ void Tai7_Home(void)
     // 左转90度
     TurnLeft_90_Rdetect_4();
     Stop(100);
-    // 修正
-    Reset(250, 50);
-    // 加速
-    speed_up(50, 120);
-    speed_down(120, 50);
-    // 修正
-    Past_Seesaw(1200,2600);
-    Land_Protect_adjust();
-    Reset(250,70);
-    while (1)
-    {
-        high_run(100);
-        if(Huidu_va(0)>white[0]||Huidu_va(1)>white[1]){
-            break;
-        }
-        /* code */
-    }
-    while(hdxl==1){
-        drift_right(90,1);
-    }
-    
-    Reset(300,70);
-
-}
-/*
-台8回家
-*/
-void Tai8_Home(void)
-{
-    // Front_down();
-    // Down_Tai8();
-    // Reset(200,40);
-    // speed_up(40,140);
-    // speed_down(140,50);
-    // TurnLeft_90_Ldetect_tai8();
-    // Stop(40);
-    // Reset(200,50);
-    // speed_up(50,100);
-    // speed_down(100,50);
-    // while (1)
-    // {
-    //     slow_run(50);
-    //     if (hwr==0)
-    //     {
-    //         break;
-    //     }
-    // }
-    // Front_down();
-    // Reset(1400,50);
-    // Front_mid();
-    // TurnRight_90_Ldetect_1();
-    // Stop(40);
-    // Reset(200,50);
-    // speed_up(50,110);
-    // speed_down(110,50);
-    // TurnLeft_90_Ldetect_tai8();
-    // Stop(40);
-    // Reset(250,70);
-    // speed_up(70,150);
-    // speed_down(150,50);
-    // TurnLeft_90_Ldetect_tai8();
-    // Stop(40);
-    // Reset(250,50);
-    // speed_up(50,120);
-    // speed_down(120,50);
-    Reset(60, 60);
-    //向有漂移直到右腰灯扫到白线
-    while (hdxr != 0) {
-        drift_right(50, 0);
-    }
-    //修正
-    Reset(500, 45);
-    //回程过波浪板
-    Back_BLB();
-    //向右转135度
-    TurnRight_135_Longline();
-    Stop(50);
     //修正
     Reset(250, 50);
     //加速
+    speed_up(50, 120);
+    speed_down(120, 50);
+    //修正
+    Reset(60, 60);
+    while (hdxr != 0) {
+        drift_right(50, 0);
+    }
+    Reset(500, 45);
+
+    Back_BLB();
+    TurnRight_135_Longline();
+    Stop(50);
+    Reset(250, 50);
     speed_up(50, 100);
     speed_down(100, 50);
-    //过桥
     Bridge_Travel();
-    //修正
     Reset(600, 60);
-    //上台1
     UP_Tai2_6();
+
 }
+
+
 /**
  * @brief 从台8回家
  */

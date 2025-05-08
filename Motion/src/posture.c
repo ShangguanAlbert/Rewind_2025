@@ -54,6 +54,35 @@ void Front_up_High(void)
 
 
 /**
+ * @brief 张开爪子
+ */
+void Paw_open(void)
+{
+   Servo_SetAngle(3, 180); 
+}
+/**
+ * @brief 合上爪子
+ */
+void Paw_close(void)
+{
+ Servo_SetAngle(3,130 ); 
+}
+/**
+ * @brief 放下摄像头
+ */
+void Camera_down(void)
+{
+ Servo_SetAngle(1, 0); 
+}
+/**
+ * @brief 抬起摄像头
+ */
+void Camera_up(void)
+{
+ Servo_SetAngle(1, 63); 
+}
+
+/**
  * @brief 低速下平台
  */
 void down_pt1_6(void)
@@ -158,27 +187,28 @@ void UP_Tai2(void)
             break;
         }
     }
+    Tai1_6_zhuan();//低平台转180度
     }//第一条黄线结束时开始转180°
     
-    Tai1_6_zhuan();//低平台转180度
     
-}
 /**
  * @brief 上台7动作
  *
  */
 void UP_Tai7(void)
 {
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
+    while (1)
+    {
+        slow_run(50);//50巡线
+        if(hwr==0){//红外扫到，即开始上坡，扫到前铲
             break;
         }
     }
-    Reset(300, 50);
-    speed_up(50, 105);
-    speed_down(105, 50);
+    Reset(300,50);//卡时间巡线
+    speed_up(50,105);
+    speed_down(105,50);
     Front_down();
+
     while (1) {
         get_huidu_va();
         if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
@@ -211,45 +241,6 @@ void UP_Tai7(void)
         }
     }
     Tai7_zhuan();
-    while (1)
-    {
-        slow_run(50);//50巡线
-        if(hwr==0){//红外扫到，即开始上坡，扫到前铲
-            break;
-        }
-    }
-    Reset(300,50);//卡时间巡线
-    speed_up(50,105);
-    speed_down(105,50);
-
-    while (1) {
-        slow_run(50);//低速巡线
-       if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])//56灰度灯扫到红线进行左右轮的修正
-       {
-           run(48, 45);
-       }
-       if (hdxl == 0 || hdxr == 0) {//腰灯扫到退出循环
-           break;
-       }
-   }
-   Front_mid();
-   Run_delay(45,100);
-//    while (1)
-//    {
-//        slow_run(45);
-//        if(hdxl==0 ||hdxr==0){
-//            break;
-//        }
-//    }
-//    while (1)
-//    {
-//        slow_run(45);
-//        if(hdxl==1 ||hdxr==1){
-//            break;
-//        }
-//    }
-   
-   Tai7_zhuan();
 }
 /**
  * @brief 下台7动作
@@ -658,3 +649,6 @@ void Go_BLB(void)
     //过波浪板
     Reset(1600, 45);
 }
+
+
+
