@@ -8,6 +8,11 @@
 #include "bsp_sensor.h"
 #include "bsp_SysTick.h"
 #include "turn.h"
+#include "bsp_lcd.h"
+#include "bsp_vision.h"
+int8_t r;
+int8_t g;
+int8_t b;
 /**
  * @brief 台1到台2
  */
@@ -23,8 +28,53 @@ void Tai1_Tai2(void)
     speed_up(60, 130);
     speed_down(130, 60);
     //上台2
-    UP_Tai2_6();
-    //
+    // UP_Tai2_6();
+    //UP_Tai2();
+}
+/**
+ * @brief 台2识别宝物
+ */
+void Tai2_Treasure_Detect(void)
+{
+    // UP_Tai2();
+    // Stop(40);
+    // Tai2_zhuan90();
+    Camera_down();
+    Stop(2000);
+    Detect_Color();
+    r=0;
+    g=0;
+    b=0;
+    while (r < 3 && g<3 && b<3)
+    {
+        if (openmv[2]== 1){
+            r++;
+        }
+        else if (openmv[2]== 2)
+        {
+            g++;
+        }
+        else if (openmv[2]== 3)
+        {
+            b++;
+        }
+        delay_ms(3);    
+    }
+    SHUT_UP();  
+    if (openmv[2] == 1) {
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 2) {
+        LCD_SetColor(LCD_GREEN);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 3) {
+        LCD_SetColor(LCD_BLUE);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 0) {
+        LCD_SetColor(LCD_WHITE);
+        LCD_FillRect(1, 1, 238, 238);
+    }
+
 }
 /**
  * @brief 台2到台3

@@ -92,7 +92,7 @@ void Tai2_zhuan90(void)
     Front_up_High();
     Deg_IN();
     for (int x = 55; x < 85; x++) {
-        run(x * 0.94, -x * 0.89);
+        run(x * 0.98, -x * 0.89);
         Delay_ms(8); //
     }
     pid_Turn_Right90(500);
