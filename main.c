@@ -56,6 +56,9 @@ int main(void)
         Tai2_Tai3();
         Tai3_door2_Tai5();
         Tai5_Tai7();
+        Tai8_Home();
+    }
+    if (progg == 2) {
         Tai7_Home();
     }
     if (progg == 2) {

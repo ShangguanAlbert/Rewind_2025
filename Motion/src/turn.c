@@ -82,6 +82,8 @@ void TurnLeft_135_Longline2(void)
 
 /**
  * @brief 低平台转180度
+ * @brief 上低平台转180°（台3到台
+ * 
  * 
  */
 void Tai1_6_zhuan(void)
@@ -93,7 +95,7 @@ void Tai1_6_zhuan(void)
     Deg_IN();
     for (int x = 55; x < 110; x++) {
         run(x * 0.86, -x * 0.94);
-        Delay_ms(8); //
+        Delay_ms(8); //加速
     }
     pid_Turn(500);
     Stop(50);
