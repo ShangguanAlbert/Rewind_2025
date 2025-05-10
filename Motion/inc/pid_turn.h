@@ -51,9 +51,11 @@ void xpid(int turn_time);
 void pid_Turn_Right90(int turn_time);
 void pid_Turn_Left90(int turn_time);
 void pid_Turn_Left25(int turn_time);
+void pid_Turn_Left22(int turn_time);
 void pid_Turn_Right25(int turn_time);
 void pid_Turn_Right50(int turn_time);
 extern pid_t_robomaster pid_yaw;
+extern pid_t_robomaster pid_yaw1;
 
 typedef struct // 位置式PID结构体
 {

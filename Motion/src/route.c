@@ -11,6 +11,10 @@
 #include "bsp_lcd.h"
 #include "bsp_vision.h"
 #include "bsp_qr.h"
+#include "bsp_compass.h"
+extern int8_t Traget_Color;
+extern int8_t NOW_Color;
+extern int8_t Turn_Or_Not;
 
 /**
  * @brief 台1到台2
@@ -42,7 +46,7 @@ void Tai2_Treasure_Detect(void)
     Camera_down();
     Stop(2000);
     Detect_Color();
-    Get_Color();
+    Get_Traget_Color();
     Camera_up();
     Tai2_zhuan90_2();
     
@@ -53,21 +57,40 @@ void Tai2_Treasure_Detect(void)
 void Treasure_Locator(void)
 {
    Camera_down();
+   Delay_s(2);
    Locate_treasure();
-   Delay_s(1);
-   if(openmv[2] == 6){
-    Run_delay(-20,750);
-    Catch();
+   Get_Turn();
+   if(Turn_Or_Not==6){
+        Run_delay(-20,380);
+        Catch();
    }
-//    else
-//    {
-//       Turn_Left25();
-//    }
-//    Delay_s(1);
-//    if(openmv[2] == 6){
-//     Run_delay(-20,750);
-//     Catch();
-//    }
+   else
+   {
+        Turn_Left25();
+        Delay_s(1);
+        Get_Turn();
+        if(Turn_Or_Not==6){
+            Run_delay(-20,480);
+            Catch();
+            Run_delay(20,480);
+            Turn_Right25();
+        }
+        else{
+            Turn_Right50();
+            Delay_s(1);
+            Get_Turn();
+            HWT101_to_0();
+            if(Turn_Or_Not==6){
+                Run_delay(-20,500);
+                Catch();
+                Run_delay(20,480);
+
+                Turn_Left22(); 
+            }
+        }
+   }
+   SHUT_UP();
+
 //    else{
 //       Turn_Right50();
 //    }

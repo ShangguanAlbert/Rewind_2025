@@ -91,15 +91,55 @@ void Tai1_6_zhuan(void)
     Stop(250);
     Front_up_High();
     Deg_IN();
-    for (int x = 60; x < 110; x++) {
+    for (int x = 70; x < 110; x++) {
         run(x * 0.86, -x * 0.94);
-        Delay_ms(8); //加速
+        Delay_ms(12); //加速
     }
+    // for (int x = 110; x > 60; x--) {
+    //     run(x * 0.86, -x * 0.94);
+    //     Delay_ms(2); //加速
+    // }
     // run_delay(90,-90*m_diff(90),350);
-    pid_Turn(500);
-    Stop(50);
+    
+    pid_Turn(400);
+    // Stop(50);
     //Front_down();
 }
+
+
+void turn_around_180(void)
+{
+    int g = 0;		   // 是否进行了旋转
+    int angle_now = 0; // 当前角度，初始化为0
+    Front_up_High();
+    Stop(300);
+    angle_now = compass_b();    //获取当前角度
+    while (g < 1)
+	{
+        if (angle_now >= 0 && angle_now < 180)
+		{
+			run_delay(-75, 75, 600);
+			while (compass_b() < (165 + angle_now))
+			{
+				run(-50, 50);
+			}
+			g++;
+		}
+		else if (angle_now >= 180 && angle_now < 360)
+		{
+			run_delay(60, -60, 600);
+			while (compass_b() > (angle_now - 162))
+			{
+				run(40, -40);
+			}
+			g++;
+		}
+	}
+    Front_mid();
+    Stop(400);
+
+}
+
 /**
  * @brief 台2转九十度1
  *
@@ -148,7 +188,22 @@ void Turn_Left25(void)
     HWT101_to_0();
     Stop(250);
     Deg_IN();
+    run(-30, 30);//98
+    Delay_ms(50);
+    Stop(10); //
     pid_Turn_Left25(500);
+    Stop(50);
+}
+void Turn_Left22(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Deg_IN();
+    run(-30, 30);//98
+    Delay_ms(50);
+    Stop(10); //
+    pid_Turn_Left22(500);
     Stop(50);
 }
 /**
@@ -177,6 +232,9 @@ void Turn_Right50(void)
     HWT101_to_0();
     Stop(250);
     Deg_IN();
+    run(30, -30);//98
+    Delay_ms(50);
+    Stop(10); //
     pid_Turn_Right50(1000);
     Stop(50);
 }

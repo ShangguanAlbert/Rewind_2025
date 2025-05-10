@@ -46,8 +46,8 @@ void USART5_OpenMV_Init(void)
     USART_ITConfig(UART5, USART_IT_RXNE, ENABLE); // 开启接收中断
 
     NVIC_InitStructure.NVIC_IRQChannel                   = UART5_IRQn; // 串口5中断通道
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;           // 抢占优先级3
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 2;           // 子优先级3
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;           // 抢占优先级3
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 1;           // 子优先级3
     NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;      // IRQ通道使能
     NVIC_Init(&NVIC_InitStructure);                                     // 根据指定的参数初始化NVIC寄存器
 }

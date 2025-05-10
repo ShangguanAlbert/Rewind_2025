@@ -47,28 +47,36 @@ int main(void)
     KEY_Init();
     GPIO_HW_Init();
     GPIO_HDLR_Init();
-    pid_init(&pid_yaw, 60, 10, 4, 2, 3);
+    pid_init(&pid_yaw, 60, 10, 1, 1, 5);
+    pid_init(&pid_yaw1, 60, 10, 4, 2, 3);
     Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
-        UP_Tai2_6();
-        // Treasure_Locator();
+        // UP_Tai2_6();
+        Treasure_Locator();
     }
     if (progg == 2) {
-        Tai1_6_zhuan();
+        UP_Tai2_6();
+        // Tai1_6_zhuan();
+        // Front_up_High();
+        // Stop(500);
+        // run_delay(60,-60*m_diff(60),2000);
+        // HWT101_to_0();
+        // turn_around_180();
     }
     if (progg == 3) {
         Camera_down();
         Stop(1000);
-        Turn_Right25();
+        // Turn_Right25();
+        Detect_Color();
+        Get_Traget_Color();
+
     }
     if (progg == 4) {
-        while (hwr != 0) {
-            bridge_PD(50, 1);
-        }
-        Front_mid();
-        Reset(300, 60);
+        Turn_Left25();
+        Stop(1000);
+        Turn_Right50();
     }
     if (progg == 5) {
         // 二维码扫描模式
@@ -82,10 +90,7 @@ int main(void)
         Tai8_zhuan();
     }
     if (progg == 7) {
-        Stop(3000);
-        speed_up(30, 60);
-        Reset(2500, 105);
-        speed_down(60, 30);
+        Camera_up_hight();
     }
     if (progg == 8) {
         Show_SensorPage_All();

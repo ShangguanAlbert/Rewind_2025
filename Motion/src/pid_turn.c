@@ -5,6 +5,7 @@
 #include "basic.h"
 
 pid_t_robomaster pid_yaw = {0}; // 结构体：存储PID参数和计算中间值
+pid_t_robomaster pid_yaw1 = {0}; // 结构体：存储PID参数和计算中间值
 
 extern float JD; //角度（单精度）
 extern float XJD; //角度（双精度）
@@ -204,7 +205,7 @@ void pid_Turn_Right90(int turn_time)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        speed_adj = pid_calc(&pid_yaw1, JD, TARGET_ANGLE);
         // 控制电机转向
         run(-speed_adj, speed_adj);
         if (t3_i > turn_time) {
@@ -223,12 +224,36 @@ void pid_Turn_Right90(int turn_time)
  */
 void pid_Turn_Left25(int turn_time)
 {
+    const int32_t TARGET_ANGLE = 28;
+    // 初始化计时器
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        speed_adj = pid_calc(&pid_yaw1, JD, TARGET_ANGLE);
+        // 控制电机转向
+        run(-speed_adj, speed_adj);
+        if (t3_i > turn_time) {
+            break;
+        }
+    } while (1);
+    // 停止并清理
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+    Stop(50);
+}
+/**
+ * @brief 小车从0度（360度）向左转到22度
+ * @param turn_time 转动时间（毫秒）
+ */
+void pid_Turn_Left22(int turn_time)
+{
     const int32_t TARGET_ANGLE = 25;
     // 初始化计时器
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        speed_adj = pid_calc(&pid_yaw1, JD, TARGET_ANGLE);
         // 控制电机转向
         run(-speed_adj, speed_adj);
         if (t3_i > turn_time) {
@@ -252,7 +277,7 @@ void pid_Turn_Right25(int turn_time)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        speed_adj = pid_calc(&pid_yaw1, JD, TARGET_ANGLE);
         // 控制电机转向
         run(-speed_adj, speed_adj);
         if (t3_i > turn_time) {
@@ -276,7 +301,7 @@ void pid_Turn_Right50(int turn_time)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        speed_adj = pid_calc(&pid_yaw1, JD, TARGET_ANGLE);
         // 控制电机转向
         run(-speed_adj, speed_adj);
         if (t3_i > turn_time) {

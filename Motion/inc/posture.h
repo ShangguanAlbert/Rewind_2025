@@ -15,6 +15,7 @@ void Paw_open(void);
 void Paw_close(void);
 void Camera_down(void);
 void Camera_up(void);
+void Camera_up_hight(void);
 void Catch(void);
 void down_pt1_6(void);
 void UP_Tai2_6(void);
@@ -35,7 +36,9 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw);
 void Back_BLB(void);
 void txs(void);
 void Go_BLB(void);
-void Get_Color(void);
+void Get_Traget_Color(void);
+void Get_Now_Color(void);
 void Get_QR(void);
+void Get_Turn(void);
 
 #endif

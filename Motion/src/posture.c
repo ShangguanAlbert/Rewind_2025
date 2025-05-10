@@ -17,8 +17,14 @@
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
 extern uint8_t qr_flag;
+int8_t Traget_Color;
+int8_t NOW_Color;
+int8_t Turn_Or_Not;
 int8_t r;
 int8_t g;
+int8_t b;
+int8_t tt;
+int8_t ss;
 int8_t b;
 
 /**
@@ -88,7 +94,13 @@ void Camera_up(void)
 {
  Servo_SetAngle(1, 63); 
 }
-
+/**
+ * @brief 抬高摄像头
+ */
+void Camera_up_hight(void)
+{
+ Servo_SetAngle(1, 70); 
+}
 /**
  * @brief 抓宝
  */
@@ -96,7 +108,8 @@ void Catch(void)
 {
     Paw_close();
     Stop(1000);
-    Camera_up();
+    Camera_up_hight();
+    Stop(1000);
     Paw_open();
 }
 /**
@@ -152,6 +165,7 @@ void UP_Tai2_6(void)
             break;
         }//左右腰灯知道第一条黄线结束
     }
+    Run_delay(45,150);
     // Run_delay(45, 100);
     // while (1) {
     //     slow_run(45);
@@ -159,7 +173,7 @@ void UP_Tai2_6(void)
     //         break;
     //     }
     // }
-
+    Stop(40);
     Tai1_6_zhuan();
     Stop (50);
 }
@@ -720,10 +734,10 @@ void Go_BLB(void)
     Reset(1600, 45);
 }
 /**
- * @brief 获取颜色信息
+ * @brief 获取目标宝物颜色信息
  *
  */
-void Get_Color(void)
+void Get_Traget_Color(void)
 {
     while (1)
     {
@@ -763,7 +777,95 @@ void Get_Color(void)
         LCD_SetColor(LCD_WHITE);
         LCD_FillRect(1, 1, 238, 238);
     }
+    Traget_Color = openmv[2];
+    openmv[2] = 0;
     SHUT_UP();
+}
+/**
+ * @brief 获取当前宝物颜色
+ *
+ */
+void Get_Now_Color(void)
+{
+    while (1)
+    {
+        if (openmv[2]!=0)
+        {
+            break;
+        }       
+    }
+    r=0;
+    g=0;
+    b=0;
+    while (r < 3 && g<3 && b<3)
+    {
+        if (openmv[2]== 1){
+            r++;
+        }
+        else if (openmv[2]== 2)
+        {
+            g++;
+        }
+        else if (openmv[2]== 3)
+        {
+            b++;
+        }
+        delay_ms(5);   
+    } 
+    if (r>=3) {
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (g>=3) {
+        LCD_SetColor(LCD_GREEN);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (b>=3) {
+        LCD_SetColor(LCD_BLUE);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 0) {
+        LCD_SetColor(LCD_WHITE);
+        LCD_FillRect(1, 1, 238, 238);
+    }
+    NOW_Color = openmv[2];
+    openmv[2] = 0;
+}
+/**
+ * @brief 获取转弯消息
+ *
+ */
+void Get_Turn(void)
+{
+    while (1)
+    {
+        if (openmv[2]!=0)
+        {
+            break;
+        }       
+    }
+    tt=0;
+    ss=0;
+    while (tt<3 && ss<3)
+    {
+        if (openmv[2]== 5){
+            tt++;
+        }
+        else if (openmv[2]== 6)
+        {
+            ss++;
+        }
+        delay_ms(5);   
+    } 
+    if (tt>=3) {
+        LCD_SetColor(LCD_YELLOW);
+        LCD_FillRect(1, 1, 238, 238);
+        Turn_Or_Not=5;
+
+    } else if (ss>=3) {
+        LCD_SetColor(LCD_GREY);
+        LCD_FillRect(1, 1, 238, 238);
+        Turn_Or_Not=6;
+
+    } 
+    openmv[2] = 0;
 }
 /**
  * @brief 获取二维码信息
