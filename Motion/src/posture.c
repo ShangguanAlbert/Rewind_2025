@@ -12,6 +12,7 @@
 #include "bsp_vision.h"
 #include "bsp_lcd.h"
 #include "bsp_qr.h"
+#include "bsp_compass.h"
 
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
@@ -27,58 +28,67 @@ void Front_down(void)
 {
     Servo_SetAngle(4, 125); // 放下多少
 }
+
+
 /**
  * @brief 悬空前铲
  */
 void Front_mid(void)
 {
-    Servo_SetAngle(4, 148); //?
+    Servo_SetAngle(4, 148);//悬空多少
 }
+
+
 /**
  * @brief 前铲抬起
  *
  */
 void Front_up(void)
 {
-    Servo_SetAngle(4, 160);
+    Servo_SetAngle(4, 160);//抬起多少
 }
+
+
 /**
  * @brief 前铲抬高
  *
  */
 void Front_up_High(void)
 {
-
-    Servo_SetAngle(4, 175);
+    
+    Servo_SetAngle(4, 165);//抬起多少
 }
+
+
 /**
- * @brief 张开爪子
- */
+ * @brief 张开爪子
+ */
 void Paw_open(void)
 {
-    Servo_SetAngle(3, 180); 
+   Servo_SetAngle(3, 180); 
 }
 /**
- * @brief 合上爪子
- */
+ * @brief 合上爪子
+ */
 void Paw_close(void)
 {
-    Servo_SetAngle(3,130 ); 
+ Servo_SetAngle(3,130 ); 
 }
 /**
- * @brief 放下摄像头
- */
+ * @brief 放下摄像头
+ */
 void Camera_down(void)
 {
-    Servo_SetAngle(1, 0); 
+ Servo_SetAngle(1, 0); 
 }
 /**
- * @brief 抬起摄像头
- */
+ * @brief 抬起摄像头
+ */
 void Camera_up(void)
 {
-    Servo_SetAngle(1, 63); 
+ Servo_SetAngle(1, 63); 
 }
+
 /**
  * @brief 抓宝
  */
@@ -94,34 +104,36 @@ void Catch(void)
  */
 void down_pt1_6(void)
 {
-    Front_down();
+    Front_down();//放下前铲
     Stop(300);
-    Reset(100, 40);
+    Reset(100,40);//低速巡线2
     while (hwr != 0) {
         slow_run(40);
-    }
-    Front_mid();
-    Reset(100, 45); //
+    }//红外不扫到前铲就一直走
+
+    Front_mid();//悬空前铲
+    Reset(100, 45);
     // stop();
 }
 
+
 /**
- * @brief 上台2到台6动作
+ * @brief 上低平台（台3到台6）
  *
  */
 void UP_Tai2_6(void)
 {
-    Front_down();
+    Front_down();//抬前铲
     while (hwr != 0) {
         slow_run(50);
-    }
+    }//红外不扫到前铲就一直走
 
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
             run(45, 48);
         }
-        if (hdxl == 0 || hdxr == 0) {
+        if (hdxl == 0 || hdxr == 0) {//腰灯扫到红线
             break;
         }
     }
@@ -131,7 +143,7 @@ void UP_Tai2_6(void)
         run(45,45);
         if (hdxl == 0 || hdxr == 0) {
             break;
-        }
+        }//左右腰灯扫到第一条黄线开头
     }
     while (1) {
         run(45,45);
@@ -190,23 +202,28 @@ void UP_Tai2(void)
             break;
         }
     }
-}
+    Tai1_6_zhuan();//低平台转180度
+    }//第一条黄线结束时开始转180°
+    
+    
 /**
  * @brief 上台7动作
  *
  */
 void UP_Tai7(void)
 {
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
+    while (1)
+    {
+        slow_run(50);//50巡线
+        if(hwr==0){//红外扫到，即开始上坡，扫到前铲
             break;
         }
     }
-    Reset(300, 50);
-    speed_up(50, 105);
-    speed_down(105, 50);
+    Reset(300,50);//卡时间巡线
+    speed_up(50,105);
+    speed_down(105,50);
     Front_down();
+
     while (1) {
         get_huidu_va();
         if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
@@ -610,6 +627,30 @@ void Back_BLB(void)
     }
     Reset(600, 45);
 }
+
+void txs(void){
+    while(hwr == 1){
+     slow_run(50);
+     }
+     Front_down();
+     HWT101_to_0();
+     Reset(600,50);
+     while(!outline ){
+     Reset(50,50);
+     }
+    stop();
+     Delay_ms(300);
+     while(!outline){
+     Reset(50,50);
+    }
+    Front_mid();
+     while(!(Huidu_va(10) > white[10] || Huidu_va(11) > white[11])){
+     txs_trace();
+     }
+    //  while(hdxl == 1){
+    //  Run_delay(30,10);
+    // }
+    }
 /**
  * @brief 出发过波浪板
  *

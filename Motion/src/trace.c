@@ -542,3 +542,17 @@ void Straight(int time)
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 }
+
+
+void txs_trace(void){
+    int jd = compass_b();
+    if(jd < 180){
+         run_delay(50+jd*2,50-jd*2,10);
+     }
+    else if(jd > 180){
+    run_delay(50-(360-jd)*2,50+(360-jd)*2,10);
+     }
+    else
+    run_delay(50,50,10);
+    }
+

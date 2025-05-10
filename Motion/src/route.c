@@ -17,17 +17,17 @@
  */
 void Tai1_Tai2(void)
 {
-    // 下台
+    // 下台1
     down_pt1_6();
     // 矫正
-    Reset(650, 60); //
+    Reset(650, 60); 
     // 过桥
     Bridge_Travel();
     // 加速
     speed_up(60, 130);
     speed_down(130, 60);
     //上台2
-    // UP_Tai2_6();
+    UP_Tai2_6();
     //UP_Tai2();
 }
 /**
@@ -97,7 +97,7 @@ void Tai2_Tai3(void)
     Go_BLB();
     //右转135度
     TurnRight_135_Longline();
-    Stop(50);
+    Stop(100);
     //修正
     Reset(250, 70);
     //加速
@@ -226,19 +226,12 @@ void Tai5_Tai7(void)
     //T形山前，左转90度
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    //低速巡线直到前铲被抬起
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    //无白线盲走
-    Straight(5000);
-    //出T形山后左转90度
-    // TurnLeft_90_Rdetect();
+    //走梯形山后无白线直走
+    txs();
+    //左转
+    Out_T_TurnLeft_90_Ldetect();
     Stop(40);
-    //修正
+    //巡线
     Reset(250, 60);
     //加速
     speed_up(60, 185);
@@ -262,25 +255,18 @@ void Tai5_Tai8(void)
     //左转90度
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    //低速巡线直到前铲被抬起
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    //无白线盲走
-    Straight(5000);
-    Stop(40);
-    //出T形山后右转90度
+    //上梯形山后无白线直走
+    txs();
+    //右转
     Out_T_TurnRight_90();
     Stop(40);
-    //修正
+    //巡线
     Reset(250, 70);
     //加速
     speed_up(70, 140);
+    //减速
     speed_down(140, 50);
-    //上台8
+    //上台八
     UP_Tai8();
 }
 /**
@@ -326,36 +312,31 @@ void Tai7_Home(void)
     // 左转90度
     TurnLeft_90_Rdetect_4();
     Stop(100);
-    // 修正
-    Reset(250, 50);
-    // 加速
-    speed_up(50, 120);
-    speed_down(120, 50);
-    // 修正
-    Reset(60, 60);
-    //向有漂移直到右腰灯扫到白线
-    while (hdxr != 0) {
-        drift_right(50, 0);
-    }
-    //修正
-    Reset(500, 45);
-    //回程过波浪板
-    Back_BLB();
-    //向右转135度
-    TurnRight_135_Longline();
-    Stop(50);
     //修正
     Reset(250, 50);
     //加速
+    speed_up(50, 120);
+    speed_down(120, 50);
+    //修正
+    Reset(60, 60);
+    while (hdxr != 0) {
+        drift_right(50, 0);
+    }
+    Reset(500, 45);
+
+    Back_BLB();
+    TurnRight_135_Longline();
+    Stop(50);
+    Reset(250, 50);
     speed_up(50, 100);
     speed_down(100, 50);
-    //过桥
     Bridge_Travel();
-    //修正
     Reset(600, 60);
-    //上台1
     UP_Tai2_6();
+
 }
+
+
 /**
  * @brief 从台8回家
  */
@@ -388,7 +369,7 @@ void Tai8_Home(void)
     // 减速
     speed_down(160, 50);
     // 向右转90度（左测灰度灯检测转弯起始点）
-    TurnRight_90_Ldetect();
+    TurnRight_90_Ldetect_3();
     Stop(50);
     // 加速
     speed_up(45, 120);

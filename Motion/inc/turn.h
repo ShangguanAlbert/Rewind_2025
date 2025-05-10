@@ -14,7 +14,7 @@ void Turn_Right50(void);
 void Tai7_zhuan(void);
 void Tai8_zhuan(void);
 void TurnRight_90_Rdetect(void);
-void TurnRight_90_Ldetect(void);
+void TurnRight_90_Ldetect_3(void);
 void TurnRight_90_Ldetect_1(void);
 void TurnLeft_90_Ldetect_Mountain(void);
 void TurnLeft_90_Ldetect(void);

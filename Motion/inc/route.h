@@ -2,6 +2,7 @@
 #define __ROUTE_H
 #include "stm32f10x.h"
 
+
 void Tai1_Tai2(void);
 void Tai2_Treasure_Detect(void);
 void Treasure_Locator(void);
@@ -16,5 +17,6 @@ void Tai5_Tai7(void);
 void Tai5_Tai8(void);
 void Tai7_Home(void);
 void Tai8_Home(void);
+void txs(void);
 
 #endif

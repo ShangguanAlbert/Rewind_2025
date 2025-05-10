@@ -34,8 +34,13 @@ void TurnRight_135_Longline(void)
     }
 }
 
+/**
+ * @brief 左转135度（进台八回家的翘翘板）
+ * 
+ */
 void TurnLeft_135_Longline(void)
 {
+    // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10]) {
@@ -51,8 +56,14 @@ void TurnLeft_135_Longline(void)
         }
     }
 }
+
+/**
+ * @brief 左转135度进波浪板
+ * 
+ */
 void TurnLeft_135_Longline2(void)
 {
+    // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯进波浪板
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10]) {
@@ -69,6 +80,12 @@ void TurnLeft_135_Longline2(void)
     }
 }
 
+/**
+ * @brief 低平台转180度
+ * @brief 上低平台转180°（台3到台
+ * 
+ * 
+ */
 void Tai1_6_zhuan(void)
 {
     Stop(100);
@@ -78,7 +95,7 @@ void Tai1_6_zhuan(void)
     Deg_IN();
     for (int x = 60; x < 110; x++) {
         run(x * 0.86, -x * 0.94);
-        Delay_ms(8); //
+        Delay_ms(8); //加速
     }
     // run_delay(90,-90*m_diff(90),350);
     pid_Turn(500);
@@ -171,17 +188,30 @@ void Turn_Right50(void)
  */
 void Tai7_zhuan(void)
 {
-    Front_up_High();
+    // Front_up_High();
+    // Stop(100);
+    // HWT101_to_0();
+    // Stop(250);
+    // Deg_IN();
+    // for (int x = 45; x <= 118; x++) {
+    //     run(x * 0.90, -x * 1.4); // 0.95,1.2
+    //     delay_ms(8);
+    // }
+    // pid_Turn(1200);
+    // stop();
+    // Front_down();
+
     Stop(100);
     HWT101_to_0();
     Stop(250);
+    Front_up_High();
     Deg_IN();
-    for (int x = 45; x <= 118; x++) {
-        run(x * 0.92, -x * 1.25); // 0.95,1.2
-        delay_ms(8);
+    for (int x = 55; x < 110; x++) {
+        run(x * 0.86, -x * 0.94);
+        Delay_ms(8); //
     }
-    pid_Turn(1200);
-    stop();
+    pid_Turn(500);
+    Stop(50);
     Front_down();
 }
 /**
@@ -190,25 +220,39 @@ void Tai7_zhuan(void)
  */
 void Tai8_zhuan(void)
 {
-    Front_up_High();
+    // Front_up_High();
+    // Stop(100);
+    // HWT101_to_0();
+    // Stop(400);
+
+    // Deg_IN();
+    // for (int x = 40; x < 80; x++) {
+    //     run(x * 0.8, -x * 1.8); // 1.05
+    //     delay_ms(20);
+    // }
+    // for (int x = 40; x > 80; x--) {
+    //     run(x * 0.8, -x * 1.8);
+    //     delay_ms(20);
+    // }
+    // pid_Turn(1000);
+    // stop();
+    // Front_down();
+    // Stop(300);
     Stop(100);
     HWT101_to_0();
-    Stop(400);
-
+    Stop(250);
+    Front_up_High();
     Deg_IN();
-    for (int x = 40; x < 80; x++) {
-        run(x * 0.8, -x * 1.8); // 1.05
-        delay_ms(20);
+    for (int x = 55; x < 110; x++) {
+        run(x * 0.86, -x * 0.94);
+        Delay_ms(8); //
     }
-    for (int x = 40; x > 80; x--) {
-        run(x * 0.8, -x * 1.8);
-        delay_ms(20);
-    }
-    // pid_Turn(1000);
-    stop();
+    pid_Turn(800);
+    Stop(50);
     Front_down();
-    Stop(300);
 }
+
+
 
 /**
  * @brief 右转90度
@@ -233,8 +277,9 @@ void TurnRight_90_Rdetect(void)
 /**
  * @brief 右转90度,左灰度
  */
-void TurnRight_90_Ldetect(void)
+void TurnRight_90_Ldetect_3(void)
 {
+    // 低速巡线，当灰度9，10，11扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
@@ -264,10 +309,10 @@ void TurnLeft_90_Ldetect_Mountain(void)
         }
     }
     // 左转
-    Right_Speed_Up(50, 80, 5);
-    Left_Speed_Down(50, -80, 5);
+    Right_Speed_Up(50, 85, 5);
+    Left_Speed_Down(50, -75, 5);
     while (1) {
-        run(-85, 80);
+        run(-80, 85);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
             break;
         }
@@ -275,14 +320,15 @@ void TurnLeft_90_Ldetect_Mountain(void)
 }
 
 /**
- * @brief 左转90度 左灰度检测
- *
+ * @brief 左转90度上台7 左灰度检测
+ * 
  */
-void TurnLeft_90_Ldetect(void)
+void Out_T_TurnLeft_90_Ldetect(void)
 {
+    // 低速巡线，当灰度10，11扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
-        if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1] || Huidu_va(2) > white[2]) {
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11] || Huidu_va(9) > white[9]) {
             break;
         }
     }
@@ -431,7 +477,7 @@ void TurnLeft_90_hdxlDetect(void)
 }
 
 /**
- * @brief 下台8左转90度，左灰度检测两次
+ * @brief 下台8左转90度，左灰度检测两次（无法使用）
  *
  */
 void TurnLeft_90_Ldetect_tai8(void)
@@ -471,6 +517,7 @@ void TurnLeft_90_Ldetect_tai8(void)
  */
 void TurnLeft_90_Rdetect_4(void)
 {
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(50);
         if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
@@ -488,7 +535,7 @@ void TurnLeft_90_Rdetect_4(void)
     }
 }
 /**
- * @brief 台8回家走完波浪板后右转
+ * @brief 台8回家走完波浪板后右转（无法使用）
  *
  */
 void TurnRight_90_Ldetect_1(void)
@@ -510,21 +557,21 @@ void TurnRight_90_Ldetect_1(void)
     }
 }
 /**
- * @brief 出t型山，转90度
+ * @brief 出t型山，右转90度进台8
  *
  */
 void Out_T_TurnRight_90(void)
 {
-    // while (1) {
-    //     Run(50);
-    //     if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
-    //         break;
-    //     }
-    // }
-    Left_Speed_Up(50, 90, 5);
-    Right_Speed_Down(50, -85, 5);
     while (1) {
-        run(70, -73);
+        Run(50);
+        if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 90, 5);
+    Right_Speed_Down(50, -88, 5);
+    while (1) {
+        run(70, -75);
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
             break;
         }
@@ -558,6 +605,7 @@ void Out_T_TurnLeft_90(void)
  */
 void In_T_TurnLeft_90(void)
 {
+    //低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         Run(50);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
