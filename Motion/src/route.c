@@ -254,7 +254,7 @@ void Tai5_Tai8(void)
     //上梯形山后无白线直走
     txs();
     //右转
-    Out_T_TurnRight_90();
+    Out_T_TurnRight_90_Ldetect();
     Stop(40);
     //巡线
     Reset(250, 70);
@@ -315,19 +315,27 @@ void Tai7_Home(void)
     speed_down(120, 50);
     //修正
     Reset(60, 60);
+    //右飘进波浪板
     while (hdxr != 0) {
         drift_right(50, 0);
     }
+    //修正
     Reset(500, 45);
-
+    //走波浪板
     Back_BLB();
+    //右转135度进长桥
     TurnRight_135_Longline();
     Stop(50);
+    //修正
     Reset(250, 50);
+    //加速
     speed_up(50, 100);
     speed_down(100, 50);
+    //走长桥
     Bridge_Travel();
+    //修正
     Reset(600, 60);
+    //上台
     UP_Tai2_6();
 
 }
@@ -347,7 +355,7 @@ void Tai8_Home(void)
     Reset(200, 40);
     speed_up(40, 140);
     speed_down(140, 50);
-    // 左转135度
+    //左转135度
     TurnLeft_135_Longline();
     Stop(50);
     // 确认上跷跷板
@@ -375,7 +383,8 @@ void Tai8_Home(void)
     TurnLeft_135_Longline2();
     // 回程过波浪板
     Back_BLB();
-    // 右转135
+    Reset(1200,45);
+    //右转135
     TurnRight_135_Longline();
     Stop(50);
     // 巡线修正

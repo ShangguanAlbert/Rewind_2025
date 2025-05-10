@@ -13,14 +13,14 @@ void TurnRight_90_Rdetect(void);
 void TurnRight_90_Ldetect_3(void);
 void TurnRight_90_Ldetect_1(void);
 void TurnLeft_90_Ldetect_Mountain(void);
-void TurnLeft_90_Ldetect(void);
+void Out_T_TurnLeft_90_Ldetect(void);
 void TurnLeft_90_hdxlDetect(void);
 void TurnRight_90_hdxrDetect(void);
 void TurnLeft_90_Ldetect_4(void);
 void TurnLeft_90_Ldetect_5(void);
 void TurnLeft_90_Ldetect_tai8(void);
 void TurnLeft_90_Rdetect_4(void);
-void Out_T_TurnRight_90(void);
+void Out_T_TurnRight_90_Ldetect(void);
 void Out_T_TurnLeft_90(void);
 
 #endif 

@@ -82,8 +82,6 @@ void TurnLeft_135_Longline2(void)
 
 /**
  * @brief 低平台转180度
- * @brief 上低平台转180°（台3到台
- * 
  * 
  */
 void Tai1_6_zhuan(void)
@@ -99,7 +97,7 @@ void Tai1_6_zhuan(void)
     }
     pid_Turn(500);
     Stop(50);
-    Front_down();
+    //Front_down();
 }
 
 
@@ -119,7 +117,7 @@ void Tai2_zhuan90(void)
     Front_down();
 }
 /**
- * @brief 中平台掉头转180
+ * @brief 七平台掉头转180
  *
  */
 void Tai7_zhuan(void)
@@ -137,10 +135,10 @@ void Tai7_zhuan(void)
     // stop();
     // Front_down();
 
+    Front_up_High();
     Stop(100);
     HWT101_to_0();
     Stop(250);
-    Front_up_High();
     Deg_IN();
     for (int x = 55; x < 110; x++) {
         run(x * 0.86, -x * 0.94);
@@ -151,7 +149,7 @@ void Tai7_zhuan(void)
     Front_down();
 }
 /**
- * @brief 高平台掉头转180
+ * @brief 八平台掉头转180
  *
  */
 void Tai8_zhuan(void)
@@ -174,37 +172,92 @@ void Tai8_zhuan(void)
     // stop();
     // Front_down();
     // Stop(300);
+
+    Front_up_High();
     Stop(100);
     HWT101_to_0();
     Stop(250);
-    Front_up_High();
     Deg_IN();
-    for (int x = 55; x < 110; x++) {
-        run(x * 0.86, -x * 0.94);
-        Delay_ms(8); //
+    for (int x = 60; x < 110; x++) {
+        run(x * 0.86, -x * 0.90);
+        Delay_ms(5); 
     }
     pid_Turn(800);
     Stop(50);
     Front_down();
+    Stop(300);
 }
 
 
+// void Tai8_zhuan(void) {
+//      int g = 0;
+//      //static int gqJD;
+//      float gqJD = compass_b();
+//      Stop(50);
+//      Front_up_High();
+//      delay_ms(200);
+//      //run(20, -20);
+//      //delay_ms(450);
+//      while (g < 1)
+//      {
+//       if (gqJD <= 180 && gqJD>=0)
+//       {
+//        run_delay(-60,60,450);
+//        while (compass_b() < (170+gqJD))
+//        {
+//         if(compass_b() - gqJD < 120)
+//         run(-60,60);
+//         else if(compass_b() - gqJD > 140)
+//         run(-40,40);
+//         else
+//         run((compass_b() - gqJD) - 180 ,180 - (compass_b() - gqJD));
+//        }
+//        g++;
+//       }
+//       else if (gqJD > 180 && gqJD <= 360)
+//       {
+//        run_delay(60,-60,450);
+//        while (compass_b() > (gqJD-170))
+//        {
+//         if(gqJD - compass_b() < 120)
+//         run(60,-60);
+//         else if(gqJD - compass_b() > 140)
+//         run(40,-40);
+//         else
+//         run(180-(gqJD - compass_b()) , (gqJD - compass_b())-180);
+//        }
+//        g++;
+//       }
+//       else
+//        while (compass_b() < 180)
+//        {
+//         run(40, -40);
+//        }
+//       g++;
+//      }
+//      stop();
+//      Front_down();
+//      Delay_ms(200);
+//     }
 
 /**
- * @brief 右转90度
+ * @brief 右转90度，左灰度
  */
 void TurnRight_90_Rdetect(void)
 {
+    //检测
     while (1) {
         slow_run(50);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1] || Huidu_va(2) > white[2]) {
             break;
         }
     }
+    //转弯
     Left_Speed_Up(50, 90, 5);
     Right_Speed_Down(50, -85, 5);
     while (1) {
         run(70, -73);
+        //检测停止
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
             break;
         }
@@ -222,10 +275,12 @@ void TurnRight_90_Ldetect_3(void)
             break;
         }
     }
+    //转弯
     Left_Speed_Up(50, 85, 5);
     Right_Speed_Down(50, -75, 5);
     while (1) {
         run(75, -70);
+        //检测停止
         if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
             break;
         }
@@ -249,6 +304,7 @@ void TurnLeft_90_Ldetect_Mountain(void)
     Left_Speed_Down(50, -75, 5);
     while (1) {
         run(-80, 85);
+        //检测停止
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
             break;
         }
@@ -268,25 +324,32 @@ void Out_T_TurnLeft_90_Ldetect(void)
             break;
         }
     }
+    //转弯
     Right_Speed_Up(50, 95, 5);
     Left_Speed_Down(50, -85, 5);
     while (1) {
         run(-70, 80);
+        //检测停止
         if (Huidu_va(8) > white[8] || Huidu_va(7) > white[7]) {
             break;
         }
     }
 }
 
+/**
+ * @brief 右转90度，右腰灯检测
+ * 
+ */
 void TurnRight_90_hdxrDetect(void)
 {
+    //检测
     while (hdxr == 1) {
         slow_run(50);
     }
-
+    //转弯
     Right_Speed_Down(50, -90, 6);
     Left_Speed_Up(50, 90, 5);
-
+    //检测停止
     while (1) {
         run(65, -50);
         if (Huidu_va(6) > white[6] || Huidu_va(7) > white[7]) {
@@ -296,18 +359,21 @@ void TurnRight_90_hdxrDetect(void)
 }
 
 /**
- * @brief 右转90度
+ * @brief 右转90度，检测到第二条白线后停止
  */
 void TurnRight_90_Rdetect_in(void)
 {
+    //检测
     while (1) {
         slow_run(50);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1] || Huidu_va(2) > white[2]) {
             break;
         }
     }
+    //转弯
     Left_Speed_Up(50, 90, 5);
     Right_Speed_Down(50, -85, 5);
+    //第一次检测到白线后继续转弯
     while (1) {
         run(70, -73);
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
@@ -315,6 +381,7 @@ void TurnRight_90_Rdetect_in(void)
         }
     }
     run_delay(70, -73, 50);
+    //第二次检测后停止
     while (1) {
         run(70, -73);
         if (Huidu_va(5) > white[5] || Huidu_va(4) > white[4]) {
@@ -394,16 +461,17 @@ void TurnLeft_90_Ldetect_5(void)
  */
 void TurnLeft_90_hdxlDetect(void)
 {
+    //检测
     while (1) {
         slow_run(50);
         if (hdxl == 0) {
             break;
         }
     }
-
+    //转弯
     Right_Speed_Up(50, 80, 5);
     Left_Speed_Down(50, -80, 5);
-
+    //检测停止
     while (1) {
         run(-50, 50);
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
@@ -460,7 +528,7 @@ void TurnLeft_90_Rdetect_4(void)
             break;
         }
     }
-
+    //转弯
     Right_Speed_Up(50, 95, 5);
     Left_Speed_Down(50, -90, 5);
     while (1) {
@@ -496,16 +564,19 @@ void TurnRight_90_Ldetect_1(void)
  * @brief 出t型山，右转90度进台8
  *
  */
-void Out_T_TurnRight_90(void)
+void Out_T_TurnRight_90_Ldetect(void)
 {
+    //检测
     while (1) {
         Run(50);
         if (Huidu_va(10) > white[10] || Huidu_va(11) > white[11]) {
             break;
         }
     }
+    //转弯
     Left_Speed_Up(50, 90, 5);
     Right_Speed_Down(50, -88, 5);
+    //检测转正
     while (1) {
         run(70, -75);
         if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {

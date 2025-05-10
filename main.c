@@ -52,19 +52,24 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        // Tai1_Tai2();
-        // Tai2_Tai3();
-        // Tai3_door2_Tai5();
-        //Tai5_Tai7();
+        Tai1_Tai2();
+        Tai2_Tai3();
+        Tai3_door2_Tai5();
+        Tai5_Tai7();
         Tai7_Home();
     }
     if (progg == 2) {
+        Tai1_Tai2();
+        Tai2_Tai4();
+        Tai4_door4_Tai5();
+        Tai5_Tai8();
+        Tai8_Home();
         
     }
     if (progg == 3) {
-        Tai1_6_zhuan();
-        Tai5_Tai8();
-        Tai2_Treasure_Detect();
+        //低平台转弯和台8转弯
+        UP_Tai8();
+        // UP_Tai2_6();
     }
     if (progg == 4) {
         while (hwr != 0) {

@@ -49,7 +49,7 @@ void Front_up(void)
 void Front_up_High(void)
 {
     
-    Servo_SetAngle(4, 165);//抬起多少
+    Servo_SetAngle(4, 175);//抬起多少
 }
 
 
@@ -113,16 +113,16 @@ void UP_Tai2_6(void)
 
     while (1) {
          slow_run(50);
-        if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])//扫到红线同时对左右轮速度进行修正
+        if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])//扫到红线同时对左右轮速度进行修正（如果需要）
         {
-            run(48, 45);
+            run(45, 45);
         }
         if (hdxl == 0 || hdxr == 0) {//腰灯扫到红线
             break;
         }
     }
     Front_mid();//悬空前铲
-    Run_delay(45,100);//卡时间忙走
+    Run_delay(45,100);//卡时间盲走
     while (1)
     {
         slow_run(45);//45速度巡线
@@ -134,18 +134,71 @@ void UP_Tai2_6(void)
         slow_run(45);
         if (hdxl == 1 || hdxr == 1) {
             break;
-        }
+        }//左右腰灯知道第一条黄线结束
     }
     Run_delay(45, 100);
     while (1) {
         slow_run(45);
         if (hdxl == 0 || hdxr == 0) {
             break;
-        }
+        }//检测到第二条黄线开始
     }
 
     Tai1_6_zhuan();
+    Stop (50);
 }
+
+
+
+
+/**
+ * @brief 上低平台不使用黄线（台3到台6）
+ *
+ */
+void UP_Tai2_6_noline(void)
+{
+    Front_down();//抬前铲
+    while (hwr != 0) {
+        slow_run(50);
+    }//红外不扫到前铲就一直走
+
+    while (1) {
+         slow_run(50);
+        if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])//扫到红线同时对左右轮速度进行修正（如果需要）
+        {
+            run(45, 45);
+        }
+        if (hdxl == 0 || hdxr == 0) {//腰灯扫到红线
+            break;
+        }
+    }
+    Front_mid();//悬空前铲
+    Run_delay(45,1000);//卡时间盲走
+    // while (1)
+    // {
+    //     slow_run(45);//45速度巡线
+    //     if(hdxl==0 ||hdxr==0){
+    //         break;
+    //     }//左右腰灯扫到第一条黄线开头
+    // }
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 1 || hdxr == 1) {
+    //         break;
+    //     }
+    // }
+    // Run_delay(45, 100);
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 0 || hdxr == 0) {
+    //         break;
+    //     }
+    // }
+
+    Tai1_6_zhuan();
+}
+
+
 /**
  * @brief 上台2
  *
@@ -188,7 +241,7 @@ void UP_Tai2(void)
         }
     }
     Tai1_6_zhuan();//低平台转180度
-    }//第一条黄线结束时开始转180°
+    }
     
     
 /**
@@ -280,32 +333,33 @@ void UP_Tai8(void)
         if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
             slow_run(50);
         } else if (cnt_whiteline == 0) {
-            run(48, 45);
+            run(45, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    Run_delay(45, 100);
+    Run_delay(45, 150);
     while (1) {
-        run(48, 45);
+        run(45, 50);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    while (1) {
-        slow_run(45);
-        if (hdxl == 1 || hdxr == 1) {
-            break;
-        }
-    }
-    Run_delay(45, 300);
-    while (1) {
-        slow_run(45);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }
-    }
+    Run_delay(45,100);
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 1 || hdxr == 1) {
+    //         break;
+    //     }
+    // }
+    // Run_delay(45, 300);
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 0 || hdxr == 0) {
+    //         break;
+    //     }
+    // }
 
     Tai8_zhuan();
 }

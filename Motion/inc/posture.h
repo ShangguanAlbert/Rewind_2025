@@ -17,6 +17,7 @@ void Camera_down(void);
 void Camera_up(void);
 void down_pt1_6(void);
 void UP_Tai2_6(void);
+void UP_Tai2_6_noline(void);
 void UP_Tai2(void);
 void UP_Tai7(void);
 void Down_Tai7(void);
