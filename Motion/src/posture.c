@@ -9,10 +9,17 @@
 #include "turn.h"
 #include "basic.h"
 #include "bsp_timer.h"
+#include "bsp_vision.h"
+#include "bsp_lcd.h"
+#include "bsp_qr.h"
 #include "bsp_compass.h"
 
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
+extern uint8_t qr_flag;
+int8_t r;
+int8_t g;
+int8_t b;
 
 /**
  * @brief 放下前铲
@@ -83,6 +90,16 @@ void Camera_up(void)
 }
 
 /**
+ * @brief 抓宝
+ */
+void Catch(void)
+{
+    Paw_close();
+    Stop(1000);
+    Camera_up();
+    Paw_open();
+}
+/**
  * @brief 低速下平台
  */
 void down_pt1_6(void)
@@ -112,37 +129,36 @@ void UP_Tai2_6(void)
     }//红外不扫到前铲就一直走
 
     while (1) {
-         slow_run(50);
-        if (Huidu_va(5)<white[5]||Huidu_va(6)<white[6])//扫到红线同时对左右轮速度进行修正（如果需要）
-        {
-            run(45, 45);
+        slow_run(50);
+        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
+            run(45, 48);
         }
         if (hdxl == 0 || hdxr == 0) {//腰灯扫到红线
             break;
         }
     }
     Front_mid();//悬空前铲
-    Run_delay(45,100);//卡时间盲走
+    Run_delay(45,150);//卡时间盲走
     while (1)
     {
-        slow_run(45);//45速度巡线
+        run(45,45);//45速度巡线
         if(hdxl==0 ||hdxr==0){
             break;
         }//左右腰灯扫到第一条黄线开头
     }
     while (1) {
-        slow_run(45);
+        run(45,45);
         if (hdxl == 1 || hdxr == 1) {
             break;
         }//左右腰灯知道第一条黄线结束
     }
-    Run_delay(45, 100);
-    while (1) {
-        slow_run(45);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }//检测到第二条黄线开始
-    }
+    // Run_delay(45, 100);
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 0 || hdxr == 0) {
+    //         break;
+    //     }
+    // }
 
     Tai1_6_zhuan();
     Stop (50);
@@ -213,7 +229,7 @@ void UP_Tai2(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(46, 45);
+            run(45, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -703,6 +719,65 @@ void Go_BLB(void)
     //过波浪板
     Reset(1600, 45);
 }
-
-
+/**
+ * @brief 获取颜色信息
+ *
+ */
+void Get_Color(void)
+{
+    while (1)
+    {
+        if (openmv[2]!=0)
+        {
+            break;
+        }       
+    }
+    r=0;
+    g=0;
+    b=0;
+    while (r < 3 && g<3 && b<3)
+    {
+        if (openmv[2]== 1){
+            r++;
+        }
+        else if (openmv[2]== 2)
+        {
+            g++;
+        }
+        else if (openmv[2]== 3)
+        {
+            b++;
+        }
+        delay_ms(5);   
+    } 
+    if (r>=3) {
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (g>=3) {
+        LCD_SetColor(LCD_GREEN);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (b>=3) {
+        LCD_SetColor(LCD_BLUE);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 0) {
+        LCD_SetColor(LCD_WHITE);
+        LCD_FillRect(1, 1, 238, 238);
+    }
+    SHUT_UP();
+}
+/**
+ * @brief 获取二维码信息
+ *
+ */
+void Get_QR(void)
+{
+    LCD_Clear(); // 清屏，黑色背景
+    while (1) {
+        QR_Process();  // 处理二维码数据
+        if (qr_flag == 1 ) {
+            break;
+        }
+        delay_ms(100); // 延时100ms，避免刷新过快
+    }
+}
 

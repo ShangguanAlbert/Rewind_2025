@@ -38,11 +38,11 @@ void USART5_OpenMV_Init(void)
     USART_InitStructure.USART_Parity              = USART_Parity_No;                // 无奇偶校验位
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None; // 无硬件数据流控制
     USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;  // 收发模式
-    USART_Init(UART5, &USART_InitStructure);                                       // 初始化串口3
+    USART_Init(UART5, &USART_InitStructure);                                       // 初始化串口5
 
-    USART_Cmd(UART5, ENABLE); // 使能串口2
+    USART_Cmd(UART5, ENABLE); // 使能串口5
 
-    // Usart3 NVIC 配置
+    // Usart5 NVIC 配置
     USART_ITConfig(UART5, USART_IT_RXNE, ENABLE); // 开启接收中断
 
     NVIC_InitStructure.NVIC_IRQChannel                   = UART5_IRQn; // 串口5中断通道
@@ -129,7 +129,7 @@ void UART5_IRQHandler(void) // 串口5中断服务程序
 {
     uint8_t com_data;
     if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET) {
-        USART_ClearFlag(UART5, USART_FLAG_RXNE);
+        USART_ClearITPendingBit(UART5, USART_IT_RXNE);
         com_data = USART_ReceiveData(UART5);
         Openmv_Receive_Data(com_data);
         Openmv_Data();
