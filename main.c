@@ -52,14 +52,16 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        Tai2_Treasure_Detect();
+        UP_Tai2_6();
+        // Treasure_Locator();
     }
     if (progg == 2) {
-        LCD_SetColor(LCD_RED);
-        LCD_FillRect(1, 1, 238, 238);
+        Tai1_6_zhuan();
     }
     if (progg == 3) {
-        Paw_open();
+        Camera_down();
+        Stop(1000);
+        Turn_Right25();
     }
     if (progg == 4) {
         while (hwr != 0) {

@@ -10,9 +10,8 @@
 #include "turn.h"
 #include "bsp_lcd.h"
 #include "bsp_vision.h"
-int8_t r;
-int8_t g;
-int8_t b;
+#include "bsp_qr.h"
+
 /**
  * @brief 台1到台2
  */
@@ -36,46 +35,51 @@ void Tai1_Tai2(void)
  */
 void Tai2_Treasure_Detect(void)
 {
-    // UP_Tai2();
-    // Stop(40);
-    // Tai2_zhuan90();
+    UP_Tai2();
+    Stop(40);
+    Get_QR();
+    Tai2_zhuan90_1();
     Camera_down();
     Stop(2000);
     Detect_Color();
-    r=0;
-    g=0;
-    b=0;
-    while (r < 3 && g<3 && b<3)
-    {
-        if (openmv[2]== 1){
-            r++;
-        }
-        else if (openmv[2]== 2)
-        {
-            g++;
-        }
-        else if (openmv[2]== 3)
-        {
-            b++;
-        }
-        delay_ms(3);    
-    }
-    SHUT_UP();  
-    if (openmv[2] == 1) {
-        LCD_SetColor(LCD_RED);
-        LCD_FillRect(1, 1, 238, 238);
-    } else if (openmv[2] == 2) {
-        LCD_SetColor(LCD_GREEN);
-        LCD_FillRect(1, 1, 238, 238);
-    } else if (openmv[2] == 3) {
-        LCD_SetColor(LCD_BLUE);
-        LCD_FillRect(1, 1, 238, 238);
-    } else if (openmv[2] == 0) {
-        LCD_SetColor(LCD_WHITE);
-        LCD_FillRect(1, 1, 238, 238);
-    }
+    Get_Color();
+    Camera_up();
+    Tai2_zhuan90_2();
+    
+}
+/**
+ * @brief 定位符合颜色的宝物
+ */
+void Treasure_Locator(void)
+{
+   Camera_down();
+   Locate_treasure();
+   Delay_s(1);
+   if(openmv[2] == 6){
+    Run_delay(-20,750);
+    Catch();
+   }
+//    else
+//    {
+//       Turn_Left25();
+//    }
+//    Delay_s(1);
+//    if(openmv[2] == 6){
+//     Run_delay(-20,750);
+//     Catch();
+//    }
+//    else{
+//       Turn_Right50();
+//    }
+//    Delay_s(1);
+//    if(openmv[2] == 6){
+//     Run_delay(-20,750);
+//     Catch();
+//    }
+
 
 }
+
 /**
  * @brief 台2到台3
  */

@@ -76,15 +76,20 @@ void Tai1_6_zhuan(void)
     Stop(250);
     Front_up_High();
     Deg_IN();
-    for (int x = 55; x < 110; x++) {
+    for (int x = 60; x < 110; x++) {
         run(x * 0.86, -x * 0.94);
         Delay_ms(8); //
     }
+    // run_delay(90,-90*m_diff(90),350);
     pid_Turn(500);
-    Stop(50);
-    Front_down();
+    // Stop(50);
+    // Front_down();
 }
-void Tai2_zhuan90(void)
+/**
+ * @brief 台2转九十度1
+ *
+ */
+void Tai2_zhuan90_1(void)
 {
     Stop(100);
     HWT101_to_0();
@@ -92,12 +97,73 @@ void Tai2_zhuan90(void)
     Front_up_High();
     Deg_IN();
     for (int x = 55; x < 85; x++) {
-        run(x * 0.98, -x * 0.89);
+        run(x * 0.90, -x * 0.89);//98
         Delay_ms(8); //
     }
     pid_Turn_Right90(500);
     Stop(50);
     Front_down();
+}
+/**
+ * @brief 台2转九十度2
+ *
+ */
+void Tai2_zhuan90_2(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Front_up_High();
+    Deg_IN();
+    for (int x = 55; x < 85; x++) {
+        run(x * 0.90, -x * 0.89);//98
+        Delay_ms(8); //
+    }
+    pid_Turn_Right90(500);
+    Stop(50);
+    Front_down();
+}
+/**
+ * @brief 左转25度
+ *
+ */
+void Turn_Left25(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Deg_IN();
+    pid_Turn_Left25(500);
+    Stop(50);
+}
+/**
+ * @brief 右转25度
+ *
+ */
+void Turn_Right25(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Deg_IN();
+    run(30, -30);//98
+    Delay_ms(50);
+    Stop(10); //
+    pid_Turn_Right25(500);
+    Stop(50);
+}
+/**
+ * @brief 右转50度
+ *
+ */
+void Turn_Right50(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Deg_IN();
+    pid_Turn_Right50(1000);
+    Stop(50);
 }
 /**
  * @brief 中平台掉头转180

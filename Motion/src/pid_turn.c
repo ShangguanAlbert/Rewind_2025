@@ -218,6 +218,78 @@ void pid_Turn_Right90(int turn_time)
     Stop(50);
 }
 /**
+ * @brief 小车从0度（360度）向左转到25度
+ * @param turn_time 转动时间（毫秒）
+ */
+void pid_Turn_Left25(int turn_time)
+{
+    const int32_t TARGET_ANGLE = 25;
+    // 初始化计时器
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        // 控制电机转向
+        run(-speed_adj, speed_adj);
+        if (t3_i > turn_time) {
+            break;
+        }
+    } while (1);
+    // 停止并清理
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+    Stop(50);
+}
+/**
+ * @brief 小车从0度（360度）向右转到25度
+ * @param turn_time 转动时间（毫秒）
+ */
+void pid_Turn_Right25(int turn_time)
+{
+    const int32_t TARGET_ANGLE = 335;
+    // 初始化计时器
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        // 控制电机转向
+        run(-speed_adj, speed_adj);
+        if (t3_i > turn_time) {
+            break;
+        }
+    } while (1);
+    // 停止并清理
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+    Stop(50);
+}
+/**
+ * @brief 小车从0度（360度）向右转到25度
+ * @param turn_time 转动时间（毫秒）
+ */
+void pid_Turn_Right50(int turn_time)
+{
+    const int32_t TARGET_ANGLE = 310;
+    // 初始化计时器
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        speed_adj = pid_calc(&pid_yaw, JD, TARGET_ANGLE);
+        // 控制电机转向
+        run(-speed_adj, speed_adj);
+        if (t3_i > turn_time) {
+            break;
+        }
+    } while (1);
+    // 停止并清理
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+    Stop(50);
+}
+/**
  * @brief 左转90度
  * @param turn_time 转动时间（毫秒）
  */

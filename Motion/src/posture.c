@@ -9,9 +9,16 @@
 #include "turn.h"
 #include "basic.h"
 #include "bsp_timer.h"
+#include "bsp_vision.h"
+#include "bsp_lcd.h"
+#include "bsp_qr.h"
 
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
+extern uint8_t qr_flag;
+int8_t r;
+int8_t g;
+int8_t b;
 
 /**
  * @brief 放下前铲
@@ -73,6 +80,16 @@ void Camera_up(void)
     Servo_SetAngle(1, 63); 
 }
 /**
+ * @brief 抓宝
+ */
+void Catch(void)
+{
+    Paw_close();
+    Stop(1000);
+    Camera_up();
+    Paw_open();
+}
+/**
  * @brief 低速下平台
  */
 void down_pt1_6(void)
@@ -102,33 +119,33 @@ void UP_Tai2_6(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(48, 45);
+            run(45, 48);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
     Front_mid();
-    Run_delay(45, 100);
+    Run_delay(45, 150);
     while (1) {
-        slow_run(45);
+        run(45,45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
     while (1) {
-        slow_run(45);
+        run(45,45);
         if (hdxl == 1 || hdxr == 1) {
             break;
         }
     }
-    Run_delay(45, 100);
-    while (1) {
-        slow_run(45);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }
-    }
+    // Run_delay(45, 100);
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 0 || hdxr == 0) {
+    //         break;
+    //     }
+    // }
 
     Tai1_6_zhuan();
 }
@@ -146,7 +163,7 @@ void UP_Tai2(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(46, 45);
+            run(45, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -606,3 +623,65 @@ void Go_BLB(void)
     //过波浪板
     Reset(1600, 45);
 }
+/**
+ * @brief 获取颜色信息
+ *
+ */
+void Get_Color(void)
+{
+    while (1)
+    {
+        if (openmv[2]!=0)
+        {
+            break;
+        }       
+    }
+    r=0;
+    g=0;
+    b=0;
+    while (r < 3 && g<3 && b<3)
+    {
+        if (openmv[2]== 1){
+            r++;
+        }
+        else if (openmv[2]== 2)
+        {
+            g++;
+        }
+        else if (openmv[2]== 3)
+        {
+            b++;
+        }
+        delay_ms(5);   
+    } 
+    if (r>=3) {
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (g>=3) {
+        LCD_SetColor(LCD_GREEN);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (b>=3) {
+        LCD_SetColor(LCD_BLUE);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 0) {
+        LCD_SetColor(LCD_WHITE);
+        LCD_FillRect(1, 1, 238, 238);
+    }
+    SHUT_UP();
+}
+/**
+ * @brief 获取二维码信息
+ *
+ */
+void Get_QR(void)
+{
+    LCD_Clear(); // 清屏，黑色背景
+    while (1) {
+        QR_Process();  // 处理二维码数据
+        if (qr_flag == 1 ) {
+            break;
+        }
+        delay_ms(100); // 延时100ms，避免刷新过快
+    }
+}
+
