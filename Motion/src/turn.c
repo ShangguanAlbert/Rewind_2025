@@ -90,6 +90,7 @@ void Tai1_6_zhuan(void)
     HWT101_to_0();
     Stop(250);
     Front_up_High();
+    Stop(400);
     Deg_IN();
     for (int x = 70; x < 110; x++) {
         run(x * 0.86, -x * 0.94);
@@ -101,11 +102,27 @@ void Tai1_6_zhuan(void)
     // }
     // run_delay(90,-90*m_diff(90),350);
     
-    pid_Turn(400);
+    pid_Turn(800);
     // Stop(50);
     //Front_down();
 }
-
+/**
+ * @brief 低平台转180度
+ * 
+ */
+void Tai1_6_zhuan1(void)
+{
+    Stop(100);
+    HWT101_to_0();
+    Stop(250);
+    Front_up_High();
+    Stop(400);
+    Deg_IN();
+    run_delay(150,-150,200);
+    pid_Turn(800);
+    
+    
+}
 
 void turn_around_180(void)
 {
@@ -157,7 +174,7 @@ void Tai2_zhuan90_1(void)
     }
     pid_Turn_Right90(500);
     Stop(50);
-    Front_down();
+    // Front_down();
 }
 /**
  * @brief 台2转九十度2

@@ -14,6 +14,7 @@ void Front_up_High(void);
 void Paw_open(void);
 void Paw_close(void);
 void Camera_down(void);
+void Camera_down_low(void);
 void Camera_up(void);
 void Camera_up_hight(void);
 void Catch(void);

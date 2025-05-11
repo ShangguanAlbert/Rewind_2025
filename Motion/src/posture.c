@@ -88,6 +88,13 @@ void Camera_down(void)
  Servo_SetAngle(1, 0); 
 }
 /**
+ * @brief 放下摄像头
+ */
+void Camera_down_low(void)
+{
+ Servo_SetAngle(1, 0); 
+}
+/**
  * @brief 抬起摄像头
  */
 void Camera_up(void)
@@ -144,7 +151,7 @@ void UP_Tai2_6(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(45, 48);
+            run(45, 45);
         }
         if (hdxl == 0 || hdxr == 0) {//腰灯扫到红线
             break;
@@ -175,7 +182,7 @@ void UP_Tai2_6(void)
     // }
     Stop(40);
     Tai1_6_zhuan();
-    Stop (50);
+    // Stop (50);
 }
 
 

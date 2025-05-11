@@ -17,9 +17,9 @@ float KP;
 float KD;
 extern float JD;
 
-int32_t thr_whiteline[] = thr_line;//判线阈值
-int32_t white[]         = thr_white;//白线阈值
-int32_t green[]         = thr_green;//绿地阈值
+int32_t thr_whiteline[] = thr_line;  // 判线阈值
+int32_t white[]         = thr_white; // 白线阈值
+int32_t green[]         = thr_green; // 绿地阈值
 /**
  * @brief 获取灰度信息
  */
@@ -45,37 +45,37 @@ void Trace(void)
         Huidu_va(4) > white[4] && Huidu_va(5) > white[5] && Huidu_va(6) > white[6] &&
         Huidu_va(7) > white[7] && Huidu_va(8) > white[8] && Huidu_va(9) > white[9] &&
         Huidu_va(10) > white[10]) {
-        error = 0;//在全白地面行驶
+        error = 0; // 在全白地面行驶
     } else if (Huidu_va(1) < green[1] && Huidu_va(2) < green[2] && Huidu_va(3) < green[3] &&
                Huidu_va(4) < green[4] && Huidu_va(5) < green[5] && Huidu_va(6) < green[6] &&
                Huidu_va(7) < green[7] && Huidu_va(8) < green[8] && Huidu_va(9) < green[9] &&
                Huidu_va(10) < green[10]) {
-        error = 0;//在绿地上
+        error = 0; // 在绿地上
     } else if (Huidu_va(5) > white[5] && Huidu_va(6) > white[6]) {
-        error = 0;//白线位于灰度灯5,6之间
+        error = 0; // 白线位于灰度灯5,6之间
     } else if ((Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) &&
                (Huidu_va(0) > white[0] || Huidu_va(1) > white[1])) {
-        error = 0;//中间的灰度灯和右边的灰度灯同时位于白线上（干扰线）
+        error = 0; // 中间的灰度灯和右边的灰度灯同时位于白线上（干扰线）
     } else if ((Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) &&
                (Huidu_va(11) > white[11] || Huidu_va(10) > white[10])) {
-        error = 0;//中间的灰度灯和左边的灰度灯同时位于白线上（干扰线）
+        error = 0; // 中间的灰度灯和左边的灰度灯同时位于白线上（干扰线）
     } else if (cnt_whiteline >= 3 || (cnt_whiteline >= 2 && (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]))) {
-        error = 0;//有三个灰度灯扫到白线 或者 5，6灰度灯扫到白线的同时总白线数大于等于2
+        error = 0; // 有三个灰度灯扫到白线 或者 5，6灰度灯扫到白线的同时总白线数大于等于2
     } else {
         Gray_sum = Huidu_va(0) * (3) +
                    Huidu_va(1) * (5) + Huidu_va(2) * (4) + Huidu_va(3) * (3) + Huidu_va(4) * (2) +
                    Huidu_va(5) * (1) + Huidu_va(6) * (-1) +
                    Huidu_va(7) * (-2) + Huidu_va(8) * (-3) + Huidu_va(9) * (-4) + Huidu_va(10) * (-5) +
-                   Huidu_va(11) * (-3);//灰度值加权和
-        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0);//误差
+                   Huidu_va(11) * (-3);                // 灰度值加权和
+        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0); // 误差
     }
 
-    motorSpeed   = KP * error + KD * (error - lastError);//修正值
-    lastError    = error;//将这一次的偏差记为上一次的偏差
-    mSpeed_right = speed - motorSpeed; // 右轮速度
-    mSpeed_left  = speed + motorSpeed; // 左轮速度
-    lastm1Speed  = mSpeed_right;//记录右轮速度
-    lastm2Speed  = mSpeed_left;//记录左轮速度
+    motorSpeed   = KP * error + KD * (error - lastError); // 修正值
+    lastError    = error;                                 // 将这一次的偏差记为上一次的偏差
+    mSpeed_right = speed - motorSpeed;                    // 右轮速度
+    mSpeed_left  = speed + motorSpeed;                    // 左轮速度
+    lastm1Speed  = mSpeed_right;                          // 记录右轮速度
+    lastm2Speed  = mSpeed_left;                           // 记录左轮速度
     // 限幅
     if (speed <= 125) {
         if (mSpeed_right < 0) {
@@ -156,7 +156,7 @@ void Trace_transVelocity(void)
     }
 
     motorSpeed = KP * error + KD * (error - lastError);
-    //限制轮速调节值
+    // 限制轮速调节值
     if (motorSpeed > 20) {
         motorSpeed = 20; // 20
     }
@@ -242,6 +242,18 @@ void slow_run(int N)
         KP = 0.00413;
         KD = 0.17;
     }
+    Trace();
+}
+/**
+ * @brief 低速巡线
+ * @param N 设定的速度
+ */
+void slow_run1(int N)
+{
+    get_huidu_va();
+    speed = N;
+    KP = 0.01;
+    KD = 0.2;
     Trace();
 }
 /**
@@ -543,16 +555,13 @@ void Straight(int time)
     t3_i = 0;
 }
 
-
-void txs_trace(void){
+void txs_trace(void)
+{
     int jd = compass_b();
-    if(jd < 180){
-         run_delay(50+jd*2,50-jd*2,10);
-     }
-    else if(jd > 180){
-    run_delay(50-(360-jd)*2,50+(360-jd)*2,10);
-     }
-    else
-    run_delay(50,50,10);
-    }
-
+    if (jd < 180) {
+        run_delay(50 + jd * 2, 50 - jd * 2, 10);
+    } else if (jd > 180) {
+        run_delay(50 - (360 - jd) * 2, 50 + (360 - jd) * 2, 10);
+    } else
+        run_delay(50, 50, 10);
+}

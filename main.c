@@ -47,23 +47,33 @@ int main(void)
     KEY_Init();
     GPIO_HW_Init();
     GPIO_HDLR_Init();
-    pid_init(&pid_yaw, 60, 10, 1, 1, 5);
+    // pid_init(&pid_yaw, 60, 10, 2, 1.5, 10);
+    pid_init(&pid_yaw, 60, 10, 3.6, 2, 3);
     pid_init(&pid_yaw1, 60, 10, 4, 2, 3);
     Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
-        // UP_Tai2_6();
-        Treasure_Locator();
+        UP_Tai2_6();
+        Front_down();
+        Stop(500);
+        Treasure_Locator3();
     }
     if (progg == 2) {
-        UP_Tai2_6();
-        // Tai1_6_zhuan();
-        // Front_up_High();
+        // UP_Tai2_6();
+        // Camera_down();
+        // Front_down();
         // Stop(500);
-        // run_delay(60,-60*m_diff(60),2000);
-        // HWT101_to_0();
-        // turn_around_180();
+        // while (1)
+        // {
+        //     slow_run(20);
+        //     if(hdxl==0&&hdxr==0)
+        //     {
+        //         break;
+        //     }
+        // }
+        // Reset(200, 20);
+        Camera_down_low();
     }
     if (progg == 3) {
         Camera_down();
@@ -71,7 +81,6 @@ int main(void)
         // Turn_Right25();
         Detect_Color();
         Get_Traget_Color();
-
     }
     if (progg == 4) {
         Turn_Left25();

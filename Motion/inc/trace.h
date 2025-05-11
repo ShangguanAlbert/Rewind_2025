@@ -20,6 +20,7 @@ void Trace(void);
 void Trace_transVelocity(void);
 void high_run(int N);
 void slow_run(int N);
+void slow_run1(int N);
 void speed_up(int start, int end);
 void speed_down(int high, int low);
 void speed_up_high(int start, int end);

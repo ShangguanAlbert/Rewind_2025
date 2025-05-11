@@ -6,6 +6,7 @@ void TurnRight_135_Longline(void);
 void TurnLeft_135_Longline(void);
 void TurnLeft_135_Longline2(void);
 void Tai1_6_zhuan(void);
+void Tai1_6_zhuan1(void);
 void turn_around_180(void);
 void Tai2_zhuan90_1(void);
 void Tai2_zhuan90_2(void);

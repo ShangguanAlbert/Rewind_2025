@@ -6,6 +6,8 @@
 void Tai1_Tai2(void);
 void Tai2_Treasure_Detect(void);
 void Treasure_Locator(void);
+void Treasure_Locator2(void);
+void Treasure_Locator3(void);
 void Tai2_Tai3(void);
 void Tai2_Tai4(void);
 void Tai3_door1_Tai5(void);
