@@ -252,8 +252,8 @@ void slow_run1(int N)
 {
     get_huidu_va();
     speed = N;
-    KP = 0.01;
-    KD = 0.2;
+    KP    = 0.01;
+    KD    = 0.2;
     Trace();
 }
 /**

@@ -4,11 +4,11 @@
 #include "posture.h"
 #include "basic.h"
 
-pid_t_robomaster pid_yaw = {0}; // 结构体：存储PID参数和计算中间值
+pid_t_robomaster pid_yaw  = {0}; // 结构体：存储PID参数和计算中间值
 pid_t_robomaster pid_yaw1 = {0}; // 结构体：存储PID参数和计算中间值
 
-extern float JD; //角度（单精度）
-extern float XJD; //角度（双精度）
+extern float JD;  // 角度（单精度）
+extern float XJD; // 角度（双精度）
 float GJD;
 float MJD;
 float WJD;
@@ -361,180 +361,179 @@ void pid_Turn_Left90(int turn_time)
     Stop(50);
 }
 
+// /* - PID转向 2024.7.9 - */
+// PID_Turn_Params pid_comp_params;
 
-/* - PID转向 2024.7.9 - */
-PID_Turn_Params pid_comp_params;
+// float angle_cnt = 0; // 给此时角度赋初值
 
-float angle_cnt = 0; // 给此时角度赋初值
-
-/**
- * @brief PID结构体初始化函数
- * @param pid_comp PID结构体
- * @param p P参数
- * @param i I参数
- * @param d D参数
- * @param max_sum_error 最大累计误差
- */
-void Set_PID_turn_params(PID_Turn_Params *pid_comp, float p, float i, float d, float max_sum_error)
-{
-    pid_comp->kp          = p;
-    pid_comp->ki          = i;
-    pid_comp->kd          = d;
-    pid_comp->sum_err     = 0;
-    pid_comp->max_sum_err = max_sum_error;
-}
-/**
- * @brief PID右转计算
- * @param pid_comp PID结构体
- * @param angle_target 目标角度
- * @param vmax 最大转速
- * @param vmin 最小转速
- */
-void PID_Calculate_Right(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin)
-{
-    // 从左往右转 -- 0-360
-    int angle_now;
-    angle_now     = compass_b();
-    pid_comp->err = angle_now - angle_target;
-    if (fabs(pid_comp->err) > 40.0) {
-        // 不调用PID
-        run(vmax, -vmax);
-    } else if (fabs(pid_comp->err) < 4.0) {
-        stop();
-    } else {
-        // 调用PID
-        pid_comp->sum_err += pid_comp->err; // 偏左正，偏右负
-        pid_comp->sum_err  = pid_comp->sum_err > pid_comp->max_sum_err ? pid_comp->max_sum_err : pid_comp->sum_err;
-        pid_comp->out      = pid_comp->kp * pid_comp->err + pid_comp->ki * pid_comp->sum_err + pid_comp->kd * (pid_comp->err - pid_comp->err_last);
-        pid_comp->err_last = pid_comp->err;
-        run(vmin + pid_comp->out, -vmin - pid_comp->out);
-    }
-}
-/**
- * @brief PID左转计算
- * @param pid_comp PID结构体
- * @param angle_target 目标角度
- * @param vmax 最大转速
- * @param vmin 最小转速
- */
-void PID_Calculate_Left(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin)
-{
-    // 从右往左转 -- 0-360
-    int angle_now;
-    angle_now     = compass_b();
-    pid_comp->err = angle_target - angle_now;
-    if (fabs(pid_comp->err) > 40.0) {
-        // 不调用PID
-        run(-vmax, vmax);
-    } else if (fabs(pid_comp->err) < 4.0) {
-        stop();
-    } else {
-        // 调用PID
-        pid_comp->sum_err += pid_comp->err;                                                                         // 偏左负，偏右正
-        pid_comp->sum_err  = pid_comp->sum_err > pid_comp->max_sum_err ? pid_comp->max_sum_err : pid_comp->sum_err; // 负值限幅?还没写
-        pid_comp->out      = pid_comp->kp * pid_comp->err + pid_comp->ki * pid_comp->sum_err + pid_comp->kd * (pid_comp->err - pid_comp->err_last);
-        pid_comp->err_last = pid_comp->err;
-        run(-vmin - pid_comp->out, vmin + pid_comp->out);
-    }
-}
-/**
- * @brief PID平台回转180计算
- * @param pid_comp PID结构体
- * @param angle_target 目标角度
- * @param vmax 最大转速
- * @param vmin 最小转速
- */
-void PID_Calculate_Around(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin)
-{
-    // 从左往右转 -- 0-360
-    int angle_now;
-    angle_now     = compass_b();
-    pid_comp->err = angle_now - angle_target;
-    if (fabs(pid_comp->err) > 35.0) {
-        // 不调用PID
-        run(vmax, -vmax + 15);
-    } else if (fabs(pid_comp->err) < 5.0) {
-        stop();
-    } else {
-        // 调用PID
-        pid_comp->sum_err += pid_comp->err; // 偏左正，偏右负
-        pid_comp->sum_err  = pid_comp->sum_err > pid_comp->max_sum_err ? pid_comp->max_sum_err : pid_comp->sum_err;
-        pid_comp->out      = pid_comp->kp * pid_comp->err + pid_comp->ki * pid_comp->sum_err + pid_comp->kd * (pid_comp->err - pid_comp->err_last);
-        pid_comp->err_last = pid_comp->err;
-        run(vmin + pid_comp->out, -vmin - pid_comp->out + 15);
-    }
-}
-/**
- * @brief PID右转 要多写10度
- *
- * @param angle_target 目标角度
- * @param time 时间
- * @param speed 最大速度
- */
-void PID_TurnRight(int angle_target, int time, int speed)
-{
-    Stop(100);
-    HWT101_to_0();
-    Stop(250);
-    t3_i = 0;
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    do {
-        PID_Calculate_Right(&pid_comp_params, angle_target, speed, 20);
-    } while (t3_i < time);
-    TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
-    t3_i = 0;
-    stop();
-    pid_comp_params.err      = 0;
-    pid_comp_params.err_last = 0;
-    pid_comp_params.sum_err  = 0;
-    pid_comp_params.out      = 0;
-}
-/**
- * @brief PID左转 要少写十度
- *
- * @param angle_target 目标角度
- * @param time 时间
- * @param speed 最大速度
- */
-void PID_TurnLeft(int angle_target, int time, int speed)
-{
-    Stop(100);
-    HWT101_to_0();
-    Stop(250);
-    t3_i = 0;
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    do {
-        PID_Calculate_Left(&pid_comp_params, angle_target, speed, 20);
-    } while (t3_i < time);
-    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
-    t3_i = 0;
-    stop();
-    pid_comp_params.err      = 0;
-    pid_comp_params.err_last = 0;
-    pid_comp_params.sum_err  = 0;
-    pid_comp_params.out      = 0;
-}
-/**
- * @brief PID平台转180度
- *
- * @param deg 目标角度
- * @param time 时间
- */
-void PID_TurnAround(int deg, int time)
-{
-    Stop(100);
-    HWT101_to_0();
-    Stop(250);
-    t3_i = 0;
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    do {
-        PID_Calculate_Around(&pid_comp_params, deg, 100, 35);
-    } while (t3_i < time);
-    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
-    t3_i = 0;
-    stop();
-    pid_comp_params.err      = 0;
-    pid_comp_params.err_last = 0;
-    pid_comp_params.sum_err  = 0;
-    pid_comp_params.out      = 0;
-}
+// /**
+//  * @brief PID结构体初始化函数
+//  * @param pid_comp PID结构体
+//  * @param p P参数
+//  * @param i I参数
+//  * @param d D参数
+//  * @param max_sum_error 最大累计误差
+//  */
+// void Set_PID_turn_params(PID_Turn_Params *pid_comp, float p, float i, float d, float max_sum_error)
+// {
+//     pid_comp->kp          = p;
+//     pid_comp->ki          = i;
+//     pid_comp->kd          = d;
+//     pid_comp->sum_err     = 0;
+//     pid_comp->max_sum_err = max_sum_error;
+// }
+// /**
+//  * @brief PID右转计算
+//  * @param pid_comp PID结构体
+//  * @param angle_target 目标角度
+//  * @param vmax 最大转速
+//  * @param vmin 最小转速
+//  */
+// void PID_Calculate_Right(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin)
+// {
+//     // 从左往右转 -- 0-360
+//     int angle_now;
+//     angle_now     = compass_b();
+//     pid_comp->err = angle_now - angle_target;
+//     if (fabs(pid_comp->err) > 40.0) {
+//         // 不调用PID
+//         run(vmax, -vmax);
+//     } else if (fabs(pid_comp->err) < 4.0) {
+//         stop();
+//     } else {
+//         // 调用PID
+//         pid_comp->sum_err += pid_comp->err; // 偏左正，偏右负
+//         pid_comp->sum_err  = pid_comp->sum_err > pid_comp->max_sum_err ? pid_comp->max_sum_err : pid_comp->sum_err;
+//         pid_comp->out      = pid_comp->kp * pid_comp->err + pid_comp->ki * pid_comp->sum_err + pid_comp->kd * (pid_comp->err - pid_comp->err_last);
+//         pid_comp->err_last = pid_comp->err;
+//         run(vmin + pid_comp->out, -vmin - pid_comp->out);
+//     }
+// }
+// /**
+//  * @brief PID左转计算
+//  * @param pid_comp PID结构体
+//  * @param angle_target 目标角度
+//  * @param vmax 最大转速
+//  * @param vmin 最小转速
+//  */
+// void PID_Calculate_Left(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin)
+// {
+//     // 从右往左转 -- 0-360
+//     int angle_now;
+//     angle_now     = compass_b();
+//     pid_comp->err = angle_target - angle_now;
+//     if (fabs(pid_comp->err) > 40.0) {
+//         // 不调用PID
+//         run(-vmax, vmax);
+//     } else if (fabs(pid_comp->err) < 4.0) {
+//         stop();
+//     } else {
+//         // 调用PID
+//         pid_comp->sum_err += pid_comp->err;                                                                         // 偏左负，偏右正
+//         pid_comp->sum_err  = pid_comp->sum_err > pid_comp->max_sum_err ? pid_comp->max_sum_err : pid_comp->sum_err; // 负值限幅?还没写
+//         pid_comp->out      = pid_comp->kp * pid_comp->err + pid_comp->ki * pid_comp->sum_err + pid_comp->kd * (pid_comp->err - pid_comp->err_last);
+//         pid_comp->err_last = pid_comp->err;
+//         run(-vmin - pid_comp->out, vmin + pid_comp->out);
+//     }
+// }
+// /**
+//  * @brief PID平台回转180计算
+//  * @param pid_comp PID结构体
+//  * @param angle_target 目标角度
+//  * @param vmax 最大转速
+//  * @param vmin 最小转速
+//  */
+// void PID_Calculate_Around(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin)
+// {
+//     // 从左往右转 -- 0-360
+//     int angle_now;
+//     angle_now     = compass_b();
+//     pid_comp->err = angle_now - angle_target;
+//     if (fabs(pid_comp->err) > 35.0) {
+//         // 不调用PID
+//         run(vmax, -vmax + 15);
+//     } else if (fabs(pid_comp->err) < 5.0) {
+//         stop();
+//     } else {
+//         // 调用PID
+//         pid_comp->sum_err += pid_comp->err; // 偏左正，偏右负
+//         pid_comp->sum_err  = pid_comp->sum_err > pid_comp->max_sum_err ? pid_comp->max_sum_err : pid_comp->sum_err;
+//         pid_comp->out      = pid_comp->kp * pid_comp->err + pid_comp->ki * pid_comp->sum_err + pid_comp->kd * (pid_comp->err - pid_comp->err_last);
+//         pid_comp->err_last = pid_comp->err;
+//         run(vmin + pid_comp->out, -vmin - pid_comp->out + 15);
+//     }
+// }
+// /**
+//  * @brief PID右转 要多写10度
+//  *
+//  * @param angle_target 目标角度
+//  * @param time 时间
+//  * @param speed 最大速度
+//  */
+// void PID_TurnRight(int angle_target, int time, int speed)
+// {
+//     Stop(100);
+//     HWT101_to_0();
+//     Stop(250);
+//     t3_i = 0;
+//     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+//     do {
+//         PID_Calculate_Right(&pid_comp_params, angle_target, speed, 20);
+//     } while (t3_i < time);
+//     TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
+//     t3_i = 0;
+//     stop();
+//     pid_comp_params.err      = 0;
+//     pid_comp_params.err_last = 0;
+//     pid_comp_params.sum_err  = 0;
+//     pid_comp_params.out      = 0;
+// }
+// /**
+//  * @brief PID左转 要少写十度
+//  *
+//  * @param angle_target 目标角度
+//  * @param time 时间
+//  * @param speed 最大速度
+//  */
+// void PID_TurnLeft(int angle_target, int time, int speed)
+// {
+//     Stop(100);
+//     HWT101_to_0();
+//     Stop(250);
+//     t3_i = 0;
+//     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+//     do {
+//         PID_Calculate_Left(&pid_comp_params, angle_target, speed, 20);
+//     } while (t3_i < time);
+//     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+//     t3_i = 0;
+//     stop();
+//     pid_comp_params.err      = 0;
+//     pid_comp_params.err_last = 0;
+//     pid_comp_params.sum_err  = 0;
+//     pid_comp_params.out      = 0;
+// }
+// /**
+//  * @brief PID平台转180度
+//  *
+//  * @param deg 目标角度
+//  * @param time 时间
+//  */
+// void PID_TurnAround(int deg, int time)
+// {
+//     Stop(100);
+//     HWT101_to_0();
+//     Stop(250);
+//     t3_i = 0;
+//     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+//     do {
+//         PID_Calculate_Around(&pid_comp_params, deg, 100, 35);
+//     } while (t3_i < time);
+//     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+//     t3_i = 0;
+//     stop();
+//     pid_comp_params.err      = 0;
+//     pid_comp_params.err_last = 0;
+//     pid_comp_params.sum_err  = 0;
+//     pid_comp_params.out      = 0;
+// }

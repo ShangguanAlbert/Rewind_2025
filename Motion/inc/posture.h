@@ -2,7 +2,7 @@
 #define __POSTURE_H
 #include "stm32f10x.h"
 
-#define outline (Huidu_va(0) < 200 && Huidu_va(1) < 200 && Huidu_va(2) < 200 && Huidu_va(3) < 200 && Huidu_va(4) < 200 && Huidu_va(5) < 200 && Huidu_va(6) < 200 && Huidu_va(7) < 200 && Huidu_va(8) < 200 && Huidu_va(9) < 200 && Huidu_va(10) < 200 && Huidu_va(11) < 200)
+#define outline       (Huidu_va(0) < 200 && Huidu_va(1) < 200 && Huidu_va(2) < 200 && Huidu_va(3) < 200 && Huidu_va(4) < 200 && Huidu_va(5) < 200 && Huidu_va(6) < 200 && Huidu_va(7) < 200 && Huidu_va(8) < 200 && Huidu_va(9) < 200 && Huidu_va(10) < 200 && Huidu_va(11) < 200)
 #define Detect_NoLine Huidu_va(0) < 200 && Huidu_va(1) < 200 && Huidu_va(2) < 200 && Huidu_va(3) < 200 && Huidu_va(4) < 200 && Huidu_va(5) < 200 && \
                           Huidu_va(6) < 200 && Huidu_va(7) < 200 && Huidu_va(8) < 200 && Huidu_va(9) < 200 && Huidu_va(10) < 200 &&                 \
                           Huidu_va(11) < 200

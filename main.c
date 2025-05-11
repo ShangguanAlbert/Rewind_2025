@@ -27,7 +27,11 @@ uint8_t progg;
 
 extern int32_t white[];
 extern int8_t OpenMV;
-
+extern float JD;
+extern float XJD;
+extern float GJD;
+extern float MJD;
+extern float WJD;
 int main(void)
 {
     SysTick_Init();
@@ -50,7 +54,7 @@ int main(void)
     // pid_init(&pid_yaw, 60, 10, 2, 1.5, 10);
     pid_init(&pid_yaw, 60, 10, 3.6, 2, 3);
     pid_init(&pid_yaw1, 60, 10, 4, 2, 3);
-    Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
+    // Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
@@ -102,6 +106,21 @@ int main(void)
         Camera_up_hight();
     }
     if (progg == 8) {
+        // while (1) {
+        //     Deg_IN();
+        //     LCD_SetDirection(Direction_H_Flip);
+        //     LCD_ShowNumMode(Fill_Space);
+        //     LCD_DisplayString(5, 35, "JD:");
+        //     LCD_DisplayNumber(70, 35, JD, 4);
+        //     LCD_DisplayString(5, 60, "XJD:");
+        //     LCD_DisplayNumber(70, 60, XJD, 4);
+        //     LCD_DisplayString(5, 85, "GJD:");
+        //     LCD_DisplayNumber(70, 85, GJD, 4);
+        //     LCD_DisplayString(5, 110, "MJD:");
+        //     LCD_DisplayNumber(70, 110, MJD, 4);
+        //     LCD_DisplayString(5, 135, "WJD:");
+        //     LCD_DisplayNumber(70, 135, WJD, 4);
+        // };
         Show_SensorPage_All();
     }
     stop();
