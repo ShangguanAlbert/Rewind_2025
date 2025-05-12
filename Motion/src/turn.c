@@ -89,7 +89,7 @@ void Tai1_6_zhuan(void)
     Stop(100);
     HWT101_to_0();
     Stop(250);
-    Front_up_High();
+    Front_up();
     Stop(400);
     Deg_IN();
     for (int x = 70; x < 110; x++) {

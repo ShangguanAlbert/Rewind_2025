@@ -1,6 +1,9 @@
 #include "trace.h"
 #include "bsp_compass.h"
 #include "pid_turn.h"
+#include "bsp_sensor.h"
+#include "bsp_servo.h"
+#include "posture.h"
 
 int Gray_sum;
 int speed;
@@ -538,6 +541,28 @@ void Straight_run(int speed)
     }
 }
 
+void Straight_run_back(int speed)
+{
+    if (JD > 180) {
+        JD = JD - 360;
+    }
+    if (-2 < JD && JD < 2) {
+        Run(-speed);
+    } else if (JD > 0) {
+        if (JD < 5) {
+            run(-speed - 3, -speed);
+        } else if (JD < 10) {
+            run(-speed - 10, -speed);
+        }
+    } else if (JD < 0) {
+        if (JD > -5) {
+            run(-speed, -speed - 3);
+        } else if (JD > -10) {
+            run(-speed, -speed - 10);
+        }
+    }
+}
+
 /**
  * @brief 无白线直走
  */
@@ -553,6 +578,33 @@ void Straight(int time)
     } while (Huidu_va(10) < white[10] || Huidu_va(11) < white[11] || t3_i > time);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
+}
+
+void Straight_back(void)
+{
+    Front_up();
+    Stop(250);
+    HWT101_to_0();
+    Stop(200);
+    Deg_IN();
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (t3_i < 800) {
+        Straight_run_back(45);
+        if (hdxl == 0 || hdxr == 0) break;
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        Straight_run_back(45);
+        // if(hdxl == 0 || hdxr == 0) break;
+    } while (t3_i < 300);
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
 }
 
 void txs_trace(void)

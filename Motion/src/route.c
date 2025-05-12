@@ -15,6 +15,7 @@
 extern int8_t Traget_Color;
 extern int8_t NOW_Color;
 extern int8_t Turn_Or_Not;
+extern uint8_t cnt_whiteline;
 
 /**
  * @brief 台1到台2
@@ -98,23 +99,30 @@ void Treasure_Locator(void)
 }
 /**
  * @brief 定位符合颜色的宝物(方案二)
+ * 识别到一个就需要标记一下这是识别到的第几个宝物，不能一直扫不到就一直转，偏离可以写一个盲转
+ * 摄像头也要改，转弯不要平移
  */
 void Treasure_Locator2(void)
 {
     Camera_down();
-    // Delay_ms(500);
-    while (1) {
-        slow_run(20);
-        if (hdxl == 0 && hdxr == 0) {
-            break;
-        }
-    }
-    run_delay(-35, 35, 600);
-    Locate_treasure();
+    Delay_ms(500);
+    // Front_down();
+    // Stop(200);
+    // while (1) {
+    //     get_huidu_va();
+    //     slow_run(20);
+    //     if (cnt_whiteline > 0) {
+    //         break;
+    //     }
+    // }
+    // stop();
+    run_delay(-38, 38, 800);
     Stop(600);
+    Locate_treasure();
+    Stop(1000);
     while (1) {
-        run(30, -30);
-        if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3 || openmv[2] == 6) {
+        run(38, -38);
+        if ( openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3 || openmv[2] == 6) {
             break;
         }
     }
@@ -124,22 +132,42 @@ void Treasure_Locator2(void)
  */
 void Treasure_Locator3(void)
 {
+    Front_down();
     while (1) {
         slow_run1(35);
         if (hwr == 0) {
             break;
         }
     }
-    // run_delay(-35,35,600);
-    // Locate_treasure();
-    // Stop(600);
-    // while (1)
-    // {
-    //     run(30,-30);
-    //     if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3||openmv[2] == 6) {
-    //         break;
-    //     }
-    // }
+    Stop(40);
+    run_delay(-35, 35, 600);
+    Locate_treasure();
+    Stop(1000);
+    while (1) {
+        run(35, -35);
+        if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3 || openmv[2] == 6) {
+            break;
+        }
+    }
+}
+
+/**
+ * @brief 抓宝方案四，先下台在后退上台确保转正
+ *
+ */
+void Treasure_Locator4(void)
+{
+    Front_down();
+    Stop(200);
+    while (1) {
+        get_huidu_va();
+        slow_run(20);
+        if (cnt_whiteline > 0) {
+            break;
+        }
+    }
+    slow_run1(35);
+    HWT101_to_0();
 }
 
 /**

@@ -18,6 +18,8 @@ void Camera_down_low(void);
 void Camera_up(void);
 void Camera_up_hight(void);
 void Catch(void);
+void Right_Catch(void);
+void Straight_Catch(void);
 void down_pt1_6(void);
 void UP_Tai2_6(void);
 void UP_Tai2_6_noline(void);

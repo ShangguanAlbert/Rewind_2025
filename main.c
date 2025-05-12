@@ -58,27 +58,25 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        UP_Tai2_6();
+        UP_Tai2_6_noline();
+        Stop(250);
         Front_down();
-        Stop(500);
-        Treasure_Locator3();
+        Stop(200);
+        while (1) {
+            slow_run(45);
+            if (hwr == 0) break;
+        }
+        Reset(300, 45);
+        Stop(300);
+        Straight_back();
+        Treasure_Locator2();
+        // Right_Catch();
+        // Treasure_Locator3();
     }
     if (progg == 2) {
-        // UP_Tai2_6();
-        // Camera_down();
-        // Front_down();
-        // Stop(500);
-        // while (1)
-        // {
-        //     slow_run(20);
-        //     if(hdxl==0&&hdxr==0)
-        //     {
-        //         break;
-        //     }
-        // }
-        // Reset(200, 20);
-        Camera_down_low();
+        Camera_down();
     }
+
     if (progg == 3) {
         Camera_down();
         Stop(1000);

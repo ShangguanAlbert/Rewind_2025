@@ -74,7 +74,7 @@ void Paw_open(void)
  */
 void Paw_close(void)
 {
-    Servo_SetAngle(3, 130);
+    Servo_SetAngle(3, 125);
 }
 /**
  * @brief 放下摄像头
@@ -114,6 +114,46 @@ void Catch(void)
     Camera_up_hight();
     Stop(1000);
     Paw_open();
+}
+/**
+ * @brief 车子右侧抓宝
+ * 
+ */
+void Right_Catch(void)
+{
+    run_delay(-45,-45,80);
+        while (1) {
+            run(-25, -25);
+            if (hdxr == 0) {
+                break;
+            }
+        }
+    run_delay(-30,-30,25);
+    Stop(40);
+    while (1) {
+        run(-25, -25);
+        if (hdxr == 1) {
+            break;
+        }
+    }   
+    stop(); 
+    Catch();
+}
+
+
+/**
+ * @brief 车子中间抓宝
+ * 
+ */
+void Straight_Catch(void)
+{
+    while (1) {
+        run(-25, -25);
+        if (hdxl == 1) {
+            break;
+        }
+    }
+    Catch();
 }
 /**
  * @brief 低速下平台
@@ -168,12 +208,12 @@ void UP_Tai2_6(void)
     }
     Run_delay(45, 150);
     // Run_delay(45, 100);
-    // while (1) {
-    //     slow_run(45);
-    //     if (hdxl == 0 || hdxr == 0) {
-    //         break;
-    //     }
-    // }
+    while (1) {
+        slow_run(45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
     Stop(40);
     Tai1_6_zhuan();
     // Stop (50);
@@ -194,35 +234,15 @@ void UP_Tai2_6_noline(void)
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) // 扫到红线同时对左右轮速度进行修正（如果需要）
         {
-            run(45, 45);
+            run(45, 46);
         }
         if (hdxl == 0 || hdxr == 0) { // 腰灯扫到红线
             break;
         }
     }
     Front_mid();         // 悬空前铲
-    Run_delay(45, 1000); // 卡时间盲走
-    // while (1)
-    // {
-    //     slow_run(45);//45速度巡线
-    //     if(hdxl==0 ||hdxr==0){
-    //         break;
-    //     }//左右腰灯扫到第一条黄线开头
-    // }
-    // while (1) {
-    //     slow_run(45);
-    //     if (hdxl == 1 || hdxr == 1) {
-    //         break;
-    //     }
-    // }
-    // Run_delay(45, 100);
-    // while (1) {
-    //     slow_run(45);
-    //     if (hdxl == 0 || hdxr == 0) {
-    //         break;
-    //     }
-    // }
-
+    Run_delay(45, 400); // 卡时间盲走
+    Stop(40);
     Tai1_6_zhuan();
 }
 
