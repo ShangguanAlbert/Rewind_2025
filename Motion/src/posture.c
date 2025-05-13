@@ -70,6 +70,13 @@ void Paw_open(void)
     Servo_SetAngle(3, 180);
 }
 /**
+ * @brief 合上一点点爪子
+ */
+void Paw_little_close(void)
+{
+    Servo_SetAngle(3, 150);
+}
+/**
  * @brief 合上爪子
  */
 void Paw_close(void)
@@ -121,6 +128,8 @@ void Catch(void)
  */
 void Right_Catch(void)
 {
+    // run_delay(-35,35,50);
+    Stop(40);
     run_delay(-45,-45,80);
         while (1) {
             run(-25, -25);
@@ -136,7 +145,7 @@ void Right_Catch(void)
             break;
         }
     }   
-    stop(); 
+    Stop(300); 
     Catch();
 }
 
@@ -147,14 +156,37 @@ void Right_Catch(void)
  */
 void Straight_Catch(void)
 {
+    run_delay(-40,-40,180);
     while (1) {
         run(-25, -25);
-        if (hdxl == 1) {
+        if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
+    // run_delay(-40,-40,50);
+    while (1) {
+        run(-25, -25);
+        if (hdxr == 1 ) {
+            break;
+        }
+    }
+    Stop(500);
     Catch();
 }
+
+
+/**
+ * @brief 车子左侧抓宝
+ * 
+ */
+void Left_Catch(void)
+{
+    run_delay(-20,-20,400);
+    Stop(500);
+    Catch();
+}
+
+
 /**
  * @brief 低速下平台
  */

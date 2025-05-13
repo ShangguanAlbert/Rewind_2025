@@ -74,7 +74,7 @@ int main(void)
         // Treasure_Locator3();
     }
     if (progg == 2) {
-        Camera_down();
+        run_delay(-40,-40,100);
     }
 
     if (progg == 3) {

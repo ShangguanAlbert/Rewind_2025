@@ -99,36 +99,71 @@ void Treasure_Locator(void)
 }
 /**
  * @brief 定位符合颜色的宝物(方案二)
- * 识别到一个就需要标记一下这是识别到的第几个宝物，不能一直扫不到就一直转，偏离可以写一个盲转
- * 摄像头也要改，转弯不要平移
  */
 void Treasure_Locator2(void)
 {
-    Camera_down();
-    Delay_ms(500);
-    // Front_down();
-    // Stop(200);
-    // while (1) {
-    //     get_huidu_va();
-    //     slow_run(20);
-    //     if (cnt_whiteline > 0) {
-    //         break;
-    //     }
-    // }
-    // stop();
-    run_delay(-38, 38, 800);
-    Stop(600);
+    Camera_down();//放下摄像头
+    Delay_ms(300);
     Locate_treasure();
     Stop(1000);
-    while (1) {
-        run(38, -38);
-        if ( openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3 || openmv[2] == 6) {
-            break;
+    //识别中间的宝物
+    if (openmv[2] == 6) {
+        Straight_Catch();//抓中间的宝物
+    } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
+        Stop(200);//不是目标宝物停200ms
+        run_delay(-38, 38, 800);//向左边转一个大角度
+        Stop(600);
+        Locate_treasure();
+        Stop(800);
+        // 开始右转扫描
+        while (1) {
+            run(35, -35);
+            if (openmv[2] == 6) {
+                // 扫到后完全停止
+                Paw_little_close();//收一点爪子
+                Stop(800);
+                Right_Catch();//抓宝
+                break;
+                //如果最左边的也不是先停200ms
+            } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
+                // 停止200ms
+                Stop(200);
+                Paw_little_close();//收一点爪子
+                Front_down();//放前铲
+                Stop(500);
+                //右转直到扫到白线后停止
+                while (1) {
+                    get_huidu_va();
+                    run(35, 0);
+                    if (cnt_whiteline > 1) {
+                        break;
+                    }
+                }
+                //抬前铲
+                Front_up();
+                Stop(200);
+                //向右边转一个大角度
+                run_delay(32, -38, 800);
+                Stop(500);
+                //向左边回转直到扫到宝物
+                while (1) {
+                    run(-35, 35);
+                    if (openmv[2] == 6) {
+                        // 完全停止
+                        Paw_little_close();
+                        Stop(800);
+                        Left_Catch();//抓宝
+                        break;
+                    }
+                }
+                break;
+            }
         }
     }
 }
+
 /**
- * @brief 定位符合颜色的宝物(方案三)
+ * @brief 定位符合颜色的宝物(方案三)——前进一段距离用腰灯或红外检测停止
  */
 void Treasure_Locator3(void)
 {
