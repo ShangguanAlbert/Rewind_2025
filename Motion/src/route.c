@@ -1,4 +1,3 @@
-
 #include "route.h"
 #include "reset.h"
 #include "posture.h"
@@ -102,16 +101,16 @@ void Treasure_Locator(void)
  */
 void Treasure_Locator2(void)
 {
-    Camera_down();//放下摄像头
+    Camera_down(); // 放下摄像头
     Delay_ms(300);
     Locate_treasure();
     Stop(1000);
-    //识别中间的宝物
+    // 识别中间的宝物
     if (openmv[2] == 6) {
-        Straight_Catch();//抓中间的宝物
+        Straight_Catch(); // 抓中间的宝物
     } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
-        Stop(200);//不是目标宝物停200ms
-        run_delay(-38, 38, 800);//向左边转一个大角度
+        Stop(200);               // 不是目标宝物停200ms
+        run_delay(-38, 38, 800); // 向左边转一个大角度
         Stop(600);
         Locate_treasure();
         Stop(800);
@@ -120,18 +119,18 @@ void Treasure_Locator2(void)
             run(35, -35);
             if (openmv[2] == 6) {
                 // 扫到后完全停止
-                Paw_little_close();//收一点爪子
+                Paw_little_close(); // 收一点爪子
                 Stop(800);
-                Right_Catch();//抓宝
+                Right_Catch(); // 抓宝
                 break;
-                //如果最左边的也不是先停200ms
+                // 如果最左边的也不是先停200ms
             } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
                 // 停止200ms
                 Stop(200);
-                Paw_little_close();//收一点爪子
-                Front_down();//放前铲
+                Paw_little_close(); // 收一点爪子
+                Front_down();       // 放前铲
                 Stop(500);
-                //右转直到扫到白线后停止
+                // 右转直到扫到白线后停止
                 while (1) {
                     get_huidu_va();
                     run(35, 0);
@@ -139,20 +138,20 @@ void Treasure_Locator2(void)
                         break;
                     }
                 }
-                //抬前铲
+                // 抬前铲
                 Front_up();
                 Stop(200);
-                //向右边转一个大角度
+                // 向右边转一个大角度
                 run_delay(32, -38, 800);
                 Stop(500);
-                //向左边回转直到扫到宝物
+                // 向左边回转直到扫到宝物
                 while (1) {
                     run(-35, 35);
                     if (openmv[2] == 6) {
                         // 完全停止
                         Paw_little_close();
                         Stop(800);
-                        Left_Catch();//抓宝
+                        Left_Catch(); // 抓宝
                         break;
                     }
                 }
