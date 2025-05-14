@@ -604,7 +604,7 @@ void Straight_back(void)
     } while (t3_i < 300);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
-    stop();
+    Stop(500);
 }
 
 void txs_trace(void)

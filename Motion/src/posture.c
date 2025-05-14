@@ -95,7 +95,8 @@ void Camera_down(void)
  */
 void Camera_down_low(void)
 {
-    Servo_SetAngle(1, 0);
+    // Servo_SetAngle(1, 0);
+    TIM2->CCR1 = 350; // 1ms
 }
 /**
  * @brief 抬起摄像头
@@ -124,39 +125,38 @@ void Catch(void)
 }
 /**
  * @brief 车子右侧抓宝
- * 
+ *
  */
 void Right_Catch(void)
 {
     // run_delay(-35,35,50);
     Stop(40);
-    run_delay(-45,-45,80);
-        while (1) {
-            run(-25, -25);
-            if (hdxr == 0) {
-                break;
-            }
+    run_delay(-45, -45, 80);
+    while (1) {
+        run(-25, -25);
+        if (hdxr == 0) {
+            break;
         }
-    run_delay(-30,-30,25);
+    }
+    run_delay(-30, -30, 25);
     Stop(40);
     while (1) {
         run(-25, -25);
         if (hdxr == 1) {
             break;
         }
-    }   
-    Stop(300); 
+    }
+    Stop(300);
     Catch();
 }
 
-
 /**
  * @brief 车子中间抓宝
- * 
+ *
  */
 void Straight_Catch(void)
 {
-    run_delay(-40,-40,180);
+    run_delay(-40, -40, 180);
     while (1) {
         run(-25, -25);
         if (hdxl == 0 || hdxr == 0) {
@@ -166,7 +166,7 @@ void Straight_Catch(void)
     // run_delay(-40,-40,50);
     while (1) {
         run(-25, -25);
-        if (hdxr == 1 ) {
+        if (hdxr == 1) {
             break;
         }
     }
@@ -174,19 +174,42 @@ void Straight_Catch(void)
     Catch();
 }
 
-
 /**
  * @brief 车子左侧抓宝
- * 
+ *
  */
 void Left_Catch(void)
 {
-    run_delay(-20,-20,400);
+    run_delay(-20, -20, 600);
     Stop(500);
     Catch();
 }
-
-
+/**
+ * @brief 车子左侧抓宝
+ *
+ */
+void Left_Catch1(void)
+{
+// run_delay(-35,35,50);
+    Stop(40);
+    run_delay(-40, -40, 80);
+    while (1) {
+        run(-25, -25);
+        if (hdxl == 0) {
+            break;
+        }
+    }
+    run_delay(-25, -25, 25);
+    // Stop(40);
+    // while (1) {
+    //     run(-20, -20);
+    //     if (hdxl == 1) {
+    //         break;
+    //     }
+    // }
+    Stop(300);
+    Catch();
+}
 /**
  * @brief 低速下平台
  */
@@ -272,7 +295,7 @@ void UP_Tai2_6_noline(void)
             break;
         }
     }
-    Front_mid();         // 悬空前铲
+    Front_mid();        // 悬空前铲
     Run_delay(45, 400); // 卡时间盲走
     Stop(40);
     Tai1_6_zhuan();
@@ -319,7 +342,7 @@ void UP_Tai2(void)
             break;
         }
     }
-    Tai1_6_zhuan(); // 低平台转180度
+    // Tai1_6_zhuan(); // 低平台转180度
 }
 
 /**
@@ -837,30 +860,32 @@ void Get_Now_Color(void)
     g = 0;
     b = 0;
     while (r < 3 && g < 3 && b < 3) {
-        if (openmv[2] == 1) {
+        if (openmv[2] == 4) {
             r++;
-        } else if (openmv[2] == 2) {
+        } else if (openmv[2] == 5) {
             g++;
-        } else if (openmv[2] == 3) {
+        } else if (openmv[2] == 6) {
             b++;
         }
         delay_ms(5);
     }
     if (r >= 3) {
-        LCD_SetColor(LCD_RED);
+        LCD_SetColor(LCD_MAGENTA);//玫红色
         LCD_FillRect(1, 1, 238, 238);
+        NOW_Color = 4;
     } else if (g >= 3) {
-        LCD_SetColor(LCD_GREEN);
+        LCD_SetColor(LCD_YELLOW);//黄色
         LCD_FillRect(1, 1, 238, 238);
+        NOW_Color = 5;
     } else if (b >= 3) {
-        LCD_SetColor(LCD_BLUE);
+        LCD_SetColor(LCD_CYAN);//青色
         LCD_FillRect(1, 1, 238, 238);
+        NOW_Color = 6;
     } else if (openmv[2] == 0) {
         LCD_SetColor(LCD_WHITE);
         LCD_FillRect(1, 1, 238, 238);
     }
-    NOW_Color = openmv[2];
-    openmv[2] = 0;
+    SHUT_UP();
 }
 /**
  * @brief 获取转弯消息

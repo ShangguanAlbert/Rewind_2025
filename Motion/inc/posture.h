@@ -22,6 +22,7 @@ void Catch(void);
 void Right_Catch(void);
 void Straight_Catch(void);
 void Left_Catch(void);
+void Left_Catch1(void);
 void down_pt1_6(void);
 void UP_Tai2_6(void);
 void UP_Tai2_6_noline(void);

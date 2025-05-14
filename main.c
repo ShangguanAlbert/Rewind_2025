@@ -27,11 +27,9 @@ uint8_t progg;
 
 extern int32_t white[];
 extern int8_t OpenMV;
-extern float JD;
-extern float XJD;
-extern float GJD;
-extern float MJD;
-extern float WJD;
+
+extern uint32_t t3_i;
+
 int main(void)
 {
     SysTick_Init();
@@ -74,9 +72,38 @@ int main(void)
         // Treasure_Locator3();
     }
     if (progg == 2) {
-        run_delay(-40,-40,100);
+        UP_Tai2_6_noline();
+        Stop(250);
+        Front_down();
+        Stop(200);
+        while (1) {
+            slow_run(45);
+            if (hwr == 0) break;
+        }
+        Reset(300, 45);
+        Stop(300);
+        HWT101_to_0();
+        Stop(200);
+        Deg_IN();
+        t3_i = 0;
+        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+        while (t3_i < 800) {
+            Straight_run_back(45);
+            if (hwr == 0) {
+                run_delay(-45, -45, 200);
+                break;
+            }
+        }
+        TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+        t3_i = 0;
+        Stop(300);
+        Front_up();
+        Camera_down_low();
+        Stop(300);
+        Locate_target_treasure();
+        Get_Now_Color();
+        Treasure_Locator3();
     }
-
     if (progg == 3) {
         Camera_down();
         Stop(1000);
@@ -85,9 +112,7 @@ int main(void)
         Get_Traget_Color();
     }
     if (progg == 4) {
-        Turn_Left25();
-        Stop(1000);
-        Turn_Right50();
+        run_delay(-35, 35, 700); 
     }
     if (progg == 5) {
         // 二维码扫描模式
@@ -101,7 +126,7 @@ int main(void)
         Tai8_zhuan();
     }
     if (progg == 7) {
-        Camera_up_hight();
+        Tai2_Treasure_Detect();
     }
     if (progg == 8) {
         // while (1) {

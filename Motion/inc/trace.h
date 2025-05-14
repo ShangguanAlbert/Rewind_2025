@@ -29,6 +29,7 @@ void bridge_Trace(uint8_t mode);
 void bridge_PD(int N, uint8_t mode);
 void Straight_run(int speed);
 void Straight_back(void);
+void Straight_run_back(int speed);
 void txs_trace(void);
 void Straight(int time);
 

@@ -42,6 +42,8 @@ void Tai2_Treasure_Detect(void)
 {
     UP_Tai2();
     Stop(40);
+    Front_down();
+    Stop(200);
     Get_QR();
     Tai2_zhuan90_1();
     Camera_down();
@@ -58,7 +60,7 @@ void Treasure_Locator(void)
 {
     Camera_down();
     Delay_s(2);
-    Locate_treasure();
+    Locate_target_treasure();
     Get_Turn();
     if (Turn_Or_Not == 6) {
         Run_delay(-20, 380);
@@ -102,16 +104,16 @@ void Treasure_Locator(void)
  */
 void Treasure_Locator2(void)
 {
-    Camera_down();//放下摄像头
+    Camera_down(); // 放下摄像头
     Delay_ms(300);
     Locate_treasure();
     Stop(1000);
-    //识别中间的宝物
+    // 识别中间的宝物
     if (openmv[2] == 6) {
-        Straight_Catch();//抓中间的宝物
+        Straight_Catch(); // 抓中间的宝物
     } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
-        Stop(200);//不是目标宝物停200ms
-        run_delay(-38, 38, 800);//向左边转一个大角度
+        Stop(200);               // 不是目标宝物停200ms
+        run_delay(-38, 38, 800); // 向左边转一个大角度
         Stop(600);
         Locate_treasure();
         Stop(800);
@@ -120,18 +122,18 @@ void Treasure_Locator2(void)
             run(35, -35);
             if (openmv[2] == 6) {
                 // 扫到后完全停止
-                Paw_little_close();//收一点爪子
+                Paw_little_close(); // 收一点爪子
                 Stop(800);
-                Right_Catch();//抓宝
+                Right_Catch(); // 抓宝
                 break;
-                //如果最左边的也不是先停200ms
+                // 如果最左边的也不是先停200ms
             } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
                 // 停止200ms
                 Stop(200);
-                Paw_little_close();//收一点爪子
-                Front_down();//放前铲
+                Paw_little_close(); // 收一点爪子
+                Front_down();       // 放前铲
                 Stop(500);
-                //右转直到扫到白线后停止
+                // 右转直到扫到白线后停止
                 while (1) {
                     get_huidu_va();
                     run(35, 0);
@@ -139,20 +141,20 @@ void Treasure_Locator2(void)
                         break;
                     }
                 }
-                //抬前铲
+                // 抬前铲
                 Front_up();
                 Stop(200);
-                //向右边转一个大角度
+                // 向右边转一个大角度
                 run_delay(32, -38, 800);
                 Stop(500);
-                //向左边回转直到扫到宝物
+                // 向左边回转直到扫到宝物
                 while (1) {
                     run(-35, 35);
                     if (openmv[2] == 6) {
                         // 完全停止
                         Paw_little_close();
                         Stop(800);
-                        Left_Catch();//抓宝
+                        Left_Catch(); // 抓宝
                         break;
                     }
                 }
@@ -167,23 +169,52 @@ void Treasure_Locator2(void)
  */
 void Treasure_Locator3(void)
 {
-    Front_down();
-    while (1) {
-        slow_run1(35);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    Stop(40);
-    run_delay(-35, 35, 600);
+    Camera_down();
+    Delay_ms(300);
+    Straight_back();
     Locate_treasure();
-    Stop(1000);
-    while (1) {
-        run(35, -35);
-        if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3 || openmv[2] == 6) {
-            break;
-        }
+    if(NOW_Color == 5){
+        Straight_Catch();
+        down_pt1_6();
     }
+    else if (NOW_Color == 4)
+    {
+        run_delay(-38, 38, 700); // 向左边转一个大角度
+        Stop(800);
+        // 开始右转扫描
+        while (1) {
+            run(35, -35);
+            if (openmv[2] == 6) {
+                // 扫到后完全停止
+                Stop(800);
+                Right_Catch(); // 抓宝
+                break;
+            }
+        }
+        run_delay(35, 0, 700);
+        down_pt1_6();
+    }
+    else if (NOW_Color==6)
+    {
+        run_delay(35, -35, 700); // 向右边转一个大角度
+        Stop(600);
+        Locate_treasure();
+        Stop(800);
+        // 开始右转扫描
+        while (1) {
+            run(-35, 35);
+            if (openmv[2] == 6) {
+                // 扫到后完全停止
+                Stop(800);
+                Left_Catch1(); // 抓宝
+                break;
+            }
+        }
+        run_delay(0, 35, 700);
+        down_pt1_6();
+    }
+    
+    
 }
 
 /**
@@ -205,6 +236,64 @@ void Treasure_Locator4(void)
     HWT101_to_0();
 }
 
+/**
+ * @brief 方案二抓包
+ *
+ */
+void Catch_Treasure(void)
+{
+    UP_Tai2_6_noline();
+    Stop(250);
+    Front_down();
+    Stop(200);
+    while (1) {
+        slow_run(45);
+        if (hwr == 0) break;
+    }
+    Reset(300, 45);
+    Stop(300);
+    Straight_back();
+    Treasure_Locator2();
+    // Right_Catch();
+    // Treasure_Locator3();
+}
+/**
+ * @brief 方案3抓包
+ *
+ */
+void Catch_Treasure2(void)
+{
+    UP_Tai2_6_noline();
+    Stop(250);
+    Front_down();
+    Stop(200);
+    while (1) {
+        slow_run(45);
+        if (hwr == 0) break;
+    }
+    Reset(300, 45);
+    Stop(300);
+    HWT101_to_0();
+    Stop(200);
+    Deg_IN();
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (t3_i < 800) {
+        Straight_run_back(45);
+        if (hwr == 0) {
+            run_delay(-45, -45, 200);
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(300);
+    Front_up();
+    Camera_down_low();
+    Stop(300);
+    Locate_target_treasure();
+    Get_Now_Color();
+}
 /**
  * @brief 台2到台3
  */
