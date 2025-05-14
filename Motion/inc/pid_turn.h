@@ -50,29 +50,34 @@ void xpid(int turn_time);
 // void pid_Turn90(int turn_time);
 void pid_Turn_Right90(int turn_time);
 void pid_Turn_Left90(int turn_time);
+void pid_Turn_Left25(int turn_time);
+void pid_Turn_Left22(int turn_time);
+void pid_Turn_Right25(int turn_time);
+void pid_Turn_Right50(int turn_time);
 extern pid_t_robomaster pid_yaw;
+extern pid_t_robomaster pid_yaw1;
 
-typedef struct // 位置式PID结构体
-{
-    float kp;       // 比例
-    float ki;       // 微分
-    float kd;       // 积分
-    float err;      // 误差
-    float err_last; // 上次偏差
-    float sum_err;  // 历史偏差之和，用于积分累加
-    float max_sum_err;
-    float out; // PID输出，可以是PWM占空比，可以是测距偏差，可以是输出温度（温控PID）
-} PID_Turn_Params;
+// typedef struct // 位置式PID结构体
+// {
+//     float kp;       // 比例
+//     float ki;       // 微分
+//     float kd;       // 积分
+//     float err;      // 误差
+//     float err_last; // 上次偏差
+//     float sum_err;  // 历史偏差之和，用于积分累加
+//     float max_sum_err;
+//     float out; // PID输出，可以是PWM占空比，可以是测距偏差，可以是输出温度（温控PID）
+// } PID_Turn_Params;
 
-extern PID_Turn_Params pid_comp_params;
+// extern PID_Turn_Params pid_comp_params;
 
-void Set_PID_turn_params(PID_Turn_Params *pid_comp, float p, float i, float d, float max_sum_error);
-void PID_Calculate_Right(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin);
-void PID_Calculate_Left(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin);
-void PID_Calculate_Around(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin);
+// void Set_PID_turn_params(PID_Turn_Params *pid_comp, float p, float i, float d, float max_sum_error);
+// void PID_Calculate_Right(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin);
+// void PID_Calculate_Left(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin);
+// void PID_Calculate_Around(PID_Turn_Params *pid_comp, int angle_target, int vmax, int vmin);
 
-void PID_TurnRight(int angle_target, int time, int speed);
-void PID_TurnLeft(int angle_target, int time, int speed);
-void PID_TurnAround(int deg, int time);
+// void PID_TurnRight(int angle_target, int time, int speed);
+// void PID_TurnLeft(int angle_target, int time, int speed);
+// void PID_TurnAround(int deg, int time);
 
 #endif

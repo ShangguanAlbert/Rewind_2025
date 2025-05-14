@@ -8,188 +8,395 @@
 #include "bsp_sensor.h"
 #include "bsp_SysTick.h"
 #include "turn.h"
+#include "bsp_lcd.h"
+#include "bsp_vision.h"
+#include "bsp_qr.h"
+#include "bsp_compass.h"
+extern int8_t Traget_Color;
+extern int8_t NOW_Color;
+extern int8_t Turn_Or_Not;
+extern uint8_t cnt_whiteline;
 
+/**
+ * @brief 台1到台2
+ */
 void Tai1_Tai2(void)
 {
-    // 下台
+    // 下台1
     down_pt1_6();
     // 矫正
-    Reset(650, 60); //
+    Reset(650, 60);
     // 过桥
     Bridge_Travel();
     // 加速
     speed_up(60, 130);
     speed_down(130, 60);
-
+    // 上台2
     UP_Tai2_6();
-    //
+    // UP_Tai2();
+}
+/**
+ * @brief 台2识别宝物
+ */
+void Tai2_Treasure_Detect(void)
+{
+    UP_Tai2();
+    Stop(40);
+    Get_QR();
+    Tai2_zhuan90_1();
+    Camera_down();
+    Stop(2000);
+    Detect_Color();
+    Get_Traget_Color();
+    Camera_up();
+    Tai2_zhuan90_2();
+}
+/**
+ * @brief 定位符合颜色的宝物
+ */
+void Treasure_Locator(void)
+{
+    Camera_down();
+    Delay_s(2);
+    Locate_treasure();
+    Get_Turn();
+    if (Turn_Or_Not == 6) {
+        Run_delay(-20, 380);
+        Catch();
+    } else {
+        Turn_Left25();
+        Delay_s(1);
+        Get_Turn();
+        if (Turn_Or_Not == 6) {
+            Run_delay(-20, 480);
+            Catch();
+            Run_delay(20, 480);
+            Turn_Right25();
+        } else {
+            Turn_Right50();
+            Delay_s(1);
+            Get_Turn();
+            HWT101_to_0();
+            if (Turn_Or_Not == 6) {
+                Run_delay(-20, 500);
+                Catch();
+                Run_delay(20, 480);
+
+                Turn_Left22();
+            }
+        }
+    }
+    SHUT_UP();
+
+    //    else{
+    //       Turn_Right50();
+    //    }
+    //    Delay_s(1);
+    //    if(openmv[2] == 6){
+    //     Run_delay(-20,750);
+    //     Catch();
+    //    }
+}
+/**
+ * @brief 定位符合颜色的宝物(方案二)
+ */
+void Treasure_Locator2(void)
+{
+    Camera_down();//放下摄像头
+    Delay_ms(300);
+    Locate_treasure();
+    Stop(1000);
+    //识别中间的宝物
+    if (openmv[2] == 6) {
+        Straight_Catch();//抓中间的宝物
+    } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
+        Stop(200);//不是目标宝物停200ms
+        run_delay(-38, 38, 800);//向左边转一个大角度
+        Stop(600);
+        Locate_treasure();
+        Stop(800);
+        // 开始右转扫描
+        while (1) {
+            run(35, -35);
+            if (openmv[2] == 6) {
+                // 扫到后完全停止
+                Paw_little_close();//收一点爪子
+                Stop(800);
+                Right_Catch();//抓宝
+                break;
+                //如果最左边的也不是先停200ms
+            } else if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3) {
+                // 停止200ms
+                Stop(200);
+                Paw_little_close();//收一点爪子
+                Front_down();//放前铲
+                Stop(500);
+                //右转直到扫到白线后停止
+                while (1) {
+                    get_huidu_va();
+                    run(35, 0);
+                    if (cnt_whiteline > 1) {
+                        break;
+                    }
+                }
+                //抬前铲
+                Front_up();
+                Stop(200);
+                //向右边转一个大角度
+                run_delay(32, -38, 800);
+                Stop(500);
+                //向左边回转直到扫到宝物
+                while (1) {
+                    run(-35, 35);
+                    if (openmv[2] == 6) {
+                        // 完全停止
+                        Paw_little_close();
+                        Stop(800);
+                        Left_Catch();//抓宝
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
 }
 
+/**
+ * @brief 定位符合颜色的宝物(方案三)——前进一段距离用腰灯或红外检测停止
+ */
+void Treasure_Locator3(void)
+{
+    Front_down();
+    while (1) {
+        slow_run1(35);
+        if (hwr == 0) {
+            break;
+        }
+    }
+    Stop(40);
+    run_delay(-35, 35, 600);
+    Locate_treasure();
+    Stop(1000);
+    while (1) {
+        run(35, -35);
+        if (openmv[2] == 1 || openmv[2] == 2 || openmv[2] == 3 || openmv[2] == 6) {
+            break;
+        }
+    }
+}
+
+/**
+ * @brief 抓宝方案四，先下台在后退上台确保转正
+ *
+ */
+void Treasure_Locator4(void)
+{
+    Front_down();
+    Stop(200);
+    while (1) {
+        get_huidu_va();
+        slow_run(20);
+        if (cnt_whiteline > 0) {
+            break;
+        }
+    }
+    slow_run1(35);
+    HWT101_to_0();
+}
+
+/**
+ * @brief 台2到台3
+ */
 void Tai2_Tai3(void)
 {
     down_pt1_6(); // 下台
     Reset(60, 60);
+    // 向右漂移直到左腰灯测到白线
     while (hdxl != 0) {
         drift_right(70, 0);
     }
+    // 修正
     Reset(320, 60);
-
-    while (hdxl != 0) {
-        slow_run(45);
-    }
-    Reset(1600, 45);
+    // 过波浪板
+    Go_BLB();
+    // 右转135度
     TurnRight_135_Longline();
-    Stop(50);
+    Stop(100);
+    // 修正
     Reset(250, 70);
+    // 加速
     speed_up(70, 190);
     Reset(150, 190);
     speed_down(190, 50);
+    // 上台3
     UP_Tai2_6();
 }
-
+/**
+ * @brief 台到台2
+ */
 void Tai2_Tai4(void)
 {
     down_pt1_6(); // 下台
+    // 修正
     Reset(60, 60);
+    // 向右漂移直到左腰灯扫到白线
     while (hdxl != 0) {
         drift_right(70, 0);
     }
+    // 巡线
     Reset(320, 60);
-
-    while (hdxl != 0) {
-        slow_run(45);
-    }
-    Reset(1600, 45);
+    // 过波浪板
+    Go_BLB();
+    // 向左漂移
     Reset_drift_left(70, 0, 800);
+    // 修正
     Reset(250, 70);
+    // 加速
     speed_up(70, 190);
     Reset(150, 190);
     speed_down(190, 50);
+    // 上台4
     UP_Tai2_6();
 }
-// void Tai3_Tai5(void)
-// {
-//     down_pt1_6();
-//     Reset(200, 70);
-//     Reset(800, 120);
-//     Reset(200, 70);
-//     Reset_drift_right(70, 0, 500);
-// }
 
-/*
-下台3从门2通过
-*/
+/**
+ * @brief 下台3经过门2到台5
+ */
 void Tai3_door2_Tai5(void)
 {
+    // 下台3
     down_pt1_6();
-
+    // 修正
     Reset(100, 70);
+    // 加速
     speed_up(70, 160);
     speed_down(160, 70);
+    // 低速巡线直到右灰度灯扫到白线
     while (1) {
         slow_run(70);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
             break;
         }
     }
+    // 向右漂移，过弯
     Reset_drift_right(70, 0, 700);
+    // 修正
     Reset(100, 70);
+    // 加速
     speed_up(70, 175);
     speed_down(175, 50);
+    // 低速巡线直到右灰度灯扫到白线
     while (1) {
         slow_run(70);
         if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1]) {
             break;
         }
     }
-
+    // 向左漂移一段时间，过弯
     Reset_drift_left(70, 0, 500);
+    // 修正
     Reset(250, 70);
+    // 加速
     speed_up(70, 150);
     speed_down(150, 50);
+    // 上台5
     UP_Tai2_6();
 }
 
-/*
-台4到台5
-*/
-void Tai4_Tai5(void)
+/**
+ * @brief 台4经过门4到台5
+ */
+void Tai4_door4_Tai5(void)
 {
+    // 下台4
     down_pt1_6();
+    // 修正
     Reset(100, 70);
+    // 加速
     speed_up(70, 170);
     speed_down(170, 70);
+    // 左转90度，左灰度灯判断转弯条件
     TurnLeft_90_Ldetect_4();
     Stop(40);
+    // 修正
     Reset(250, 70);
+    // 加速
     speed_up(70, 150);
     speed_down(150, 50);
+    // 左转90度，左灰度灯判断转弯条件
     TurnLeft_90_Ldetect_5();
     Stop(50);
+    // 修正
     Reset(350, 70);
+    // 加速
     speed_up(70, 160);
     speed_down(160, 70);
+    // 上台5
     UP_Tai2_6();
 }
-
+/**
+ * @brief 台5到台7
+ */
 void Tai5_Tai7(void)
 {
+    // 下台
     down_pt1_6();
+    // 修正
     Reset(200, 50);
+    // 加速
     speed_up(50, 190);
     Reset(200, 190);
     speed_down(190, 50);
+    // T形山前，左转90度
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    Front_down();
-    Reset(1400, 50);
-    Front_mid();
-    Reset(200, 50);
-    // speed_up(50, 100);
-    // speed_down(100, 50);
-    // TurnLeft_90_Rdetect();
-    // Stop(40);
-
+    // 走梯形山后无白线直走
+    txs();
+    // 左转
+    Out_T_TurnLeft_90_Ldetect();
     Stop(40);
-
+    // 巡线
     Reset(250, 60);
+    // 加速
     speed_up(60, 185);
     speed_down(185, 50);
+    // 上台7
     UP_Tai7();
 }
+/**
+ * @brief 台5到台8
+ */
 void Tai5_Tai8(void)
 {
+    // 下台5
     down_pt1_6();
+    // 修正
     Reset(200, 50);
+    // 加速
     speed_up(50, 190);
     Reset(200, 190);
     speed_down(190, 50);
+    // 左转90度
     TurnLeft_90_Ldetect_Mountain();
     Stop(40);
-    while (1) {
-        slow_run(50);
-        if (hwr == 0) {
-            break;
-        }
-    }
-    Straight(5000);
+    // 上梯形山后无白线直走
+    txs();
+    // 右转
+    Out_T_TurnRight_90_Ldetect();
     Stop(40);
-    Out_T_TurnRight_90();
-    Stop(40);
+    // 巡线
     Reset(250, 70);
+    // 加速
     speed_up(70, 140);
+    // 减速
     speed_down(140, 50);
+    // 上台八
     UP_Tai8();
 }
-/*
-台7回家
-*/
+/**
+ * @brief 从台7回家
+ */
 void Tai7_Home(void)
 {
     // 放下前铲
@@ -237,24 +444,33 @@ void Tai7_Home(void)
     speed_down(120, 50);
     // 修正
     Reset(60, 60);
+    // 右飘进波浪板
     while (hdxr != 0) {
         drift_right(50, 0);
     }
+    // 修正
     Reset(500, 45);
-
+    // 走波浪板
     Back_BLB();
+    // 右转135度进长桥
     TurnRight_135_Longline();
     Stop(50);
+    // 修正
     Reset(250, 50);
+    // 加速
     speed_up(50, 100);
     speed_down(100, 50);
+    // 走长桥
     Bridge_Travel();
+    // 修正
     Reset(600, 60);
+    // 上台
     UP_Tai2_6();
 }
-/*
-台8回家
-*/
+
+/**
+ * @brief 从台8回家
+ */
 void Tai8_Home(void)
 {
     // 放下前铲
@@ -284,7 +500,7 @@ void Tai8_Home(void)
     // 减速
     speed_down(160, 50);
     // 向右转90度（左测灰度灯检测转弯起始点）
-    TurnRight_90_Ldetect();
+    TurnRight_90_Ldetect_3();
     Stop(50);
     // 加速
     speed_up(45, 120);
@@ -294,6 +510,7 @@ void Tai8_Home(void)
     TurnLeft_135_Longline2();
     // 回程过波浪板
     Back_BLB();
+    Reset(1200, 45);
     // 右转135
     TurnRight_135_Longline();
     Stop(50);

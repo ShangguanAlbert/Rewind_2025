@@ -26,7 +26,12 @@ uint8_t prog_num_hope = 8;
 uint8_t progg;
 
 extern int32_t white[];
-
+extern int8_t OpenMV;
+extern float JD;
+extern float XJD;
+extern float GJD;
+extern float MJD;
+extern float WJD;
 int main(void)
 {
     SysTick_Init();
@@ -46,30 +51,43 @@ int main(void)
     KEY_Init();
     GPIO_HW_Init();
     GPIO_HDLR_Init();
-    pid_init(&pid_yaw, 60, 10, 4, 2, 3);
-    Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
+    // pid_init(&pid_yaw, 60, 10, 2, 1.5, 10);
+    pid_init(&pid_yaw, 60, 10, 3.6, 2, 3);
+    pid_init(&pid_yaw1, 60, 10, 4, 2, 3);
+    // Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
-        Tai5_Tai8();
+        UP_Tai2_6_noline();
+        Stop(250);
+        Front_down();
+        Stop(200);
+        while (1) {
+            slow_run(45);
+            if (hwr == 0) break;
+        }
+        Reset(300, 45);
+        Stop(300);
+        Straight_back();
+        Treasure_Locator2();
+        // Right_Catch();
+        // Treasure_Locator3();
     }
     if (progg == 2) {
-        // Tai8_Home();
-        Straight_run(50);
+        run_delay(-40,-40,100);
     }
+
     if (progg == 3) {
-        while (hwr != 0) {
-            Run(50);
-        }
-        Front_mid();
-        Reset(300, 60);
+        Camera_down();
+        Stop(1000);
+        // Turn_Right25();
+        Detect_Color();
+        Get_Traget_Color();
     }
     if (progg == 4) {
-        while (hwr != 0) {
-            bridge_PD(50, 1);
-        }
-        Front_mid();
-        Reset(300, 60);
+        Turn_Left25();
+        Stop(1000);
+        Turn_Right50();
     }
     if (progg == 5) {
         // 二维码扫描模式
@@ -83,12 +101,24 @@ int main(void)
         Tai8_zhuan();
     }
     if (progg == 7) {
-        Stop(3000);
-        speed_up(30, 60);
-        Reset(2500, 105);
-        speed_down(60, 30);
+        Camera_up_hight();
     }
     if (progg == 8) {
+        // while (1) {
+        //     Deg_IN();
+        //     LCD_SetDirection(Direction_H_Flip);
+        //     LCD_ShowNumMode(Fill_Space);
+        //     LCD_DisplayString(5, 35, "JD:");
+        //     LCD_DisplayNumber(70, 35, JD, 4);
+        //     LCD_DisplayString(5, 60, "XJD:");
+        //     LCD_DisplayNumber(70, 60, XJD, 4);
+        //     LCD_DisplayString(5, 85, "GJD:");
+        //     LCD_DisplayNumber(70, 85, GJD, 4);
+        //     LCD_DisplayString(5, 110, "MJD:");
+        //     LCD_DisplayNumber(70, 110, MJD, 4);
+        //     LCD_DisplayString(5, 135, "WJD:");
+        //     LCD_DisplayNumber(70, 135, WJD, 4);
+        // };
         Show_SensorPage_All();
     }
     stop();

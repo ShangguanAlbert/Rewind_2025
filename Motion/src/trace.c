@@ -1,6 +1,9 @@
 #include "trace.h"
 #include "bsp_compass.h"
 #include "pid_turn.h"
+#include "bsp_sensor.h"
+#include "bsp_servo.h"
+#include "posture.h"
 
 int Gray_sum;
 int speed;
@@ -17,10 +20,12 @@ float KP;
 float KD;
 extern float JD;
 
-int32_t thr_whiteline[] = thr_line;
-int32_t white[]         = thr_white;
-int32_t green[]         = thr_green;
-
+int32_t thr_whiteline[] = thr_line;  // 判线阈值
+int32_t white[]         = thr_white; // 白线阈值
+int32_t green[]         = thr_green; // 绿地阈值
+/**
+ * @brief 获取灰度信息
+ */
 void get_huidu_va(void)
 {
     uint8_t i;
@@ -34,44 +39,46 @@ void get_huidu_va(void)
         }
     }
 }
-
+/**
+ * @brief 巡线函数
+ */
 void Trace(void)
 {
     if (Huidu_va(1) > white[1] && Huidu_va(2) > white[2] && Huidu_va(3) > white[3] &&
         Huidu_va(4) > white[4] && Huidu_va(5) > white[5] && Huidu_va(6) > white[6] &&
         Huidu_va(7) > white[7] && Huidu_va(8) > white[8] && Huidu_va(9) > white[9] &&
         Huidu_va(10) > white[10]) {
-        error = 0;
+        error = 0; // 在全白地面行驶
     } else if (Huidu_va(1) < green[1] && Huidu_va(2) < green[2] && Huidu_va(3) < green[3] &&
                Huidu_va(4) < green[4] && Huidu_va(5) < green[5] && Huidu_va(6) < green[6] &&
                Huidu_va(7) < green[7] && Huidu_va(8) < green[8] && Huidu_va(9) < green[9] &&
                Huidu_va(10) < green[10]) {
-        error = 0;
+        error = 0; // 在绿地上
     } else if (Huidu_va(5) > white[5] && Huidu_va(6) > white[6]) {
-        error = 0;
+        error = 0; // 白线位于灰度灯5,6之间
     } else if ((Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) &&
                (Huidu_va(0) > white[0] || Huidu_va(1) > white[1])) {
-        error = 0;
+        error = 0; // 中间的灰度灯和右边的灰度灯同时位于白线上（干扰线）
     } else if ((Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) &&
                (Huidu_va(11) > white[11] || Huidu_va(10) > white[10])) {
-        error = 0;
+        error = 0; // 中间的灰度灯和左边的灰度灯同时位于白线上（干扰线）
     } else if (cnt_whiteline >= 3 || (cnt_whiteline >= 2 && (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]))) {
-        error = 0;
+        error = 0; // 有三个灰度灯扫到白线 或者 5，6灰度灯扫到白线的同时总白线数大于等于2
     } else {
         Gray_sum = Huidu_va(0) * (3) +
                    Huidu_va(1) * (5) + Huidu_va(2) * (4) + Huidu_va(3) * (3) + Huidu_va(4) * (2) +
                    Huidu_va(5) * (1) + Huidu_va(6) * (-1) +
                    Huidu_va(7) * (-2) + Huidu_va(8) * (-3) + Huidu_va(9) * (-4) + Huidu_va(10) * (-5) +
-                   Huidu_va(11) * (-3);
-        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0);
+                   Huidu_va(11) * (-3);                // 灰度值加权和
+        error = Gray_sum * 1.0 * (3000.0 / sum * 1.0); // 误差
     }
 
-    motorSpeed   = KP * error + KD * (error - lastError);
-    lastError    = error;
-    mSpeed_right = speed - motorSpeed; // 右轮速度
-    mSpeed_left  = speed + motorSpeed; // 左轮速度
-    lastm1Speed  = mSpeed_right;
-    lastm2Speed  = mSpeed_left;
+    motorSpeed   = KP * error + KD * (error - lastError); // 修正值
+    lastError    = error;                                 // 将这一次的偏差记为上一次的偏差
+    mSpeed_right = speed - motorSpeed;                    // 右轮速度
+    mSpeed_left  = speed + motorSpeed;                    // 左轮速度
+    lastm1Speed  = mSpeed_right;                          // 记录右轮速度
+    lastm2Speed  = mSpeed_left;                           // 记录左轮速度
     // 限幅
     if (speed <= 125) {
         if (mSpeed_right < 0) {
@@ -117,7 +124,9 @@ void Trace(void)
     set_pwm(1, mSpeed_right, speed);
     set_pwm(2, mSpeed_left, speed);
 }
-
+/**
+ * @brief 巡线函数，限速
+ */
 void Trace_transVelocity(void)
 {
     if (Huidu_va(1) > white[1] && Huidu_va(2) > white[2] && Huidu_va(3) > white[3] &&
@@ -150,13 +159,11 @@ void Trace_transVelocity(void)
     }
 
     motorSpeed = KP * error + KD * (error - lastError);
+    // 限制轮速调节值
     if (motorSpeed > 20) {
-
         motorSpeed = 20; // 20
     }
-
     if (motorSpeed < -20) {
-
         motorSpeed = -20;
     }
 
@@ -211,6 +218,10 @@ void Trace_transVelocity(void)
     set_pwm(2, mSpeed_left, speed);
 }
 
+/**
+ * @brief 低速巡线
+ * @param N 设定的速度
+ */
 void slow_run(int N)
 {
     get_huidu_va();
@@ -236,7 +247,22 @@ void slow_run(int N)
     }
     Trace();
 }
-
+/**
+ * @brief 低速巡线
+ * @param N 设定的速度
+ */
+void slow_run1(int N)
+{
+    get_huidu_va();
+    speed = N;
+    KP    = 0.01;
+    KD    = 0.2;
+    Trace();
+}
+/**
+ * @brief 高速巡线
+ * @param N 设定的速度
+ */
 void high_run(int N)
 {
     get_huidu_va();
@@ -278,7 +304,11 @@ void high_run(int N)
     }
     Trace();
 }
-
+/**
+ * @brief 加速巡线
+ * @param start 起始速度
+ * @param end 结束速度
+ */
 void speed_up(int start, int end)
 {
     KP = 0.0019;
@@ -302,7 +332,11 @@ void speed_up(int start, int end)
         }
     }
 }
-
+/**
+ * @brief 减速巡线
+ * @param high 起始速度
+ * @param low 结束速度
+ */
 void speed_down(int high, int low)
 {
     for (; high > low; high--) {
@@ -347,7 +381,11 @@ void speed_down(int high, int low)
         Delay_ms(5);
     }
 }
-
+/**
+ * @brief 爬坡加速巡线
+ * @param start 起始速度
+ * @param end 结束速度
+ */
 void speed_up_high(int start, int end)
 {
     KP = 0.019;
@@ -371,7 +409,11 @@ void speed_up_high(int start, int end)
         }
     }
 }
-
+/**
+ * @brief 爬坡减速巡线
+ * @param high 起始速度
+ * @param low 结束速度
+ */
 void speed_down_high(int high, int low)
 {
     for (; high > low; high--) {
@@ -475,7 +517,7 @@ void bridge_PD(int N, uint8_t mode)
     bridge_Trace(mode);
 }
 /**
- * @brief 无线直走
+ * @brief 无线直走函数
  */
 void Straight_run(int speed)
 {
@@ -499,6 +541,28 @@ void Straight_run(int speed)
     }
 }
 
+void Straight_run_back(int speed)
+{
+    if (JD > 180) {
+        JD = JD - 360;
+    }
+    if (-2 < JD && JD < 2) {
+        Run(-speed);
+    } else if (JD > 0) {
+        if (JD < 5) {
+            run(-speed - 3, -speed);
+        } else if (JD < 10) {
+            run(-speed - 10, -speed);
+        }
+    } else if (JD < 0) {
+        if (JD > -5) {
+            run(-speed, -speed - 3);
+        } else if (JD > -10) {
+            run(-speed, -speed - 10);
+        }
+    }
+}
+
 /**
  * @brief 无白线直走
  */
@@ -514,4 +578,42 @@ void Straight(int time)
     } while (Huidu_va(10) < white[10] || Huidu_va(11) < white[11] || t3_i > time);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
+}
+
+void Straight_back(void)
+{
+    Front_up();
+    Stop(250);
+    HWT101_to_0();
+    Stop(200);
+    Deg_IN();
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (t3_i < 800) {
+        Straight_run_back(45);
+        if (hdxl == 0 || hdxr == 0) break;
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        Straight_run_back(45);
+        // if(hdxl == 0 || hdxr == 0) break;
+    } while (t3_i < 300);
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    stop();
+}
+
+void txs_trace(void)
+{
+    int jd = compass_b();
+    if (jd < 180) {
+        run_delay(50 + jd * 2, 50 - jd * 2, 10);
+    } else if (jd > 180) {
+        run_delay(50 - (360 - jd) * 2, 50 + (360 - jd) * 2, 10);
+    } else
+        run_delay(50, 50, 10);
 }

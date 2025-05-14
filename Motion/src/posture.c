@@ -9,9 +9,23 @@
 #include "turn.h"
 #include "basic.h"
 #include "bsp_timer.h"
+#include "bsp_vision.h"
+#include "bsp_lcd.h"
+#include "bsp_qr.h"
+#include "bsp_compass.h"
 
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
+extern uint8_t qr_flag;
+int8_t Traget_Color;
+int8_t NOW_Color;
+int8_t Turn_Or_Not;
+int8_t r;
+int8_t g;
+int8_t b;
+int8_t tt;
+int8_t ss;
+int8_t b;
 
 /**
  * @brief 放下前铲
@@ -20,21 +34,24 @@ void Front_down(void)
 {
     Servo_SetAngle(4, 125); // 放下多少
 }
+
 /**
  * @brief 悬空前铲
  */
 void Front_mid(void)
 {
-    Servo_SetAngle(4, 148); //?
+    Servo_SetAngle(4, 148); // 悬空多少
 }
+
 /**
  * @brief 前铲抬起
  *
  */
 void Front_up(void)
 {
-    Servo_SetAngle(4, 160);
+    Servo_SetAngle(4, 160); // 抬起多少
 }
+
 /**
  * @brief 前铲抬高
  *
@@ -42,31 +59,230 @@ void Front_up(void)
 void Front_up_High(void)
 {
 
-    Servo_SetAngle(4, 175);
+    Servo_SetAngle(4, 175); // 抬起多少
 }
+
+/**
+ * @brief 张开爪子
+ */
+void Paw_open(void)
+{
+    Servo_SetAngle(3, 180);
+}
+/**
+ * @brief 合上一点点爪子
+ */
+void Paw_little_close(void)
+{
+    Servo_SetAngle(3, 150);
+}
+/**
+ * @brief 合上爪子
+ */
+void Paw_close(void)
+{
+    Servo_SetAngle(3, 125);
+}
+/**
+ * @brief 放下摄像头
+ */
+void Camera_down(void)
+{
+    Servo_SetAngle(1, 0);
+}
+/**
+ * @brief 放下摄像头
+ */
+void Camera_down_low(void)
+{
+    Servo_SetAngle(1, 0);
+}
+/**
+ * @brief 抬起摄像头
+ */
+void Camera_up(void)
+{
+    Servo_SetAngle(1, 63);
+}
+/**
+ * @brief 抬高摄像头
+ */
+void Camera_up_hight(void)
+{
+    Servo_SetAngle(1, 70);
+}
+/**
+ * @brief 抓宝
+ */
+void Catch(void)
+{
+    Paw_close();
+    Stop(1000);
+    Camera_up_hight();
+    Stop(1000);
+    Paw_open();
+}
+/**
+ * @brief 车子右侧抓宝
+ * 
+ */
+void Right_Catch(void)
+{
+    // run_delay(-35,35,50);
+    Stop(40);
+    run_delay(-45,-45,80);
+        while (1) {
+            run(-25, -25);
+            if (hdxr == 0) {
+                break;
+            }
+        }
+    run_delay(-30,-30,25);
+    Stop(40);
+    while (1) {
+        run(-25, -25);
+        if (hdxr == 1) {
+            break;
+        }
+    }   
+    Stop(300); 
+    Catch();
+}
+
+
+/**
+ * @brief 车子中间抓宝
+ * 
+ */
+void Straight_Catch(void)
+{
+    run_delay(-40,-40,180);
+    while (1) {
+        run(-25, -25);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    // run_delay(-40,-40,50);
+    while (1) {
+        run(-25, -25);
+        if (hdxr == 1 ) {
+            break;
+        }
+    }
+    Stop(500);
+    Catch();
+}
+
+
+/**
+ * @brief 车子左侧抓宝
+ * 
+ */
+void Left_Catch(void)
+{
+    run_delay(-20,-20,400);
+    Stop(500);
+    Catch();
+}
+
 
 /**
  * @brief 低速下平台
  */
 void down_pt1_6(void)
 {
-    Front_down();
+    Front_down(); // 放下前铲
     Stop(300);
-    Reset(100, 40);
+    Reset(100, 40); // 低速巡线2
     while (hwr != 0) {
         slow_run(40);
-    }
-    Front_mid();
-    Reset(100, 45); //
+    } // 红外不扫到前铲就一直走
+
+    Front_mid(); // 悬空前铲
+    Reset(100, 45);
     // stop();
 }
 
-void down_Tai7();
 /**
- * @brief 上台2到台6动作
+ * @brief 上低平台（台3到台6）
  *
  */
 void UP_Tai2_6(void)
+{
+    Front_down(); // 抬前铲
+    while (hwr != 0) {
+        slow_run(50);
+    } // 红外不扫到前铲就一直走
+
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
+            run(45, 45);
+        }
+        if (hdxl == 0 || hdxr == 0) { // 腰灯扫到红线
+            break;
+        }
+    }
+    Front_mid();        // 悬空前铲
+    Run_delay(45, 150); // 卡时间盲走
+    while (1) {
+        run(45, 45); // 45速度巡线
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        } // 左右腰灯扫到第一条黄线开头
+    }
+    while (1) {
+        run(45, 45);
+        if (hdxl == 1 || hdxr == 1) {
+            break;
+        } // 左右腰灯知道第一条黄线结束
+    }
+    Run_delay(45, 150);
+    // Run_delay(45, 100);
+    while (1) {
+        slow_run(45);
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    Stop(40);
+    Tai1_6_zhuan();
+    // Stop (50);
+}
+
+/**
+ * @brief 上低平台不使用黄线（台3到台6）
+ *
+ */
+void UP_Tai2_6_noline(void)
+{
+    Front_down(); // 抬前铲
+    while (hwr != 0) {
+        slow_run(50);
+    } // 红外不扫到前铲就一直走
+
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) // 扫到红线同时对左右轮速度进行修正（如果需要）
+        {
+            run(45, 46);
+        }
+        if (hdxl == 0 || hdxr == 0) { // 腰灯扫到红线
+            break;
+        }
+    }
+    Front_mid();         // 悬空前铲
+    Run_delay(45, 400); // 卡时间盲走
+    Stop(40);
+    Tai1_6_zhuan();
+}
+
+/**
+ * @brief 上台2
+ *
+ */
+void UP_Tai2(void)
 {
     Front_down();
     while (hwr != 0) {
@@ -76,36 +292,36 @@ void UP_Tai2_6(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(48, 45);
+            run(45, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
     Front_mid();
-    Run_delay(45, 100);
+    Run_delay(45, 150);
     while (1) {
         slow_run(45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-    while (1) {
-        slow_run(45);
-        if (hdxl == 1 || hdxr == 1) {
-            break;
-        }
-    }
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 1 || hdxr == 1) {
+    //         break;
+    //     }
+    // }
     Run_delay(45, 100);
     while (1) {
-        slow_run(45);
+        slow_run(30);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
-
-    Tai1_6_zhuan();
+    Tai1_6_zhuan(); // 低平台转180度
 }
+
 /**
  * @brief 上台7动作
  *
@@ -113,15 +329,16 @@ void UP_Tai2_6(void)
 void UP_Tai7(void)
 {
     while (1) {
-        slow_run(50);
-        if (hwr == 0) {
+        slow_run(50);   // 50巡线
+        if (hwr == 0) { // 红外扫到，即开始上坡，扫到前铲
             break;
         }
     }
-    Reset(300, 50);
+    Reset(300, 50); // 卡时间巡线
     speed_up(50, 105);
     speed_down(105, 50);
     Front_down();
+
     while (1) {
         get_huidu_va();
         if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
@@ -193,32 +410,33 @@ void UP_Tai8(void)
         if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
             slow_run(50);
         } else if (cnt_whiteline == 0) {
-            run(48, 45);
+            run(45, 45);
         }
+        if (hdxl == 0 || hdxr == 0) {
+            break;
+        }
+    }
+    Run_delay(45, 150);
+    while (1) {
+        run(45, 50);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
     Run_delay(45, 100);
-    while (1) {
-        run(48, 45);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }
-    }
-    while (1) {
-        slow_run(45);
-        if (hdxl == 1 || hdxr == 1) {
-            break;
-        }
-    }
-    Run_delay(45, 300);
-    while (1) {
-        slow_run(45);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }
-    }
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 1 || hdxr == 1) {
+    //         break;
+    //     }
+    // }
+    // Run_delay(45, 300);
+    // while (1) {
+    //     slow_run(45);
+    //     if (hdxl == 0 || hdxr == 0) {
+    //         break;
+    //     }
+    // }
 
     Tai8_zhuan();
 }
@@ -514,10 +732,181 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     t3_i = 0;
     Stop(1000);
 }
+/**
+ * @brief 回程过波浪板
+ *
+ */
 void Back_BLB(void)
 {
     while (hdxr != 0) {
         slow_run(45);
     }
     Reset(600, 45);
+}
+
+void txs(void)
+{
+    while (hwr == 1) {
+        slow_run(50);
+    }
+    Front_down();
+    HWT101_to_0();
+    Reset(600, 50);
+    while (!outline) {
+        Reset(50, 50);
+    }
+    stop();
+    Delay_ms(300);
+    while (!outline) {
+        Reset(50, 50);
+    }
+    Front_mid();
+    while (!(Huidu_va(10) > white[10] || Huidu_va(11) > white[11])) {
+        txs_trace();
+    }
+    //  while(hdxl == 1){
+    //  Run_delay(30,10);
+    // }
+}
+/**
+ * @brief 出发过波浪板
+ *
+ */
+void Go_BLB(void)
+{
+    // 巡线直到扫到黄线
+    while (hdxl != 0) {
+        slow_run(45);
+    }
+    // 过波浪板
+    Reset(1600, 45);
+}
+/**
+ * @brief 获取目标宝物颜色信息
+ *
+ */
+void Get_Traget_Color(void)
+{
+    while (1) {
+        if (openmv[2] != 0) {
+            break;
+        }
+    }
+    r = 0;
+    g = 0;
+    b = 0;
+    while (r < 3 && g < 3 && b < 3) {
+        if (openmv[2] == 1) {
+            r++;
+        } else if (openmv[2] == 2) {
+            g++;
+        } else if (openmv[2] == 3) {
+            b++;
+        }
+        delay_ms(5);
+    }
+    if (r >= 3) {
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (g >= 3) {
+        LCD_SetColor(LCD_GREEN);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (b >= 3) {
+        LCD_SetColor(LCD_BLUE);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 0) {
+        LCD_SetColor(LCD_WHITE);
+        LCD_FillRect(1, 1, 238, 238);
+    }
+    Traget_Color = openmv[2];
+    openmv[2]    = 0;
+    SHUT_UP();
+}
+/**
+ * @brief 获取当前宝物颜色
+ *
+ */
+void Get_Now_Color(void)
+{
+    while (1) {
+        if (openmv[2] != 0) {
+            break;
+        }
+    }
+    r = 0;
+    g = 0;
+    b = 0;
+    while (r < 3 && g < 3 && b < 3) {
+        if (openmv[2] == 1) {
+            r++;
+        } else if (openmv[2] == 2) {
+            g++;
+        } else if (openmv[2] == 3) {
+            b++;
+        }
+        delay_ms(5);
+    }
+    if (r >= 3) {
+        LCD_SetColor(LCD_RED);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (g >= 3) {
+        LCD_SetColor(LCD_GREEN);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (b >= 3) {
+        LCD_SetColor(LCD_BLUE);
+        LCD_FillRect(1, 1, 238, 238);
+    } else if (openmv[2] == 0) {
+        LCD_SetColor(LCD_WHITE);
+        LCD_FillRect(1, 1, 238, 238);
+    }
+    NOW_Color = openmv[2];
+    openmv[2] = 0;
+}
+/**
+ * @brief 获取转弯消息
+ *
+ */
+void Get_Turn(void)
+{
+    while (1) {
+        if (openmv[2] != 0) {
+            break;
+        }
+    }
+    tt = 0;
+    ss = 0;
+    while (tt < 3 && ss < 3) {
+        if (openmv[2] == 5) {
+            tt++;
+        } else if (openmv[2] == 6) {
+            ss++;
+        }
+        delay_ms(5);
+    }
+    if (tt >= 3) {
+        LCD_SetColor(LCD_YELLOW);
+        LCD_FillRect(1, 1, 238, 238);
+        Turn_Or_Not = 5;
+
+    } else if (ss >= 3) {
+        LCD_SetColor(LCD_GREY);
+        LCD_FillRect(1, 1, 238, 238);
+        Turn_Or_Not = 6;
+    }
+    openmv[2] = 0;
+}
+/**
+ * @brief 获取二维码信息
+ *
+ */
+void Get_QR(void)
+{
+    LCD_Clear(); // 清屏，黑色背景
+    while (1) {
+        QR_Process(); // 处理二维码数据
+        if (qr_flag == 1) {
+            break;
+        }
+        delay_ms(100); // 延时100ms，避免刷新过快
+    }
 }

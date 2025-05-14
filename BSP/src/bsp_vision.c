@@ -5,7 +5,7 @@ int8_t OpenMV;
 int m = 0;
 
 /**
- * @brief 串口3初始化函数, 并且开启NVIC中断配置 115200
+ * @brief 串口5初始化函数, 并且开启NVIC中断配置 115200
  */
 void USART5_OpenMV_Init(void)
 {
@@ -20,14 +20,14 @@ void USART5_OpenMV_Init(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART5, ENABLE); // 使能UART5时钟
 
     // USART5端口配置
-    /* PD8用于TX数据输出, PD9用于RX数据输入 */
+    /* PC12用于TX数据输出, PD2用于RX数据输入 */
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_12;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
 
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOD, &GPIO_InitStructure);
 
@@ -38,16 +38,16 @@ void USART5_OpenMV_Init(void)
     USART_InitStructure.USART_Parity              = USART_Parity_No;                // 无奇偶校验位
     USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None; // 无硬件数据流控制
     USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;  // 收发模式
-    USART_Init(UART5, &USART_InitStructure);                                       // 初始化串口3
+    USART_Init(UART5, &USART_InitStructure);                                       // 初始化串口5
 
-    USART_Cmd(UART5, ENABLE); // 使能串口2
+    USART_Cmd(UART5, ENABLE); // 使能串口5
 
-    // Usart3 NVIC 配置
+    // Usart5 NVIC 配置
     USART_ITConfig(UART5, USART_IT_RXNE, ENABLE); // 开启接收中断
 
-    NVIC_InitStructure.NVIC_IRQChannel                   = UART5_IRQn; // 串口3中断通道
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;           // 抢占优先级3
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 2;           // 子优先级3
+    NVIC_InitStructure.NVIC_IRQChannel                   = UART5_IRQn; // 串口5中断通道
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;           // 抢占优先级3
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 1;           // 子优先级3
     NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;      // IRQ通道使能
     NVIC_Init(&NVIC_InitStructure);                                     // 根据指定的参数初始化NVIC寄存器
 }
@@ -129,8 +129,8 @@ void UART5_IRQHandler(void) // 串口5中断服务程序
 {
     uint8_t com_data;
     if (USART_GetITStatus(UART5, USART_IT_RXNE) != RESET) {
-        USART_ClearFlag(UART5, USART_FLAG_RXNE);
-        com_data = USART_ReceiveData(USART2);
+        USART_ClearITPendingBit(UART5, USART_IT_RXNE);
+        com_data = USART_ReceiveData(UART5);
         Openmv_Receive_Data(com_data);
         Openmv_Data();
         com_data = 0;
