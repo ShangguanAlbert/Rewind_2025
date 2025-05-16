@@ -3,6 +3,7 @@
 #include "stm32f10x.h"
 
 void TurnRight_135_Longline(void);
+void TurnRight_135_Circle(void);
 void TurnLeft_135_Longline(void);
 void TurnLeft_135_Longline2(void);
 void Tai1_6_zhuan(void);

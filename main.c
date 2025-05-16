@@ -50,59 +50,26 @@ int main(void)
     GPIO_HW_Init();
     GPIO_HDLR_Init();
     // pid_init(&pid_yaw, 60, 10, 2, 1.5, 10);
-    pid_init(&pid_yaw, 60, 10, 3.6, 2, 3);
+    pid_init(&pid_yaw, 60, 10, 3.4, 2, 2.7);
     pid_init(&pid_yaw1, 60, 10, 4, 2, 3);
     // Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
     if (progg == 1) {
-        UP_Tai2_6_noline();
-        Stop(250);
-        Front_down();
-        Stop(200);
-        while (1) {
-            slow_run(45);
-            if (hwr == 0) break;
-        }
-        Reset(300, 45);
-        Stop(300);
-        Straight_back();
-        Treasure_Locator2();
-        // Right_Catch();
+        // Tai1_Tai2();
+        // Tai2_Treasure_Detect();
+        // Tai2_Tai4();
+        // Catch_Treasure2();
         // Treasure_Locator3();
+        // Tai4_door4_Tai5();
+        // Catch_Treasure2();
+        // Treasure_Locator3();
+        // Tai5_Tai7();
+        // Tai5_Tai8();
     }
     if (progg == 2) {
-        UP_Tai2_6_noline();
-        Stop(250);
-        Front_down();
-        Stop(200);
-        while (1) {
-            slow_run(45);
-            if (hwr == 0) break;
-        }
-        Reset(300, 45);
-        Stop(300);
-        HWT101_to_0();
-        Stop(200);
-        Deg_IN();
-        t3_i = 0;
-        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-        while (t3_i < 800) {
-            Straight_run_back(45);
-            if (hwr == 0) {
-                run_delay(-45, -45, 200);
-                break;
-            }
-        }
-        TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
-        t3_i = 0;
-        Stop(300);
-        Front_up();
-        Camera_down_low();
-        Stop(300);
-        Locate_target_treasure();
-        Get_Now_Color();
-        Treasure_Locator3();
+        Tai6_seesaw();
+        
     }
     if (progg == 3) {
         Camera_down();
@@ -112,7 +79,10 @@ int main(void)
         Get_Traget_Color();
     }
     if (progg == 4) {
-        run_delay(-35, 35, 700); 
+        Camera_down_low();
+        Stop(500);
+        Locate_target_treasure();
+        Get_Now_Color();
     }
     if (progg == 5) {
         // 二维码扫描模式
@@ -126,7 +96,7 @@ int main(void)
         Tai8_zhuan();
     }
     if (progg == 7) {
-        Tai2_Treasure_Detect();
+        UP_Tai8();
     }
     if (progg == 8) {
         // while (1) {

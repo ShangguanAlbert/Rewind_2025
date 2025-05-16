@@ -11,6 +11,7 @@
 #include "bsp_vision.h"
 #include "bsp_qr.h"
 #include "bsp_compass.h"
+#include "pid_turn.h"
 extern int8_t Traget_Color;
 extern int8_t NOW_Color;
 extern int8_t Turn_Or_Not;
@@ -31,7 +32,7 @@ void Tai1_Tai2(void)
     speed_up(60, 130);
     speed_down(130, 60);
     // 上台2
-    UP_Tai2_6();
+    // UP_Tai2_6();
     // UP_Tai2();
 }
 /**
@@ -50,6 +51,7 @@ void Tai2_Treasure_Detect(void)
     Detect_Color();
     Get_Traget_Color();
     Camera_up();
+    run_delay(-25, -25, 200);
     Tai2_zhuan90_2();
 }
 /**
@@ -178,11 +180,11 @@ void Treasure_Locator3(void)
     }
     else if (NOW_Color == 4)
     {
-        run_delay(-38, 38, 700); // 向左边转一个大角度
+        run_delay(-35, 35, 700); // 向左边转一个大角度
         Stop(800);
         // 开始右转扫描
         while (1) {
-            run(35, -35);
+            run(30, -30);
             if (openmv[2] == 6) {
                 // 扫到后完全停止
                 Stop(800);
@@ -201,11 +203,11 @@ void Treasure_Locator3(void)
         Stop(800);
         // 开始右转扫描
         while (1) {
-            run(-35, 35);
+            run(-30, 30);
             if (openmv[2] == 6) {
                 // 扫到后完全停止
                 Stop(800);
-                Left_Catch1(); // 抓宝
+                Left_Catch1(50); // 抓宝
                 break;
             }
         }
@@ -292,6 +294,12 @@ void Catch_Treasure2(void)
     Stop(300);
     Locate_target_treasure();
     Get_Now_Color();
+    if(NOW_Color==0){
+        run_delay(-35,-35,100);
+        stop();
+    }
+    Get_Now_Color();
+    SHUT_UP();
 }
 /**
  * @brief 台2到台3
@@ -310,15 +318,15 @@ void Tai2_Tai3(void)
     Go_BLB();
     // 右转135度
     TurnRight_135_Longline();
-    Stop(100);
+    Stop(300);
     // 修正
-    Reset(250, 70);
+    Reset(500, 70);
     // 加速
-    speed_up(70, 190);
-    Reset(150, 190);
-    speed_down(190, 50);
+    speed_up(70, 170);
+    Reset(250, 170);
+    speed_down(170, 50);
     // 上台3
-    UP_Tai2_6();
+    // UP_Tai2_6();
 }
 /**
  * @brief 台到台2
@@ -345,7 +353,7 @@ void Tai2_Tai4(void)
     Reset(150, 190);
     speed_down(190, 50);
     // 上台4
-    UP_Tai2_6();
+    // UP_Tai2_6();
 }
 
 /**
@@ -398,7 +406,7 @@ void Tai3_door2_Tai5(void)
 void Tai4_door4_Tai5(void)
 {
     // 下台4
-    down_pt1_6();
+    // down_pt1_6();
     // 修正
     Reset(100, 70);
     // 加速
@@ -406,22 +414,23 @@ void Tai4_door4_Tai5(void)
     speed_down(170, 70);
     // 左转90度，左灰度灯判断转弯条件
     TurnLeft_90_Ldetect_4();
-    Stop(40);
-    // 修正
-    Reset(250, 70);
-    // 加速
-    speed_up(70, 150);
-    speed_down(150, 50);
+    Reset(250, 50);
+    speed_up(50, 95);
+    speed_down(95,50);
+    while (hdxl != 0 || hdxr != 0) {
+        slow_run(50);
+    }
+    Reset(1000, 50);
     // 左转90度，左灰度灯判断转弯条件
     TurnLeft_90_Ldetect_5();
-    Stop(50);
+    Stop(200);
     // 修正
     Reset(350, 70);
     // 加速
     speed_up(70, 160);
     speed_down(160, 70);
     // 上台5
-    UP_Tai2_6();
+    // UP_Tai2_6();
 }
 /**
  * @brief 台5到台7
@@ -429,7 +438,7 @@ void Tai4_door4_Tai5(void)
 void Tai5_Tai7(void)
 {
     // 下台
-    down_pt1_6();
+    // down_pt1_6();
     // 修正
     Reset(200, 50);
     // 加速
@@ -458,7 +467,7 @@ void Tai5_Tai7(void)
 void Tai5_Tai8(void)
 {
     // 下台5
-    down_pt1_6();
+    // down_pt1_6();
     // 修正
     Reset(200, 50);
     // 加速
@@ -611,4 +620,63 @@ void Tai8_Home(void)
     Reset(600, 60);
     // 上台1
     UP_Tai2_6();
+}
+/**
+ * @brief 走台6跷跷板圆圈
+ *
+ */
+void Tai6_seesaw(void)
+{
+    // TurnRight_135_Circle();
+    // Touch_Seesaw_adjust();
+    // Seesaw_with_Adjustion(1100, 2100);
+    // Land_Protect_adjust();
+    // // 检测左转
+    // while (1) {
+    //     slow_run(50);
+    //     if (Huidu_va(10) > white[10] || Huidu_va(9) > white[9]) {
+    //         break;
+    //     }
+    // }
+    // // 左转
+    // // 左转
+    // Right_Speed_Up(50, 96, 5);
+    // Left_Speed_Down(50, -90, 5);
+    // while (1) {
+    //     run(-75, 80);
+    //     if (Huidu_va(6) > white[6] || Huidu_va(5) > white[5]) {
+    //         break;
+    //     }
+    // }
+    // Stop(40);
+    // UP_Tai2_6_noline();
+    down_pt1_6();
+    TurnLeft_90_Rdetect_4();
+    Stop(50);
+    Touch_Seesaw_adjust();
+    Seesaw_with_Adjustion(1200, 2100);
+    Land_Protect_adjust();
+    while (1) {
+        drift_left(60, 0);
+        if (hdxr == 0) {
+            break;
+        }
+    }
+    while (1) {
+        drift_right(60, 0);
+        if (hdxl == 0) {
+            break;
+        }
+    }
+    // while (1) {
+    //     run(-30, 30);
+    //     if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
+    //         break;
+    //     }
+    // }
+    // Stop(40);
+    Reset(110, 60);
+
+
+
 }

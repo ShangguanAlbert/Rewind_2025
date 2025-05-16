@@ -23,7 +23,7 @@ void TurnRight_135_Longline(void)
             break;
         }
     }
-    Left_Speed_Up(50, 115, 3);
+    Left_Speed_Up(50, 115, 4);
     Right_Speed_Down(50, -90, 4);
     while (1) {
         // 左右轮设定不同速度，直到灰度4，5扫到白线
@@ -33,7 +33,29 @@ void TurnRight_135_Longline(void)
         }
     }
 }
-
+/**
+ * @brief 右转135°后进圆圈
+ *
+ */
+void TurnRight_135_Circle(void)
+{
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 115, 4);
+    Right_Speed_Down(50, -90, 4);
+    while (1) {
+        // 左右轮设定不同速度，直到灰度4，5扫到白线
+        run(85, -65);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
 /**
  * @brief 左转135度（进台八回家的翘翘板）
  *
@@ -119,7 +141,8 @@ void Tai1_6_zhuan1(void)
     Stop(400);
     Deg_IN();
     run_delay(150, -150, 200);
-    pid_Turn(800);
+    Stop(300);
+    // pid_Turn(800);
 }
 
 void turn_around_180(void)
@@ -167,6 +190,8 @@ void Tai2_zhuan90_1(void)
     Stop(50);
     // Front_down();
 }
+
+
 /**
  * @brief 台2转九十度2
  *
@@ -304,13 +329,13 @@ void Tai8_zhuan(void)
     // Stop(300);
 
     Front_up_High();
-    Stop(100);
+    Stop(300);
     HWT101_to_0();
     Stop(250);
     Deg_IN();
-    for (int x = 60; x < 110; x++) {
-        run(x * 0.86, -x * 0.90);
-        Delay_ms(5);
+    for (int x = 50; x < 125; x++) {
+        run(-x * 0.98, x * 1.02);
+        Delay_ms(4);//4
     }
     pid_Turn(800);
     Stop(50);

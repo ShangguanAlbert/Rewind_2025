@@ -186,9 +186,9 @@ void Left_Catch(void)
 }
 /**
  * @brief 车子左侧抓宝
- *
+ * @paragraph t 后退时间
  */
-void Left_Catch1(void)
+void Left_Catch1(int t)
 {
 // run_delay(-35,35,50);
     Stop(40);
@@ -199,7 +199,7 @@ void Left_Catch1(void)
             break;
         }
     }
-    run_delay(-25, -25, 25);
+    run_delay(-25, -25, t);
     // Stop(40);
     // while (1) {
     //     run(-20, -20);
@@ -315,7 +315,7 @@ void UP_Tai2(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(45, 45);
+            run(45, 46);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -358,8 +358,8 @@ void UP_Tai7(void)
         }
     }
     Reset(300, 50); // 卡时间巡线
-    speed_up(50, 105);
-    speed_down(105, 50);
+    speed_up_high(50, 105);
+    speed_down_high(105, 50);
     Front_down();
 
     while (1) {
@@ -462,6 +462,22 @@ void UP_Tai8(void)
     // }
 
     Tai8_zhuan();
+    // if (hwl==0) 
+    // {
+    //     while (1)
+    //     {
+    //         run(-25,-25);
+    //         if (hwl == 1) {
+    //             break;
+    //         }
+    //     }
+    //     run_delay(35,-35,300);
+        
+    // }
+
+
+    
+    
 }
 /**
  * @brief 下台8动作
@@ -642,7 +658,7 @@ void Past_Seesaw(int time_stop, int time_Seesaw)
  * @brief 跷跷板落地扫不到白线保护程序
  *
  */
-void Land_Protect_adjust(void)
+void Land_Protect_adjust0(void)
 {
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
@@ -713,7 +729,10 @@ void Land_Protect_adjust(void)
         }
     }
 }
-
+/**
+ * @brief 过跷跷板
+ *
+ */
 void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
 {
     int count_turn = 0;
@@ -754,6 +773,115 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
     Stop(1000);
+}
+/**
+ * @brief 在圆圈过跷跷板
+ *
+ */
+void Seesaw_with_Adjustion_Circle(int time_stop, int time_Seesaw)
+{
+    int count_turn = 0;
+    t3_i           = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        get_huidu_va();
+        Run(65);
+        /*循环修正*/
+        if (hwr == 1 && hwl == 1) {
+            run(40, 65);
+            Delay_ms(5);
+            count_turn += 3;
+        } else if (hwr == 1 && hwl == 0) {
+            run(65, 40);
+            Delay_ms(5);
+            count_turn += 3;
+        } else if (cnt_whiteline == 0 && hwr == 0) {
+            Run(65);
+        }
+        if (t3_i > time_stop) {
+            run(35, 35);
+            Delay_ms(5);
+        }
+        /* 下跷跷板停车 红外检测到 */
+        if (hwr != 0 && t3_i > time_stop) {
+            Front_mid();
+            stop();
+            break;
+        }
+        /* 检测到落地点有白线停车 */
+        get_huidu_va();
+        if (cnt_whiteline > 0 && (t3_i >= (time_Seesaw + count_turn))) {
+            stop();
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(1000);
+}
+/**
+ * @brief 检测到跷跷板并调整姿态到左色标扫到
+ *
+ */
+void Touch_Seesaw_adjust(void)
+{
+    while (1) {
+        drift_left(60, 0);
+        if (hwr == 0) break;
+    }
+    // Front_down();
+    Stop(40);
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    // while ((bhwl == 1) || t3_i > 180) {
+    //     run(0, 45);
+    // }
+    while (1) {
+        run(-30, 0);
+        if (hwl == 0) {
+            break;
+        } else if (t3_i > 750) { // 没扫到
+            while (1) {
+                run(-35, 10);
+                if (hwl == 0 || t3_i > 1800) break;
+            }
+            break;
+        } 
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(40);
+}
+/**
+ * @brief 跷跷板落地扫不到白线保护程序
+ *
+ */
+void Land_Protect_adjust(void)
+{
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        get_huidu_va();
+        if (cnt_whiteline != 0) {
+            Reset_drift_left(60, 0, 100);
+            break;
+        } else if (cnt_whiteline == 0) {
+            while (1) {
+                run(0, 50);
+                if (Huidu_va(10) > white[10] || Huidu_va(9) > white[9] || Huidu_va(8) > white[8] || Huidu_va(11) > white[11] || Huidu_va(7) > white[7]) break;
+            }
+            Stop(150);
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    while (1) {
+        run(0, 40);
+        if (Huidu_va(5) > white[5] || Huidu_va(6) > white[6]) {
+            break;
+        }
+    }
 }
 /**
  * @brief 回程过波浪板
@@ -851,14 +979,13 @@ void Get_Traget_Color(void)
  */
 void Get_Now_Color(void)
 {
-    while (1) {
-        if (openmv[2] != 0) {
-            break;
-        }
-    }
+     
     r = 0;
     g = 0;
     b = 0;
+    NOW_Color=0;
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (r < 3 && g < 3 && b < 3) {
         if (openmv[2] == 4) {
             r++;
@@ -868,7 +995,14 @@ void Get_Now_Color(void)
             b++;
         }
         delay_ms(5);
+        if(t3_i > 2000){
+            break;
+        }
     }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(300);
+
     if (r >= 3) {
         LCD_SetColor(LCD_MAGENTA);//玫红色
         LCD_FillRect(1, 1, 238, 238);
@@ -885,7 +1019,7 @@ void Get_Now_Color(void)
         LCD_SetColor(LCD_WHITE);
         LCD_FillRect(1, 1, 238, 238);
     }
-    SHUT_UP();
+    stop();
 }
 /**
  * @brief 获取转弯消息
