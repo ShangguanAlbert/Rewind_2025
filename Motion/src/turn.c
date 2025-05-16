@@ -440,6 +440,32 @@ void TurnRight_90_Ldetect_3(void)
         }
     }
 }
+
+/**
+ * @brief 右转90度,右灰度
+ */
+void TurnRight_90_Ldetect_3_indoor1(void)
+{
+    // 低速巡线，当灰度0,1扫到白线时候跳出循环，开始转弯
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1] ) {
+            break;
+        }
+    }
+    // 转弯
+    Left_Speed_Up(50, 85, 5);
+    Right_Speed_Down(50, -75, 5);
+    while (1) {
+        run(75, -70);
+        // 检测停止
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+
+
 /**
  * @brief 左转90度 左灰度检测
  *        用于台5左转上梯形山

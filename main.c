@@ -56,20 +56,24 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        // Tai1_Tai2();
-        // Tai2_Treasure_Detect();
-        // Tai2_Tai4();
-        // Catch_Treasure2();
-        // Treasure_Locator3();
+        Tai1_Tai2();
+        Tai2_Treasure_Detect();
+        Tai2_Tai3();
+        Catch_Treasure3();
+        Treasure_Locator3();
+        Tai3_door2_Tai5();
         // Tai4_door4_Tai5();
         // Catch_Treasure2();
         // Treasure_Locator3();
         // Tai5_Tai7();
         // Tai5_Tai8();
+        Catch_Treasure3();
+        Treasure_Locator3();
     }
     if (progg == 2) {
         Tai6_seesaw();
-        
+        // Touch_Seesaw_adjust();
+        // Seesaw_with_Adjustion(1100, 2100);
     }
     if (progg == 3) {
         Camera_down();
@@ -93,7 +97,8 @@ int main(void)
         }
     }
     if (progg == 6) {
-        Tai8_zhuan();
+        // Tai3_door2_Tai5();
+        
     }
     if (progg == 7) {
         UP_Tai8();

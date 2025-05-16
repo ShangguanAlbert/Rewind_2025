@@ -118,37 +118,42 @@ void Camera_up_hight(void)
 void Catch(void)
 {
     Paw_close();
-    Stop(1000);
+    Stop(5000);
     Camera_up_hight();
     Stop(1000);
     Paw_open();
 }
+
 /**
  * @brief 车子右侧抓宝
- *
+ * @paragraph t 后退时间
  */
-void Right_Catch(void)
+void Right_Catch(int t)
 {
-    // run_delay(-35,35,50);
-    Stop(40);
-    run_delay(-45, -45, 80);
-    while (1) {
-        run(-25, -25);
-        if (hdxr == 0) {
-            break;
-        }
-    }
-    run_delay(-30, -30, 25);
-    Stop(40);
-    while (1) {
-        run(-25, -25);
-        if (hdxr == 1) {
-            break;
-        }
-    }
-    Stop(300);
+    // // run_delay(-35,35,50);
+    // Stop(40);
+    // run_delay(-45, -45, 80);
+    // while (1) {
+    //     run(-25, -25);
+    //     if (hdxr == 0) {
+    //         break;
+    //     }
+    // }
+    // run_delay(-30, -30, 25);
+    // Stop(40);
+    // while (1) {
+    //     run(-25, -25);
+    //     if (hdxr == 1) {
+    //         break;
+    //     }
+    // }
+    // Stop(300);
+    // Catch();
+    run_delay(-20, -20, t);
+    Stop(500);
     Catch();
 }
+
 
 /**
  * @brief 车子中间抓宝
@@ -163,7 +168,7 @@ void Straight_Catch(void)
             break;
         }
     }
-    // run_delay(-40,-40,50);
+    run_delay(-40, -40, 50);
     while (1) {
         run(-25, -25);
         if (hdxr == 1) {
@@ -174,32 +179,23 @@ void Straight_Catch(void)
     Catch();
 }
 
-/**
- * @brief 车子左侧抓宝
- *
- */
-void Left_Catch(void)
-{
-    run_delay(-20, -20, 600);
-    Stop(500);
-    Catch();
-}
+
 /**
  * @brief 车子左侧抓宝
  * @paragraph t 后退时间
  */
-void Left_Catch1(int t)
+void Left_Catch(int t)
 {
-// run_delay(-35,35,50);
-    Stop(40);
-    run_delay(-40, -40, 80);
-    while (1) {
-        run(-25, -25);
-        if (hdxl == 0) {
-            break;
-        }
-    }
-    run_delay(-25, -25, t);
+    // run_delay(-35,35,50);
+    // Stop(40);
+    // run_delay(-40, -40, 80);
+    // while (1) {
+    //     run(-25, -25);
+    //     if (hdxl == 0) {
+    //         break;
+    //     }
+    // }
+    run_delay(-20, -20, t);
     // Stop(40);
     // while (1) {
     //     run(-20, -20);
@@ -207,7 +203,7 @@ void Left_Catch1(int t)
     //         break;
     //     }
     // }
-    Stop(300);
+    Stop(500);
     Catch();
 }
 /**
@@ -462,7 +458,7 @@ void UP_Tai8(void)
     // }
 
     Tai8_zhuan();
-    // if (hwl==0) 
+    // if (hwl==0)
     // {
     //     while (1)
     //     {
@@ -472,12 +468,8 @@ void UP_Tai8(void)
     //         }
     //     }
     //     run_delay(35,-35,300);
-        
+
     // }
-
-
-    
-    
 }
 /**
  * @brief 下台8动作
@@ -846,7 +838,7 @@ void Touch_Seesaw_adjust(void)
                 if (hwl == 0 || t3_i > 1800) break;
             }
             break;
-        } 
+        }
     }
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
@@ -979,12 +971,12 @@ void Get_Traget_Color(void)
  */
 void Get_Now_Color(void)
 {
-     
-    r = 0;
-    g = 0;
-    b = 0;
-    NOW_Color=0;
-    t3_i = 0;
+
+    r         = 0;
+    g         = 0;
+    b         = 0;
+    NOW_Color = 0;
+    t3_i      = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (r < 3 && g < 3 && b < 3) {
         if (openmv[2] == 4) {
@@ -995,7 +987,7 @@ void Get_Now_Color(void)
             b++;
         }
         delay_ms(5);
-        if(t3_i > 2000){
+        if (t3_i > 2000) {
             break;
         }
     }
@@ -1004,15 +996,15 @@ void Get_Now_Color(void)
     Stop(300);
 
     if (r >= 3) {
-        LCD_SetColor(LCD_MAGENTA);//玫红色
+        LCD_SetColor(LCD_MAGENTA); // 玫红色
         LCD_FillRect(1, 1, 238, 238);
         NOW_Color = 4;
     } else if (g >= 3) {
-        LCD_SetColor(LCD_YELLOW);//黄色
+        LCD_SetColor(LCD_YELLOW); // 黄色
         LCD_FillRect(1, 1, 238, 238);
         NOW_Color = 5;
     } else if (b >= 3) {
-        LCD_SetColor(LCD_CYAN);//青色
+        LCD_SetColor(LCD_CYAN); // 青色
         LCD_FillRect(1, 1, 238, 238);
         NOW_Color = 6;
     } else if (openmv[2] == 0) {
