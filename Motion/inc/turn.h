@@ -2,6 +2,7 @@
 #define __TURN_H
 #include "stm32f10x.h"
 
+void TurnRight_135_home(void);
 void TurnRight_135_Longline(void);
 void TurnRight_135_Circle(void);
 void TurnLeft_135_Longline(void);

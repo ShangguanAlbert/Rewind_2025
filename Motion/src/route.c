@@ -622,6 +622,8 @@ void Tai7_Home(void)
     }
     // 过跷跷板
     Seesaw_with_Adjustion(900, 2100);
+    Land_Protect_adjust0();
+    
     // 修正
     Reset(400, 70);
     // 巡线直到右灰度等测到白线
@@ -644,39 +646,40 @@ void Tai7_Home(void)
     {
         slow_run(50);
     }
-    Reset(800,50);
-    // 左转90度
-    // TurnLeft_90_Rdetect_4();
-    // Stop(100);
-    // // 修正
-    // Reset(250, 50);
-    // // 加速
-    // speed_up(50, 120);
-    // speed_down(120, 50);
-    // // 修正
-    // Reset(60, 60);
-    // // 右飘进波浪板
-    // while (hdxr != 0) {
-    //     drift_right(50, 0);
-    // }
-    // // 修正
-    // Reset(500, 45);
-    // // 走波浪板
-    // Back_BLB();
-    // // 右转135度进长桥
-    // TurnRight_135_Longline();
-    // Stop(50);
-    // // 修正
-    // Reset(250, 50);
-    // // 加速
-    // speed_up(50, 100);
-    // speed_down(100, 50);
-    // // 走长桥
-    // Bridge_Travel();
-    // // 修正
-    // Reset(600, 60);
-    // // 上台
-    // UP_Tai2_6();
+    Reset(1200,50);
+
+    //左转90度
+    TurnLeft_90_Rdetect_4();
+    Stop(250);
+    // 修正
+    Reset(250, 50);
+    // 加速
+    speed_up(50, 120);
+    speed_down(120, 50);
+    // 修正
+    Reset(60, 60);
+    // 右飘进波浪板
+    while (hdxr != 0) {
+        drift_right(50, 0);
+    }
+    // 修正
+    Reset(500, 45);
+    // 走波浪板
+    Back_BLB();
+    // 右转135度进长桥
+    TurnRight_135_home();
+    Stop(200);
+    // 修正
+    Reset(250, 50);
+    // 加速
+    speed_up(50, 100);
+    speed_down(100, 50);
+    // 走长桥
+    Bridge_Travel();
+    // 修正
+    Reset(600, 60);
+    // 上台
+    UP_Tai2_6();
 }
 
 /**
@@ -703,43 +706,45 @@ void Tai8_Home(void)
     // 过跷跷板
     Seesaw_with_Adjustion(900, 2100);
     //保护修正
-    Land_Protect_adjust();
+    Land_Protect_adjust0();
     // 巡线修正
     Reset(350, 70);
     // 向右漂移
     Reset_drift_right(70, 1, 800);
     Reset(300, 70);
     // 加速
-    speed_up(70,100);
-    speed_down(100,50);
+    // speed_up(70,100);
+    // speed_down(100,50);
+    Reset(500, 70);
+
     while (hdxl != 0 || hdxr != 0)
     {
         slow_run(50);
     }
     Reset(800,50);
-    // TurnRight_90_Ldetect_3();
-    // Stop(50);
-    // // 加速
-    // speed_up(45, 120);
-    // // 减速
-    // speed_down(120, 50);
-    // // 向左转135度
-    // TurnLeft_135_Longline2();
-    // // 回程过波浪板
-    // Back_BLB();
-    // Reset(1200, 45);
-    // // 右转135
-    // TurnRight_135_Longline();
-    // Stop(50);
-    // // 巡线修正
-    // Reset(250, 50);
-    // speed_up(50, 100);
-    // speed_down(100, 50);
-    // // 桥上巡线
-    // Bridge_Travel();
-    // Reset(600, 60);
-    // // 上台1
-    // UP_Tai2_6();
+    TurnRight_90_Ldetect_3();
+    Stop(250);
+    // 加速
+    speed_up(45, 120);
+    // 减速
+    speed_down(120, 50);
+    // 向左转135度
+    TurnLeft_135_Longline2();
+    // 回程过波浪板
+    Back_BLB();
+    Reset(1200, 45);
+    // 右转135
+    TurnRight_135_home();
+    Stop(200);
+    // 巡线修正
+    Reset(250, 50);
+    speed_up(50, 100);
+    speed_down(100, 50);
+    // 桥上巡线
+    Bridge_Travel();
+    Reset(600, 60);
+    // 上台1
+    UP_Tai2_6();
 }
 /**
  * @brief 走台6跷跷板圆圈

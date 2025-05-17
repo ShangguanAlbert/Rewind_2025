@@ -237,7 +237,7 @@ void slow_run(int N)
         KD = 0.005;
     } else if (speed >= 70 && speed < 80) { // 70
         KP = 0.00400;
-        KD = 0.00558;
+        KD = 0.02;//0.00558
     } else if (speed >= 80 && speed < 90) { // 80
         KP = 0.0041;
         KD = 0.005;

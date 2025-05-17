@@ -14,6 +14,29 @@
  * @brief 右转135°后进长桥（用于回家和台2-台3）
  *
  */
+void TurnRight_135_home(void)
+{
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 115, 5);
+    Right_Speed_Down(50, -98, 4);
+    while (1) {
+        // 左右轮设定不同速度，直到灰度4，5扫到白线
+        run(85, -65);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+/**
+ * @brief 右转135°后进长桥（用于回家和台2-台3）
+ *
+ */
 void TurnRight_135_Longline(void)
 {
     // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
@@ -183,7 +206,7 @@ void Tai2_zhuan90_1(void)
     Front_up_High();
     Deg_IN();
     for (int x = 55; x < 85; x++) {
-        run(x * 0.90, -x * 0.89); // 98
+        run(x * 0.93, -x * 0.89); // 98
         Delay_ms(8);              //
     }
     pid_Turn_Right90(500);
@@ -296,7 +319,7 @@ void Tai7_zhuan(void)
     Stop(250);
     Deg_IN();
     for (int x = 55; x < 115; x++) {
-        run(x * 0.84, -x * 0.94);
+        run(x * 0.84, -x * 0.96);
         Delay_ms(8); //
     }
     pid_Turn(500);
