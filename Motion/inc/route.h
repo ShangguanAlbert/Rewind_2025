@@ -16,6 +16,7 @@ void Tai2_Tai4(void);
 void Tai3_door2_Tai5(void);
 void Tai3_door1_Tai6(void);
 void Tai4_door4_Tai5(void);
+void Tai4_door3_Tai6(void);
 void Tai6_seesaw(void);
 void Tai5_Tai7(void);
 void Tai5_Tai8(void);

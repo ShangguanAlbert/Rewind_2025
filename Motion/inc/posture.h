@@ -20,7 +20,7 @@ void Camera_up(void);
 void Camera_up_hight(void);
 void Catch(void);
 void Right_Catch(int t);
-void Straight_Catch(void);
+void Straight_Catch(int t);
 void Left_Catch(int t);
 void down_pt1_6(void);
 void UP_Tai2_6(void);

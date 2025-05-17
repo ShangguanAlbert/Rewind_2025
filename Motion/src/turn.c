@@ -291,12 +291,12 @@ void Tai7_zhuan(void)
     // Front_down();
 
     Front_up_High();
-    Stop(100);
+    Stop(500);
     HWT101_to_0();
     Stop(250);
     Deg_IN();
-    for (int x = 55; x < 110; x++) {
-        run(x * 0.86, -x * 0.94);
+    for (int x = 55; x < 115; x++) {
+        run(x * 0.84, -x * 0.94);
         Delay_ms(8); //
     }
     pid_Turn(500);
@@ -463,6 +463,15 @@ void TurnRight_90_Ldetect_3_indoor1(void)
             break;
         }
     }
+    run_delay(76, -75, 50);
+    // 左转，扫到第二根白线停止
+    while (1) {
+        run(76, -75);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+
 }
 
 
@@ -593,7 +602,7 @@ void TurnLeft_90_Ldetect_4(void)
             break;
         }
     }
-    run_delay(-75, 76, 50);
+    run_delay(-75, 76, 100);
     // 左转，扫到第二根白线停止
     while (1) {
         run(-75, 76);

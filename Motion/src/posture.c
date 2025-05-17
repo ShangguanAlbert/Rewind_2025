@@ -154,31 +154,32 @@ void Right_Catch(int t)
     Catch();
 }
 
-
 /**
  * @brief 车子中间抓宝
  *
  */
-void Straight_Catch(void)
+void Straight_Catch(int t)
 {
-    run_delay(-40, -40, 180);
-    while (1) {
-        run(-25, -25);
-        if (hdxl == 0 || hdxr == 0) {
-            break;
-        }
-    }
-    run_delay(-40, -40, 50);
-    while (1) {
-        run(-25, -25);
-        if (hdxr == 1) {
-            break;
-        }
-    }
+    // run_delay(-40, -40, 180);
+    // while (1) {
+    //     run(-25, -25);
+    //     if (hdxl == 0 || hdxr == 0) {
+    //         break;
+    //     }
+    // }
+    // run_delay(-40, -40, 50);
+    // while (1) {
+    //     run(-25, -25);
+    //     if (hdxr == 1) {
+    //         break;
+    //     }
+    // }
+    // Stop(500);
+    // Catch();
+    run_delay(-20, -20, t);
     Stop(500);
     Catch();
 }
-
 
 /**
  * @brief 车子左侧抓宝
@@ -285,7 +286,7 @@ void UP_Tai2_6_noline(void)
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) // 扫到红线同时对左右轮速度进行修正（如果需要）
         {
-            run(45, 46);
+            run(46, 45);
         }
         if (hdxl == 0 || hdxr == 0) { // 腰灯扫到红线
             break;
@@ -363,7 +364,7 @@ void UP_Tai7(void)
         if (cnt_whiteline >= 1 && cnt_whiteline < 3) {
             slow_run(50);
         } else if (cnt_whiteline == 0) {
-            run(48, 45);
+            run(46, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -371,20 +372,20 @@ void UP_Tai7(void)
     }
     Run_delay(45, 100);
     while (1) {
-        run(48, 45);
+        run(45, 45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
     while (1) {
-        run(48, 45);
+        run(45, 45);
         if (hdxl == 1 || hdxr == 1) {
             break;
         }
     }
     Run_delay(45, 150);
     while (1) {
-        run(48, 45);
+        run(45, 45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
