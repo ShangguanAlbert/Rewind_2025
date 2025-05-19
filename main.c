@@ -56,17 +56,18 @@ int main(void)
 
     progg = Function_Mode();
     if (progg == 1) {
-        // 35抓宝
-        // Tai1_Tai2();
-        // Tai2_Treasure_Detect();
-        // Tai2_Tai3();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
-        // Tai3_door2_Tai5();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
+        //35抓宝
+        Tai1_Tai2();
+        Tai2_Treasure_Detect();
+        Tai2_Tai3();
+        Catch_Treasure3();
+        Treasure_Locator3();
+        Tai3_door2_Tai5();
+        Catch_Treasure3();
+        Treasure_Locator3();
+        Tai5_Home();
 
-        // 45抓宝
+        //45抓宝
         // Tai1_Tai2();
         // Tai2_Treasure_Detect();
         // Tai2_Tai4();
@@ -75,6 +76,7 @@ int main(void)
         // Tai4_door4_Tai5();
         // Catch_Treasure3();
         // Treasure_Locator3();
+        // Tai5_Home();
 
         //46抓宝
         // Tai1_Tai2();
@@ -83,15 +85,16 @@ int main(void)
         // Catch_Treasure3();
         // Treasure_Locator3();
         // Tai4_door3_Tai6();
+        // Tai6_Home();
 
         //36抓宝
-        Tai1_Tai2();
-        Tai2_Treasure_Detect();
-        Tai2_Tai3();
-        Catch_Treasure3();
-        Treasure_Locator3();
-        Tai3_door1_Tai6();
-        Tai6_Home();
+        // Tai1_Tai2();
+        // Tai2_Treasure_Detect();
+        // Tai2_Tai3();
+        // Catch_Treasure3();
+        // Treasure_Locator3();
+        // Tai3_door1_Tai6();
+        // Tai6_Home();
 
 
     }
@@ -126,14 +129,18 @@ int main(void)
         // Tai4_door3_Tai6();
         // Tai6_seesaw();
         // Tai8_Home();
-        Catch_Treasure3();
-        Treasure_Locator3();
+        // Catch_Treasure3();
+        // Treasure_Locator3();
+        TurnLeft_90_Ldetect_5();
     }
     if (progg == 7) {
         // Catch_Treasure3();
         // Treasure_Locator2();
-        Catch_Treasure1();
-        Treasure_Locator2();
+        // Catch_Treasure1();
+        // Treasure_Locator2();
+        Tai5_Home();
+       
+    
     }
     if (progg == 8) {
         // while (1) {

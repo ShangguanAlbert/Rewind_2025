@@ -18,13 +18,13 @@ void TurnRight_135_home(void)
 {
     // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
-        slow_run(50);
+        slow_run(45);
         if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
             break;
         }
     }
     Left_Speed_Up(50, 115, 5);
-    Right_Speed_Down(50, -98, 4);
+    Right_Speed_Down(50, -85, 4);
     while (1) {
         // 左右轮设定不同速度，直到灰度4，5扫到白线
         run(85, -65);
@@ -649,7 +649,7 @@ void TurnLeft_90_Ldetect_5(void)
         }
     }
     // 左转检测到第一条白线继续转
-    Right_Speed_Up(50, 80, 5);
+    Right_Speed_Up(50, 95, 5);
     Left_Speed_Down(50, -80, 5);
     while (1) {
         run(-75, 70);

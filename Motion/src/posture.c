@@ -785,6 +785,33 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     Stop(1000);
 }
 /**
+ * @brief 过跷跷板(指南针板)
+ *
+ */
+void Seesaw_with_compass(int time_stop, int time_Seesaw)
+{
+    t3_i           = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        Straight_run(15,50);
+        /* 下跷跷板停车 红外检测到 */
+        if (hwr == 0 || t3_i > time_stop) {
+            Front_mid();
+            stop();
+            break;
+        }
+        /* 检测到落地点有白线停车 */
+        get_huidu_va();
+        if (cnt_whiteline > 0|| (t3_i >= time_Seesaw )) {
+            stop();
+            break;
+        }
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+    Stop(1000);
+}
+/**
  * @brief 在圆圈过跷跷板
  *
  */
@@ -897,11 +924,25 @@ void Land_Protect_adjust(void)
  * @brief 回程过波浪板
  *
  */
+void Back_BLB1(void)
+{
+    while (hdxr != 0) {
+        slow_run45();
+    }
+    t7_i = 0;
+    TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
+    do {
+        slow_run45();
+    } while (t7_i < 1500);
+    TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
+    t7_i = 0;
+}
 void Back_BLB(void)
 {
     while (hdxr != 0) {
-        slow_run(45);
+        slow_run45();
     }
+    Reset(800,45);
     Reset(800, 45);
 }
 
@@ -1028,7 +1069,7 @@ void Get_Now_Color(void)
         LCD_SetColor(LCD_CYAN); // 青色
         LCD_FillRect(1, 1, 238, 238);
         NOW_Color = 6;
-    } else if (openmv[2] == 0) {
+    } else if (NOW_Color == 0) {
         LCD_SetColor(LCD_WHITE);
         LCD_FillRect(1, 1, 238, 238);
     }

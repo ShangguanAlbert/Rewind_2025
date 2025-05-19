@@ -237,7 +237,7 @@ void slow_run(int N)
         KD = 0.005;
     } else if (speed >= 70 && speed < 80) { // 70
         KP = 0.00400;
-        KD = 0.02;//0.00558
+        KD = 0.02;                          // 0.00558
     } else if (speed >= 80 && speed < 90) { // 80
         KP = 0.0041;
         KD = 0.005;
@@ -257,6 +257,18 @@ void slow_run1(int N)
     speed = N;
     KP    = 0.01;
     KD    = 0.2;
+    Trace();
+}
+/**
+ * @brief 低速巡线
+ * @param N 设定的速度
+ */
+void slow_run45(void)
+{
+    get_huidu_va();
+    speed = 45;
+    KP    = 0.077;
+    KD    = 0.5;
     Trace();
 }
 /**
@@ -518,24 +530,25 @@ void bridge_PD(int N, uint8_t mode)
 }
 /**
  * @brief 无线直走函数
+ * @param angle 目标角度
  */
-void Straight_run(int speed)
+void Straight_run(int angle,int speed)
 {
     if (JD > 180) {
         JD = JD - 360;
     }
-    if (-2 < JD && JD < 2) {
+    if (-2 < JD - angle && JD < 2) {
         Run(speed);
-    } else if (JD > 0) {
-        if (JD < 6) {
+    } else if (JD - angle > 0) {
+        if (JD - angle < 5) {
             run(speed + 3, speed);
-        } else if (JD < 10) {
+        } else if (JD - angle < 10) {
             run(speed + 10, speed);
         }
-    } else if (JD < 0) {
-        if (JD > -6) {
+    } else if (JD - angle < 0) {
+        if (JD - angle > -5) {
             run(speed, speed + 3);
-        } else if (JD > -10) {
+        } else if (JD - angle > -10) {
             run(speed, speed + 10);
         }
     }
@@ -574,7 +587,7 @@ void Straight(int time)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        Straight_run(50);
+        Straight_run(0,50);
     } while (Huidu_va(10) < white[10] || Huidu_va(11) < white[11] || t3_i > time);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
