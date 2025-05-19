@@ -22,6 +22,7 @@ void GPIO_HW_Init(void)
     GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
+
 /**
  * @brief 读取红外数字电平
  *
@@ -71,4 +72,20 @@ uint8_t HDLR(uint8_t LR)
         res_hdlr = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_2);
     }
     return res_hdlr;
+}
+
+/**
+ * @brief LED
+ *
+ */
+void GPIO_LED_Init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;    // 推挽输出
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // 速度选择
+    // 初始化 PE0 引脚
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
 }

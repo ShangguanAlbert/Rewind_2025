@@ -304,13 +304,16 @@ void UP_Tai2_6_noline(void)
  */
 void UP_Tai2(void)
 {
+    qr_flag = 0;
     Front_down();
     while (hwr != 0) {
         slow_run(50);
+        
     }
 
     while (1) {
         slow_run(50);
+        
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
             run(48, 45);
         }
@@ -322,6 +325,7 @@ void UP_Tai2(void)
     Run_delay(45, 150);
     while (1) {
         run(47,45);
+ 
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
@@ -335,10 +339,12 @@ void UP_Tai2(void)
     Run_delay(45, 100);
     while (1) {
         run(30,30);
+
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
+
     // Tai1_6_zhuan(); // 低平台转180度
 }
 
@@ -556,9 +562,9 @@ void drift_left(int speed, uint8_t model)
 void drift_right(int speed, uint8_t model)
 {
     if (Huidu_va(1) > white[1]) {
-        run(speed + 15, 0);
+        run(speed + 20, 0);//15
     } else if (Huidu_va(0) > white[0]) {
-        run(speed + 15, 10);
+        run(speed + 20, 10);//15
     } else if (Huidu_va(3) > white[3]) {
         run(speed + 15, 20);
     } else if (Huidu_va(2) > white[2]) {
@@ -931,7 +937,7 @@ void Go_BLB(void)
 {
     // 巡线直到扫到黄线
     while (hdxl != 0) {
-        slow_run(45);
+        slow_run(45);   
     }
     // 过波浪板
     Reset(1600, 45);
@@ -1002,7 +1008,7 @@ void Get_Now_Color(void)
             b++;
         }
         delay_ms(5);
-        if (t3_i > 2000) {
+        if (t3_i > 3000) {
             break;
         }
     }
@@ -1068,11 +1074,39 @@ void Get_Turn(void)
 void Get_QR(void)
 {
     LCD_Clear(); // 清屏，黑色背景
-    while (1) {
+
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (t3_i < 1500) {
         QR_Process(); // 处理二维码数据
         if (qr_flag == 1) {
             break;
         }
         delay_ms(100); // 延时100ms，避免刷新过快
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+
+    if (qr_flag ==1){
+        LCD_SetColor(LCD_MAGENTA); // 玫红色
+        LCD_FillRect(1, 1, 238, 238);
+    }
+
+    if(qr_flag==0){
+        run_delay(-30,-30, 250);
+        stop();
+
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (t3_i < 1500) {
+        QR_Process(); // 处理二维码数据
+        if (qr_flag == 1) {
+            break;
+        }
+        delay_ms(100); // 延时100ms，避免刷新过快
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+ 
     }
 }

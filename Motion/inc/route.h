@@ -20,6 +20,8 @@ void Tai4_door3_Tai6(void);
 void Tai6_seesaw(void);
 void Tai5_Tai7(void);
 void Tai5_Tai8(void);
+void Tai5_Home(void);
+void Tai6_Home(void);
 void Tai7_Home(void);
 void Tai8_Home(void);
 void txs(void);

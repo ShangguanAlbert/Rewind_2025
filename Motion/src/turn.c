@@ -467,7 +467,7 @@ void TurnRight_90_Ldetect_3(void)
 /**
  * @brief 右转90度,右灰度
  */
-void TurnRight_90_Ldetect_3_indoor1(void)
+void TurnRight_90_Rdetect_3_indoor1(void)
 {
     // 低速巡线，当灰度0,1扫到白线时候跳出循环，开始转弯
     while (1) {

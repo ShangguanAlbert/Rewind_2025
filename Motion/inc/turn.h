@@ -20,7 +20,7 @@ void Tai7_zhuan(void);
 void Tai8_zhuan(void);
 void TurnRight_90_Rdetect(void);
 void TurnRight_90_Ldetect_3(void);
-void TurnRight_90_Ldetect_3_indoor1(void);
+void TurnRight_90_Rdetect_3_indoor1(void);
 void TurnRight_90_Ldetect_1(void);
 void TurnLeft_90_Ldetect_Mountain(void);
 void Out_T_TurnLeft_90_Ldetect(void);

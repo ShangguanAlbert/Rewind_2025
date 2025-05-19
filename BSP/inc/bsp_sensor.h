@@ -11,5 +11,6 @@ void GPIO_HW_Init(void);
 uint8_t HW(uint8_t LR);
 void GPIO_HDLR_Init(void);
 uint8_t HDLR(uint8_t LR);
+void GPIO_LED_Init(void);
 
 #endif // !__BSP_SENSOR_H

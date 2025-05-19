@@ -40,11 +40,12 @@ void Tai1_Tai2(void)
  */
 void Tai2_Treasure_Detect(void)
 {
+    
     UP_Tai2();
     Stop(40);
     Front_down();
-    Stop(200);
     Get_QR();
+    Stop(200);
     Tai2_zhuan90_1();
     Camera_down();
     Stop(2000);
@@ -177,7 +178,8 @@ void Treasure_Locator3(void)
     if (NOW_Color == 5) {
         Paw_little_close();
         Straight_Catch(500);
-        down_pt1_6();
+        // down_pt1_6();
+
     } else if (NOW_Color == 4) {
         run_delay(-35, 35, 700); // 向左边转一个大角度
         Stop(800);
@@ -187,12 +189,12 @@ void Treasure_Locator3(void)
             if (openmv[2] == 6) {
                 // 扫到后完全停止
                 Stop(800);
-                Right_Catch(500); // 抓宝
+                Right_Catch(550); // 抓宝
                 break;
             }
         }
         run_delay(35, 0, 700);
-        down_pt1_6();
+        // down_pt1_6();
     } else if (NOW_Color == 6) {
         run_delay(35, -35, 700); // 向右边转一个大角度
         Stop(600);
@@ -209,8 +211,9 @@ void Treasure_Locator3(void)
             }
         }
         run_delay(0, 35, 700);
-        down_pt1_6();
+        // down_pt1_6();
     }
+    down_pt1_6();
 }
 
 /**
@@ -311,7 +314,7 @@ void Catch_Treasure3(void)
         slow_run(45);
         if (hwr == 0) break;
     }
-    Reset(300, 45);
+    Reset(80, 45);
     Stop(250);
     HWT101_to_0();
     Stop(250);
@@ -456,7 +459,7 @@ void Tai3_door1_Tai6(void)
     // 加速
     speed_up(70, 140);
     speed_down(140, 70);
-    TurnRight_90_Ldetect_3_indoor1();
+    TurnRight_90_Rdetect_3_indoor1();
     Reset(250, 50);
     speed_up(50, 95);
     speed_down(95, 50);
@@ -818,3 +821,96 @@ void Tai6_seesaw(void)
 // void Tai6_Tai7(void){
 
 // }
+
+void Tai5_Home(void)
+{
+    Reset(350, 70);
+    // 加速
+    speed_up(70, 160);
+    speed_down(160, 70);
+    TurnRight_90_Rdetect_3_indoor1();
+    Stop(200);
+    Reset(250, 50);
+    // 加速
+    speed_up(50,95);
+    speed_down(95,50);
+    while (hdxl != 0 || hdxr != 0)
+    {
+        slow_run(50);
+    }
+    Reset(1200,50);
+
+    //左转90度
+    TurnLeft_90_Rdetect_4();
+    Stop(250);
+    // 修正
+    Reset(250, 50);
+    // 加速
+    speed_up(50, 120);
+    speed_down(120, 50);
+    // 修正
+    Reset(60, 60);
+    // 右飘进波浪板
+    while (hdxr != 0) {
+        drift_right(50, 0);
+    }
+    //修正
+    Reset(500, 45);
+    // 走波浪板
+    Back_BLB();
+    // 右转135度进长桥
+    TurnRight_135_home();
+    Stop(200);
+    // 修正
+    Reset(250, 50);
+    // 加速
+    speed_up(50, 100);
+    speed_down(100, 50);
+    // 走长桥
+    Bridge_Travel();
+    // 修正
+    Reset(600, 60);
+    // 上台
+    UP_Tai2_6();
+}
+
+/**
+ * @brief 从台6回家
+ */
+void Tai6_Home(void)
+{
+
+    Reset(350, 70); 
+    TurnLeft_90_Ldetect_4();
+    Stop(200);
+    Reset(700, 70);
+
+    while (hdxl != 0 || hdxr != 0)
+    {
+        slow_run(50);
+    }
+    Reset(800,50);
+    TurnRight_90_Ldetect_3();
+    Stop(250);
+    // 加速
+    speed_up(45, 120);
+    // 减速
+    speed_down(120, 50);
+    // 向左转135度
+    TurnLeft_135_Longline2();
+    Stop(200);    // 回程过波浪板
+    Back_BLB();
+    Reset(1200, 45);
+    // 右转135
+    TurnRight_135_home();
+    Stop(200);
+    // 巡线修正
+    Reset(250, 50);
+    speed_up(50, 100);
+    speed_down(100, 50);
+    // 桥上巡线
+    Bridge_Travel();
+    Reset(600, 60);
+    // 上台1
+    UP_Tai2_6();
+}

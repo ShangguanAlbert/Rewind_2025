@@ -77,25 +77,27 @@ int main(void)
         // Treasure_Locator3();
 
         //46抓宝
-        Tai1_Tai2();
-        Tai2_Treasure_Detect();
-        Tai2_Tai4();
-        Catch_Treasure3();
-        Treasure_Locator3();
-        Tai4_door3_Tai6();
-
-        // 36抓宝
         // Tai1_Tai2();
         // Tai2_Treasure_Detect();
-        // Tai2_Tai3();
+        // Tai2_Tai4();
         // Catch_Treasure3();
         // Treasure_Locator3();
-        // Tai3_door1_Tai6();
+        // Tai4_door3_Tai6();
+
+        //36抓宝
+        Tai1_Tai2();
+        Tai2_Treasure_Detect();
+        Tai2_Tai3();
+        Catch_Treasure3();
+        Treasure_Locator3();
+        Tai3_door1_Tai6();
+        Tai6_Home();
 
 
     }
     if (progg == 2) {
-         Tai2_Treasure_Detect();
+         Camera_down_low();
+         Locate_treasure();
         
     }
     if (progg == 3) {
@@ -106,7 +108,7 @@ int main(void)
         Get_Traget_Color();
     }
     if (progg == 4) {
-        Camera_down_low();
+        Camera_down();
         Stop(500);
         Locate_target_treasure();
         Get_Now_Color();
@@ -128,10 +130,7 @@ int main(void)
         Treasure_Locator3();
     }
     if (progg == 7) {
-        
-    
-        
-       
+        Tai6_Home();
     }
     if (progg == 8) {
         // while (1) {

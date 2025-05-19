@@ -9,7 +9,8 @@
 uint8_t qr_raw_data[QR_BUFFER_SIZE]; // 存储接收到的原始二维码数据
 uint16_t qr_index     = 0;           // 当前索引位置
 uint8_t qr_data_ready = 0;           // 数据接收完成标志
-uint8_t qr_flag = 0;
+uint8_t qr_flag       = 0;
+int32_t qr_value      = 0;
 
 void UART4_QRCode_Init(void)
 {
@@ -133,10 +134,10 @@ void QR_Process(void)
 
         // 如果是数字内容，显示转换后的整数值
         if (qr_data[0] >= '0' && qr_data[0] <= '9') {
-            int32_t value = QR_GetIntValue();
+            qr_value = QR_GetIntValue(); // 使用全局变量保存结果
             LCD_DisplayString(10, 120, "Value:");
-            LCD_DisplayNumber(100, 120, value, 10);
-            if (value != 0){
+            LCD_DisplayNumber(100, 120, qr_value, 10);
+            if (qr_value != 0) {
                 qr_flag = 1;
             }
         }
@@ -144,10 +145,18 @@ void QR_Process(void)
         // 显示数据长度
         LCD_DisplayString(10, 160, "Length:");
         LCD_DisplayNumber(100, 160, QR_GetDataLength(), 3);
-        
 
         // 处理完成，重置缓冲区以便接收新数据
         QR_ResetBuffer();
-        
     }
+}
+
+/**
+ * @brief 获取二维码信息(非阻塞版)
+ * @return 1表示获取成功，0表示未获取
+ */
+uint8_t Get_QR_NonBlock(void)
+{
+    QR_Process(); // 处理二维码数据
+    return qr_flag;
 }
