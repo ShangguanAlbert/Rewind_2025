@@ -130,7 +130,10 @@ int main(void)
         Treasure_Locator3();
     }
     if (progg == 7) {
-        Tai6_Home();
+        // Catch_Treasure3();
+        // Treasure_Locator2();
+        Catch_Treasure1();
+        Treasure_Locator2();
     }
     if (progg == 8) {
         // while (1) {
