@@ -9,6 +9,7 @@ void Treasure_Locator(void);
 void Treasure_Locator2(void);
 void Treasure_Locator3(void);
 void Catch_Treasure(void);
+void Catch_Treasure1(void);
 void Catch_Treasure2(void);
 void Catch_Treasure3(void);
 void Tai2_Tai3(void);
