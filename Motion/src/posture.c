@@ -312,7 +312,7 @@ void UP_Tai2(void)
     while (1) {
         slow_run(50);
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
-            run(45, 46);
+            run(48, 45);
         }
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -321,7 +321,7 @@ void UP_Tai2(void)
     Front_mid();
     Run_delay(45, 150);
     while (1) {
-        slow_run(45);
+        run(47,45);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
@@ -334,7 +334,7 @@ void UP_Tai2(void)
     // }
     Run_delay(45, 100);
     while (1) {
-        slow_run(30);
+        run(30,30);
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
@@ -398,10 +398,21 @@ void UP_Tai7(void)
  */
 void Down_Tai7(void)
 {
-    Reset(200, 50);
+    while (1) {
+        get_huidu_va();
+        if (cnt_whiteline > 0) {
+            break;
+        }
+        run(45, 45);
+    }
+
+    Reset(200, 45);
     Front_mid();
-    while (hwr == 1) {
+    while (1) {
         slow_run(50);
+        if (hwr == 0) {
+            break;
+        }
     }
 }
 /**
@@ -504,7 +515,7 @@ void Bridge_Travel(void)
     // Reset(300, 60);
 
     while (hwr != 0) {
-        Run(50);
+        run(50, 50);
     }
     Front_mid();
     Reset(300, 60);
@@ -576,9 +587,9 @@ void drift_right_2(int speed, uint8_t model)
     } else if (Huidu_va(2) > white[2]) {
         run(speed + 15, 10);
     } else if (Huidu_va(1) > white[1]) {
-        run(speed + 15, 0);
+        run(speed + 20, 0);
     } else if (Huidu_va(0) > white[0]) {
-        run(speed + 15, 0);
+        run(speed + 20, 0);
     } else {
         if (model == 0) {
             slow_run(speed);
@@ -658,14 +669,14 @@ void Land_Protect_adjust0(void)
     while (1) {
         get_huidu_va();
         if (cnt_whiteline != 0) {
-            Front_down();
+            // Front_down();
             Reset(200, 60);
             break;
         } else if (cnt_whiteline == 0) {
-            // 先向左找，限制2秒
+            // 先向右找，限制2秒
             t3_i = 0; // 重置计时器
             while (1) {
-                run(0, 50); // 向左转
+                run(50, 0); // 向右转
                 if (Huidu_va(11) > white[11] || Huidu_va(10) > white[10] || Huidu_va(9) > white[9] ||
                     Huidu_va(8) > white[8] ||
                     Huidu_va(7) > white[7]) {
@@ -673,17 +684,17 @@ void Land_Protect_adjust0(void)
                     break;
                 }
                 // 如果超过2秒还没找到，跳出循环
-                if (t3_i >= 600) { // 假设t3_i的单位是毫秒
+                if (t3_i >= 700) { // 假设t3_i的单位是毫秒
                     Stop(150);
                     break;
                 }
             }
-            // 如果向左没找到，再向右找
+            // 如果向右没找到，再向左找
             get_huidu_va();
             if (cnt_whiteline == 0) {
                 t3_i = 0; // 重置计时器
                 while (1) {
-                    run(40, -40); // 向右转
+                    run(-50, 40); // 向左转
                     if (Huidu_va(1) > white[1] || Huidu_va(2) > white[2] ||
                         Huidu_va(3) > white[3] || Huidu_va(0) > white[0] ||
                         Huidu_va(4) > white[4]) {
@@ -885,7 +896,7 @@ void Back_BLB(void)
     while (hdxr != 0) {
         slow_run(45);
     }
-    Reset(600, 45);
+    Reset(800, 45);
 }
 
 void txs(void)
@@ -952,18 +963,21 @@ void Get_Traget_Color(void)
     if (r >= 3) {
         LCD_SetColor(LCD_RED);
         LCD_FillRect(1, 1, 238, 238);
+        Traget_Color = 1;
     } else if (g >= 3) {
         LCD_SetColor(LCD_GREEN);
         LCD_FillRect(1, 1, 238, 238);
+        Traget_Color = 2;
     } else if (b >= 3) {
         LCD_SetColor(LCD_BLUE);
         LCD_FillRect(1, 1, 238, 238);
+        Traget_Color = 3;
     } else if (openmv[2] == 0) {
         LCD_SetColor(LCD_WHITE);
         LCD_FillRect(1, 1, 238, 238);
     }
-    Traget_Color = openmv[2];
-    openmv[2]    = 0;
+
+    openmv[2] = 0;
     SHUT_UP();
 }
 /**
