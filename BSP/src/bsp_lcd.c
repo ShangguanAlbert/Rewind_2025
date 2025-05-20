@@ -107,6 +107,11 @@ void Sensor_Test_Page2(void)
     LCD_DisplayNumber(100, 85, hdxl, 1);
     LCD_DisplayString(5, 110, "hdxr:");
     LCD_DisplayNumber(100, 110, hdxr, 1);
+    LCD_DisplayString(5, 160, "sebl");
+    LCD_DisplayNumber(100, 160, sebl, 1);
+    LCD_DisplayString(5, 185, "sebr");
+    LCD_DisplayNumber(100, 185, sebr, 1);
+
     LCD_DisplayString(5, 135, "bpt:");
     // LCD_DisplayNumber(100, 135, code_info, 8);
     // LCD_DisplayString(5, 160, "bpt:");

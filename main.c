@@ -55,53 +55,85 @@ int main(void)
     // Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
+
+    TIM2->CCR1 = 1200; // 抓夹舵机 500
+    Stop(400);
     if (progg == 1) {
-        //35抓宝
+        Start();
         Tai1_Tai2();
         Tai2_Treasure_Detect();
-        Tai2_Tai3();
-        Catch_Treasure3();
-        Treasure_Locator3();
-        Tai3_door2_Tai5();
-        Catch_Treasure3();
-        Treasure_Locator3();
-        Tai5_Home();
-
-        //45抓宝
-        // Tai1_Tai2();
-        // Tai2_Treasure_Detect();
-        // Tai2_Tai4();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
-        // Tai4_door4_Tai5();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
-        // Tai5_Home();
-
-        //46抓宝
-        // Tai1_Tai2();
-        // Tai2_Treasure_Detect();
-        // Tai2_Tai4();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
-        // Tai4_door3_Tai6();
-        // Tai6_Home();
-
-        //36抓宝
+        if (qr_value == 358 || qr_value == 357) {
+            Tai2_Tai3();
+            Catch_Treasure3();
+            Treasure_Locator3();
+            Tai3_door2_Tai5();
+            Catch_Treasure3();
+            Treasure_Locator3();
+            Tai5_Home();
+        } else if (qr_value == 367 || qr_value == 368) {
+            Tai2_Tai3();
+            Catch_Treasure3();
+            Treasure_Locator3();
+            Tai3_door1_Tai6();
+            Tai6_Home();
+        } else if (qr_value == 457 || qr_value == 458) {
+            Tai2_Tai4();
+            Catch_Treasure3();
+            Treasure_Locator3();
+            Tai4_door4_Tai5();
+            Catch_Treasure3();
+            Treasure_Locator3();
+            Tai5_Home();
+        } else if (qr_value == 467 || qr_value == 468) {
+            Tai2_Tai4();
+            Catch_Treasure3();
+            Treasure_Locator3();
+            Tai4_door3_Tai6();
+            Tai6_Home();
+        }
+        // 35抓宝
         // Tai1_Tai2();
         // Tai2_Treasure_Detect();
         // Tai2_Tai3();
         // Catch_Treasure3();
         // Treasure_Locator3();
-        // Tai3_door1_Tai6();
-        // Tai6_Home();
+        // Tai3_door2_Tai5();
+        // Catch_Treasure3();
+        // Treasure_Locator3();
+        // Tai5_Home();
 
+        // 45抓宝
+        //  Tai1_Tai2();
+        //  Tai2_Treasure_Detect();
+        //  Tai2_Tai4();
+        //  Catch_Treasure3();
+        //  Treasure_Locator3();
+        //  Tai4_door4_Tai5();
+        //  Catch_Treasure3();
+        //  Treasure_Locator3();
+        //  Tai5_Home();
 
+        // 46抓宝
+        //  Tai1_Tai2();
+        //  Tai2_Treasure_Detect();
+        //  Tai2_Tai4();
+        //  Catch_Treasure3();
+        //  Treasure_Locator3();
+        //  Tai4_door3_Tai6();
+        //  Tai6_Home();
+
+        // 36抓宝
+        //  Tai1_Tai2();
+        //  Tai2_Treasure_Detect();
+        //  Tai2_Tai3();
+        //  Catch_Treasure3();
+        //  Treasure_Locator3();
+        //  Tai3_door1_Tai6();
+        //  Tai6_Home();
     }
     if (progg == 2) {
-         Camera_down_low();
-         Locate_treasure();
-        
+        Camera_down_low();
+        Locate_treasure();
     }
     if (progg == 3) {
         Camera_down();
@@ -129,18 +161,17 @@ int main(void)
         // Tai4_door3_Tai6();
         // Tai6_seesaw();
         // Tai8_Home();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
-        TurnLeft_90_Ldetect_5();
+        Catch_Treasure3();
+        Treasure_Locator3();
+        // Catch_Treasure1();
+        // Treasure_Locator2();
     }
     if (progg == 7) {
         // Catch_Treasure3();
         // Treasure_Locator2();
         // Catch_Treasure1();
         // Treasure_Locator2();
-        Tai5_Home();
-       
-    
+        Paw_close();
     }
     if (progg == 8) {
         // while (1) {

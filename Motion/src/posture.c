@@ -74,14 +74,14 @@ void Paw_open(void)
  */
 void Paw_little_close(void)
 {
-    Servo_SetAngle(3, 150);
+    Servo_SetAngle(3, 160);
 }
 /**
  * @brief 合上爪子
  */
 void Paw_close(void)
 {
-    Servo_SetAngle(3, 125);
+    Servo_SetAngle(3, 140);
 }
 /**
  * @brief 放下摄像头
@@ -122,34 +122,28 @@ void Catch(void)
     Camera_up_hight();
     Stop(1000);
     Paw_open();
+    Stop(800);
 }
 
 /**
  * @brief 车子右侧抓宝
  * @paragraph t 后退时间
  */
-void Right_Catch(int t)
+void Right_Catch(void)
 {
-    // // run_delay(-35,35,50);
-    // Stop(40);
-    // run_delay(-45, -45, 80);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxr == 0) {
-    //         break;
-    //     }
-    // }
-    // run_delay(-30, -30, 25);
-    // Stop(40);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxr == 1) {
-    //         break;
-    //     }
-    // }
-    // Stop(300);
-    // Catch();
-    run_delay(-20, -20, t);
+    while (1) {
+        run(-20, -20);
+        if (sebl == 0) {
+            break;
+        }
+    }
+    Stop(100);
+    while (1) {
+        run(-20, -20);
+        if (sebr == 0) {
+            break;
+        }
+    }
     Stop(500);
     Catch();
 }
@@ -158,25 +152,15 @@ void Right_Catch(int t)
  * @brief 车子中间抓宝
  *
  */
-void Straight_Catch(int t)
+void Straight_Catch(void)
 {
-    // run_delay(-40, -40, 180);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxl == 0 || hdxr == 0) {
-    //         break;
-    //     }
-    // }
-    // run_delay(-40, -40, 50);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxr == 1) {
-    //         break;
-    //     }
-    // }
-    // Stop(500);
-    // Catch();
-    run_delay(-20, -20, t);
+    run_delay(-25, -25, 250);
+    while (1) {
+        run(-20, -20);
+        if (sebl == 0 || sebr == 0) {
+            break;
+        }
+    }
     Stop(500);
     Catch();
 }
@@ -185,28 +169,38 @@ void Straight_Catch(int t)
  * @brief 车子左侧抓宝
  * @paragraph t 后退时间
  */
-void Left_Catch(int t)
+void Left_Catch(void)
 {
-    // run_delay(-35,35,50);
-    // Stop(40);
-    // run_delay(-40, -40, 80);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxl == 0) {
-    //         break;
-    //     }
-    // }
-    run_delay(-20, -20, t);
-    // Stop(40);
-    // while (1) {
-    //     run(-20, -20);
-    //     if (hdxl == 1) {
-    //         break;
-    //     }
-    // }
+    while (1) {
+        run(-20, -20);
+        if (sebr == 0) {
+            break;
+        }
+    }
+    Stop(100);
+    while (1) {
+        run(-20, -20);
+        if (sebl == 0) {
+            break;
+        }
+    }
     Stop(500);
     Catch();
 }
+
+
+
+/**
+ * @brief 卡时间后退抓宝
+ * 
+ */
+void Catch_Time(int t){
+    run_delay(-20,-20,t);
+    Stop(500);
+    Catch();
+}
+
+
 /**
  * @brief 低速下平台
  */
@@ -308,12 +302,11 @@ void UP_Tai2(void)
     Front_down();
     while (hwr != 0) {
         slow_run(50);
-        
     }
 
     while (1) {
         slow_run(50);
-        
+
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
             run(48, 45);
         }
@@ -324,8 +317,8 @@ void UP_Tai2(void)
     Front_mid();
     Run_delay(45, 150);
     while (1) {
-        run(47,45);
- 
+        run(47, 45);
+
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
@@ -338,7 +331,7 @@ void UP_Tai2(void)
     // }
     Run_delay(45, 100);
     while (1) {
-        run(30,30);
+        run(30, 30);
 
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -562,9 +555,9 @@ void drift_left(int speed, uint8_t model)
 void drift_right(int speed, uint8_t model)
 {
     if (Huidu_va(1) > white[1]) {
-        run(speed + 20, 0);//15
+        run(speed + 20, 0); // 15
     } else if (Huidu_va(0) > white[0]) {
-        run(speed + 20, 10);//15
+        run(speed + 20, 10); // 15
     } else if (Huidu_va(3) > white[3]) {
         run(speed + 15, 20);
     } else if (Huidu_va(2) > white[2]) {
@@ -790,10 +783,10 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
  */
 void Seesaw_with_compass(int time_stop, int time_Seesaw)
 {
-    t3_i           = 0;
+    t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (1) {
-        Straight_run(15,50);
+        Straight_run(15, 50);
         /* 下跷跷板停车 红外检测到 */
         if (hwr == 0 || t3_i > time_stop) {
             Front_mid();
@@ -802,7 +795,7 @@ void Seesaw_with_compass(int time_stop, int time_Seesaw)
         }
         /* 检测到落地点有白线停车 */
         get_huidu_va();
-        if (cnt_whiteline > 0|| (t3_i >= time_Seesaw )) {
+        if (cnt_whiteline > 0 || (t3_i >= time_Seesaw)) {
             stop();
             break;
         }
@@ -942,7 +935,7 @@ void Back_BLB(void)
     while (hdxr != 0) {
         slow_run45();
     }
-    Reset(800,45);
+    Reset(800, 45);
     Reset(800, 45);
 }
 
@@ -978,7 +971,7 @@ void Go_BLB(void)
 {
     // 巡线直到扫到黄线
     while (hdxl != 0) {
-        slow_run(45);   
+        slow_run(45);
     }
     // 过波浪板
     Reset(1600, 45);
@@ -1128,26 +1121,25 @@ void Get_QR(void)
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 
-    if (qr_flag ==1){
+    if (qr_flag == 1) {
         LCD_SetColor(LCD_MAGENTA); // 玫红色
         LCD_FillRect(1, 1, 238, 238);
     }
 
-    if(qr_flag==0){
-        run_delay(-30,-30, 250);
+    if (qr_flag == 0) {
+        run_delay(-30, -30, 250);
         stop();
 
-    t3_i = 0;
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    while (t3_i < 1500) {
-        QR_Process(); // 处理二维码数据
-        if (qr_flag == 1) {
-            break;
+        t3_i = 0;
+        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+        while (t3_i < 1500) {
+            QR_Process(); // 处理二维码数据
+            if (qr_flag == 1) {
+                break;
+            }
+            delay_ms(100); // 延时100ms，避免刷新过快
         }
-        delay_ms(100); // 延时100ms，避免刷新过快
-    }
-    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
-    t3_i = 0;
- 
+        TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+        t3_i = 0;
     }
 }

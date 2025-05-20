@@ -1,6 +1,7 @@
 #include "basic.h"
 #include "bsp_motor.h"
 #include "bsp_SysTick.h"
+#include "bsp_sensor.h"
 
 /**
  * @brief 左右轮走直线, 不带时间
@@ -178,5 +179,15 @@ void turnL_speed_down(int High, int Low, uint16_t delay_time)
         Motor(2, -High);
         Motor(1, High);
         if (High % 5 == 0) Delay_ms(delay_time); // 用1
+    }
+}
+
+void Start(void)
+{
+    while (hwr == 1) {
+        stop();
+    }
+    while (hwr == 0) {
+        stop();
     }
 }
