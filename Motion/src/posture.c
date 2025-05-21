@@ -74,14 +74,14 @@ void Paw_open(void)
  */
 void Paw_little_close(void)
 {
-    Servo_SetAngle(3, 150);
+    Servo_SetAngle(3, 160);
 }
 /**
  * @brief 合上爪子
  */
 void Paw_close(void)
 {
-    Servo_SetAngle(3, 125);
+    Servo_SetAngle(3, 140);
 }
 /**
  * @brief 放下摄像头
@@ -122,34 +122,28 @@ void Catch(void)
     Camera_up_hight();
     Stop(1000);
     Paw_open();
+    Stop(800);
 }
 
 /**
  * @brief 车子右侧抓宝
  * @paragraph t 后退时间
  */
-void Right_Catch(int t)
+void Right_Catch(void)
 {
-    // // run_delay(-35,35,50);
-    // Stop(40);
-    // run_delay(-45, -45, 80);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxr == 0) {
-    //         break;
-    //     }
-    // }
-    // run_delay(-30, -30, 25);
-    // Stop(40);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxr == 1) {
-    //         break;
-    //     }
-    // }
-    // Stop(300);
-    // Catch();
-    run_delay(-20, -20, t);
+    while (1) {
+        run(-20, -20);
+        if (sebl == 0) {
+            break;
+        }
+    }
+    Stop(100);
+    while (1) {
+        run(-20, -20);
+        if (sebr == 0) {
+            break;
+        }
+    }
     Stop(500);
     Catch();
 }
@@ -158,25 +152,15 @@ void Right_Catch(int t)
  * @brief 车子中间抓宝
  *
  */
-void Straight_Catch(int t)
+void Straight_Catch(void)
 {
-    // run_delay(-40, -40, 180);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxl == 0 || hdxr == 0) {
-    //         break;
-    //     }
-    // }
-    // run_delay(-40, -40, 50);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxr == 1) {
-    //         break;
-    //     }
-    // }
-    // Stop(500);
-    // Catch();
-    run_delay(-20, -20, t);
+    run_delay(-25, -25, 250);
+    while (1) {
+        run(-20, -20);
+        if (sebl == 0 || sebr == 0) {
+            break;
+        }
+    }
     Stop(500);
     Catch();
 }
@@ -185,28 +169,38 @@ void Straight_Catch(int t)
  * @brief 车子左侧抓宝
  * @paragraph t 后退时间
  */
-void Left_Catch(int t)
+void Left_Catch(void)
 {
-    // run_delay(-35,35,50);
-    // Stop(40);
-    // run_delay(-40, -40, 80);
-    // while (1) {
-    //     run(-25, -25);
-    //     if (hdxl == 0) {
-    //         break;
-    //     }
-    // }
-    run_delay(-20, -20, t);
-    // Stop(40);
-    // while (1) {
-    //     run(-20, -20);
-    //     if (hdxl == 1) {
-    //         break;
-    //     }
-    // }
+    while (1) {
+        run(-20, -20);
+        if (sebr == 0) {
+            break;
+        }
+    }
+    Stop(100);
+    while (1) {
+        run(-20, -20);
+        if (sebl == 0) {
+            break;
+        }
+    }
     Stop(500);
     Catch();
 }
+
+
+
+/**
+ * @brief 卡时间后退抓宝
+ * 
+ */
+void Catch_Time(int t){
+    run_delay(-20,-20,t);
+    Stop(500);
+    Catch();
+}
+
+
 /**
  * @brief 低速下平台
  */

@@ -55,8 +55,10 @@ int main(void)
     // Set_PID_turn_params(&pid_comp_params, 2.8, 0, 5, 10);
 
     progg = Function_Mode();
-    if (progg == 1) {
 
+    TIM2->CCR1 = 1200; // 抓夹舵机 500
+    Stop(400);
+    if (progg == 1) {
         Start();
         Tai1_Tai2();
         Tai2_Treasure_Detect();
@@ -89,17 +91,16 @@ int main(void)
             Tai4_door3_Tai6();
             Tai6_Home();
         }
-
         // 35抓宝
-        //  Tai1_Tai2();
-        //  Tai2_Treasure_Detect();
-        //  Tai2_Tai3();
-        //  Catch_Treasure3();
-        //  Treasure_Locator3();
-        //  Tai3_door2_Tai5();
-        //  Catch_Treasure3();
-        //  Treasure_Locator3();
-        //  Tai5_Home();
+        // Tai1_Tai2();
+        // Tai2_Treasure_Detect();
+        // Tai2_Tai3();
+        // Catch_Treasure3();
+        // Treasure_Locator3();
+        // Tai3_door2_Tai5();
+        // Catch_Treasure3();
+        // Treasure_Locator3();
+        // Tai5_Home();
 
         // 45抓宝
         //  Tai1_Tai2();
@@ -160,9 +161,10 @@ int main(void)
         // Tai4_door3_Tai6();
         // Tai6_seesaw();
         // Tai8_Home();
-        // Catch_Treasure3();
-        // Treasure_Locator3();
-        TurnLeft_90_Ldetect_5();
+        Catch_Treasure3();
+        Treasure_Locator3();
+        // Catch_Treasure1();
+        // Treasure_Locator2();
     }
     if (progg == 7) {
         // Catch_Treasure3();
