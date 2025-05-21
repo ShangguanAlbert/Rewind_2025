@@ -1,6 +1,8 @@
 #include "bsp_qr.h"
 #include "bsp_lcd.h"
 #include "lcd_spi_130.h"
+#include "bsp_timer.h"
+
 
 #define QR_BUFFER_SIZE 50
 #define QR_END_CHAR    0X0D // 结束符
@@ -66,7 +68,15 @@ void UART4_IRQHandler(void)
         // 检测是否为结束字符或缓冲区已满
         if (temp == QR_END_CHAR || qr_index >= QR_BUFFER_SIZE - 1) {
             qr_raw_data[qr_index] = '\0'; // 字符串结束标志
-            qr_data_ready         = 1;    // 标记接收完成
+            qr_data_ready = 1;    // 标记接收完成
+            
+            // 如果是数字，直接计算值并设置标志
+            if (qr_raw_data[0] >= '0' && qr_raw_data[0] <= '9') {
+                qr_value = QR_GetIntValue();
+                if (qr_value != 0) {
+                    qr_flag = 1;
+                }
+            }
         } else {
             qr_index++; // 更新索引
         }
@@ -159,4 +169,50 @@ uint8_t Get_QR_NonBlock(void)
 {
     QR_Process(); // 处理二维码数据
     return qr_flag;
+}
+
+/**
+ * @brief 启动二维码超时检测
+ */
+void Start_QR_Detection(void)
+{
+    // 重置标志
+    qr_flag = 0;
+    qr_value = 0;
+    QR_ResetBuffer();
+    // 显示扫描开始
+    LCD_DisplayString(10, 200, "QR Scanning...");
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    while (1) {
+        stop();
+        if (qr_flag == 1) {
+        LCD_DisplayString(10, 120, "Value:");
+        LCD_DisplayNumber(100, 120, qr_value, 10);
+    }
+    else{
+        LCD_DisplayString(10, 120, "ValueMiss");
+    }
+    
+        if (qr_flag==1||t3_i>3000) break;
+    }
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+}
+/**
+ * @brief 检查二维码是否已获取或超时
+ * @return 0:继续检测 1:检测成功 2:检测超时
+ */
+uint8_t Check_QR_Status(void)
+{
+    // 检查是否已获取二维码
+    if (qr_flag == 1) {
+        LCD_DisplayString(10, 120, "Value:");
+        LCD_DisplayNumber(100, 120, qr_value, 10);
+        return 1;
+    }
+    else{
+        LCD_DisplayString(10, 120, "ValueMiss");
+    }
+    return 0; // 继续检测
 }

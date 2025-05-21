@@ -13,5 +13,7 @@ uint16_t QR_GetDataLength(void);
 int32_t QR_GetIntValue(void);
 void QR_Process(void);
 uint8_t Get_QR_NonBlock(void);
-
+void Start_QR_Detection(void);
+uint8_t Check_QR_Status(void);
+void Check_QR_Again(void);
 #endif

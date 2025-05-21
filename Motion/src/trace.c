@@ -530,14 +530,14 @@ void bridge_PD(int N, uint8_t mode)
 }
 /**
  * @brief 无线直走函数
- * @param angle 目标角度
+ * @param angle  目标角度
  */
-void Straight_run(int angle,int speed)
+void Straight_run(int angle, int speed)
 {
     if (JD > 180) {
         JD = JD - 360;
     }
-    if (-2 < JD - angle && JD < 2) {
+    if (-2 < JD - angle && JD - angle < 2) {
         Run(speed);
     } else if (JD - angle > 0) {
         if (JD - angle < 5) {
@@ -545,12 +545,26 @@ void Straight_run(int angle,int speed)
         } else if (JD - angle < 10) {
             run(speed + 10, speed);
         }
+        else if (JD - angle < 15){
+            run(speed + 15, speed);
+        }
+        else{
+            run(speed + 20, speed);
+        }
     } else if (JD - angle < 0) {
         if (JD - angle > -5) {
             run(speed, speed + 3);
         } else if (JD - angle > -10) {
             run(speed, speed + 10);
         }
+        else if (JD - angle > -15)
+        {
+           run(speed, speed + 15);
+        }
+        else{
+            run(speed, speed + 20);
+        }
+        
     }
 }
 
@@ -567,12 +581,14 @@ void Straight_run_back(int speed)
         } else if (JD < 10) {
             run(-speed - 10, -speed);
         }
+        else{run(-speed - 15, -speed);}
     } else if (JD < 0) {
         if (JD > -5) {
             run(-speed, -speed - 3);
         } else if (JD > -10) {
             run(-speed, -speed - 10);
         }
+        else{run(-speed , -speed-15);}
     }
 }
 
@@ -587,7 +603,7 @@ void Straight(int time)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        Straight_run(0,50);
+        Straight_run(0, 50);
     } while (Huidu_va(10) < white[10] || Huidu_va(11) < white[11] || t3_i > time);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;

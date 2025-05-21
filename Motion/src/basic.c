@@ -1,7 +1,17 @@
 #include "basic.h"
 #include "bsp_motor.h"
 #include "bsp_SysTick.h"
+#include "bsp_sensor.h"
 
+void Start(void)
+{
+    while (hwr == 1) {
+        stop();
+    }
+    while (hwr == 0) {
+        stop();
+    }
+}
 /**
  * @brief 左右轮走直线, 不带时间
  * @param run_speed 速度

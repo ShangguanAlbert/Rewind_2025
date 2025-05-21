@@ -305,15 +305,14 @@ void UP_Tai2_6_noline(void)
 void UP_Tai2(void)
 {
     qr_flag = 0;
-    Front_down();
+    Front_mid();
     while (hwr != 0) {
         slow_run(50);
-        
     }
 
     while (1) {
         slow_run(50);
-        
+
         if (Huidu_va(5) < white[5] || Huidu_va(6) < white[6]) {
             run(48, 45);
         }
@@ -321,15 +320,20 @@ void UP_Tai2(void)
             break;
         }
     }
+
     Front_mid();
+    run_delay(45,45, 100);
+    Front_down();
+    Start_QR_Detection();
     Run_delay(45, 150);
     while (1) {
-        run(47,45);
- 
+        run(47, 45);
+
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
+
     // while (1) {
     //     slow_run(45);
     //     if (hdxl == 1 || hdxr == 1) {
@@ -338,12 +342,14 @@ void UP_Tai2(void)
     // }
     Run_delay(45, 100);
     while (1) {
-        run(30,30);
+        run(30, 30);
 
         if (hdxl == 0 || hdxr == 0) {
             break;
         }
     }
+    Check_QR_Status();
+    Check_QR_Again();
 
     // Tai1_6_zhuan(); // 低平台转180度
 }
@@ -562,9 +568,9 @@ void drift_left(int speed, uint8_t model)
 void drift_right(int speed, uint8_t model)
 {
     if (Huidu_va(1) > white[1]) {
-        run(speed + 20, 0);//15
+        run(speed + 20, 0); // 15
     } else if (Huidu_va(0) > white[0]) {
-        run(speed + 20, 10);//15
+        run(speed + 20, 10); // 15
     } else if (Huidu_va(3) > white[3]) {
         run(speed + 15, 20);
     } else if (Huidu_va(2) > white[2]) {
@@ -790,23 +796,22 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
  */
 void Seesaw_with_compass(int time_stop, int time_Seesaw)
 {
-    t3_i           = 0;
+
+    HWT101_to_0();
+    Stop(40);
+    t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    while (1) {
-        Straight_run(15,50);
-        /* 下跷跷板停车 红外检测到 */
-        if (hwr == 0 || t3_i > time_stop) {
-            Front_mid();
-            stop();
-            break;
-        }
-        /* 检测到落地点有白线停车 */
-        get_huidu_va();
-        if (cnt_whiteline > 0|| (t3_i >= time_Seesaw )) {
-            stop();
-            break;
-        }
-    }
+    do {
+        Straight_run(0, 50);
+    } while (t3_i < time_stop);
+    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+    t3_i = 0;
+
+    t3_i = 0;
+    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+    do {
+        Straight_run(20, 50);
+    } while (t3_i < time_Seesaw);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
     Stop(1000);
@@ -921,7 +926,7 @@ void Land_Protect_adjust(void)
     }
 }
 /**
- * @brief 回程过波浪板
+ * @brief 回程过波浪板，d值加大
  *
  */
 void Back_BLB1(void)
@@ -937,12 +942,16 @@ void Back_BLB1(void)
     TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
     t7_i = 0;
 }
+/**
+ * @brief 回程过波浪板
+ *
+ */
 void Back_BLB(void)
 {
     while (hdxr != 0) {
         slow_run45();
     }
-    Reset(800,45);
+    Reset(800, 45);
     Reset(800, 45);
 }
 
@@ -978,7 +987,7 @@ void Go_BLB(void)
 {
     // 巡线直到扫到黄线
     while (hdxl != 0) {
-        slow_run(45);   
+        slow_run(45);
     }
     // 过波浪板
     Reset(1600, 45);
@@ -1128,26 +1137,60 @@ void Get_QR(void)
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
 
-    if (qr_flag ==1){
+    if (qr_flag == 1) {
         LCD_SetColor(LCD_MAGENTA); // 玫红色
         LCD_FillRect(1, 1, 238, 238);
     }
 
-    if(qr_flag==0){
-        run_delay(-30,-30, 250);
+    if (qr_flag == 0) {
+        run_delay(-30, -30, 250);
         stop();
 
-    t3_i = 0;
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    while (t3_i < 1500) {
-        QR_Process(); // 处理二维码数据
-        if (qr_flag == 1) {
+        t3_i = 0;
+        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+        while (t3_i < 1500) {
+            QR_Process(); // 处理二维码数据
+            if (qr_flag == 1) {
+                break;
+            }
+            delay_ms(100); // 延时100ms，避免刷新过快
+        }
+        TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+        t3_i = 0;
+    }
+}
+/**
+ * @brief 二维码保护程序
+ * @return
+ */
+void Check_QR_Again(void)
+{
+    if (qr_flag == 0) {
+        run_delay(-30, -30, 300);
+        stop();
+
+        t3_i = 0;
+        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+        while (1) {
+            stop();
+            if (qr_flag == 1) {
+                LCD_DisplayString(10, 120, "Value:");
+                LCD_DisplayNumber(100, 120, qr_value, 10);
+            } else {
+                LCD_DisplayString(10, 120, "ValueMiss");
+            }
+
+            if (qr_flag == 1 || t3_i > 3000) break;
+        }
+        TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+        t3_i = 0;
+         Run_delay(45, 100);
+    while (1) {
+        run(30,30);
+
+        if (hdxl == 0 || hdxr == 0) {
             break;
         }
-        delay_ms(100); // 延时100ms，避免刷新过快
     }
-    TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
-    t3_i = 0;
- 
     }
 }

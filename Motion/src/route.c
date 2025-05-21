@@ -43,8 +43,7 @@ void Tai2_Treasure_Detect(void)
     
     UP_Tai2();
     Stop(40);
-    Front_down();
-    Get_QR();
+    Front_mid();
     Stop(200);
     Tai2_zhuan90_1();
     Camera_down();

@@ -4,6 +4,7 @@
 
 /* 电机基础动作 */
 
+void Start(void);
 void Run(int run_speed);
 void Run_delay(int run_speed, uint16_t last_time);
 void run(int left_speed, int right_speed);
