@@ -191,12 +191,3 @@ void turnL_speed_down(int High, int Low, uint16_t delay_time)
     }
 }
 
-void Start(void)
-{
-    while (hwr == 1) {
-        stop();
-    }
-    while (hwr == 0) {
-        stop();
-    }
-}

@@ -32,5 +32,7 @@ void TurnLeft_90_Ldetect_tai8(void);
 void TurnLeft_90_Rdetect_4(void);
 void Out_T_TurnRight_90_Ldetect(void);
 void Out_T_TurnLeft_90(void);
+void turn_around_repair(int N);
+void turn_around_180(void);
 
 #endif 

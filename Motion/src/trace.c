@@ -328,10 +328,23 @@ void speed_up(int start, int end)
     for (; start < end; start++) {
         if (speed <= 100) {
             KP = 0.003;
-            KD = 0.16;
-        } else {
+            KD = 0.24;//0.16
+        } else if (speed <= 140){
             KP = 0.0016;
-            KD = 0.15;
+            KD = 0.27;//0.15//0.3
+        }
+        else if (speed <= 160)
+        {
+            KP = 0.0012;
+            KD = 0.6;
+        }
+        else if(speed <= 180){
+            KP = 0.0013;
+            KD = 0.8;
+        }
+        else{
+            KP = 0.0014;
+            KD = 0.9;
         }
         speed = start;
         // KP    = 0.0016;
@@ -383,10 +396,10 @@ void speed_down(int high, int low)
         speed = high;
         if (speed <= 100) {
             KP = 0.002;
-            KD = 0.16;
+            KD = 0.15;//0.16
         } else {
             KP = 0.0012;
-            KD = 0.12;
+            KD = 0.11;//0.12
         }
         get_huidu_va();
         if (high % 2 == 0) Trace_transVelocity();
@@ -524,7 +537,7 @@ void bridge_PD(int N, uint8_t mode)
         KD = 0.15;
     } else if (mode == 2) {
         KP = 0.009;
-        KD = 0.2;
+        KD = 0.2;//0.2
     }
     bridge_Trace(mode);
 }
@@ -619,7 +632,7 @@ void Straight_back(void)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (t3_i < 800) {
-        Straight_run_back(45);
+        Straight_run_back(37);
         if (hdxl == 0 || hdxr == 0) break;
     }
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
@@ -628,7 +641,7 @@ void Straight_back(void)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        Straight_run_back(45);
+        Straight_run_back(37);
         // if(hdxl == 0 || hdxr == 0) break;
     } while (t3_i < 300);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);

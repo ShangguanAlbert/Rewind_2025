@@ -189,6 +189,9 @@
           },
           {
             "path": "Motion/src/grab.c"
+          },
+          {
+            "path": "Motion/src/test.c"
           }
         ],
         "folders": []

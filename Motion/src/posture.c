@@ -13,6 +13,7 @@
 #include "bsp_lcd.h"
 #include "bsp_qr.h"
 #include "bsp_compass.h"
+#include "bsp_led.h"
 
 extern uint32_t t3_i;
 extern uint8_t cnt_whiteline;
@@ -81,7 +82,7 @@ void Paw_little_close(void)
  */
 void Paw_close(void)
 {
-    Servo_SetAngle(3, 140);
+    Servo_SetAngle(3, 135);
 }
 /**
  * @brief 放下摄像头
@@ -89,6 +90,13 @@ void Paw_close(void)
 void Camera_down(void)
 {
     Servo_SetAngle(1, 0);
+}
+/**
+ * @brief 放下摄像头
+ */
+void Camera_little_up(void)
+{
+    Servo_SetAngle(1, 10);
 }
 /**
  * @brief 放下摄像头
@@ -110,7 +118,7 @@ void Camera_up(void)
  */
 void Camera_up_hight(void)
 {
-    Servo_SetAngle(1, 70);
+    Servo_SetAngle(1, 75);
 }
 /**
  * @brief 抓宝
@@ -118,11 +126,11 @@ void Camera_up_hight(void)
 void Catch(void)
 {
     Paw_close();
-    Stop(5000);
+    Stop(3000);
     Camera_up_hight();
     Stop(1000);
-    Paw_open();
-    Stop(800);
+    // Paw_open();
+    // Stop(800);
 }
 
 /**
@@ -131,20 +139,34 @@ void Catch(void)
  */
 void Right_Catch(void)
 {
+    Camera_little_up();
+    Stop(300);
+    run_delay(-25, -25, 200);
+    Stop(300);
     while (1) {
         run(-20, -20);
         if (sebl == 0) {
             break;
         }
     }
-    Stop(100);
     while (1) {
         run(-20, -20);
         if (sebr == 0) {
             break;
         }
     }
+    Stop(200);
+    // while (1) {
+    //     run(-16, -16);
+    //     if (sebl == 1) {
+    //         break;
+    //     }
+    // }
     Stop(500);
+    Paw_open();
+    Stop(500);
+    Camera_down();
+    Stop(900);
     Catch();
 }
 
@@ -154,7 +176,10 @@ void Right_Catch(void)
  */
 void Straight_Catch(void)
 {
-    run_delay(-25, -25, 250);
+    Camera_little_up();
+    Stop(300);
+    run_delay(-25, -25, 200);
+    Stop(300);
     while (1) {
         run(-20, -20);
         if (sebl == 0 || sebr == 0) {
@@ -162,6 +187,10 @@ void Straight_Catch(void)
         }
     }
     Stop(500);
+    Paw_open();
+    Stop(500);
+    Camera_down();
+    Stop(900);
     Catch();
 }
 
@@ -171,35 +200,47 @@ void Straight_Catch(void)
  */
 void Left_Catch(void)
 {
+    Camera_little_up();
+    Stop(300);
+    run_delay(-25, -25, 200);
+    Stop(300);
     while (1) {
         run(-20, -20);
         if (sebr == 0) {
             break;
         }
     }
-    Stop(100);
     while (1) {
         run(-20, -20);
         if (sebl == 0) {
             break;
         }
     }
+    Stop(200);
+    // while (1) {
+    //     run(-16, -16);
+    //     if (sebr == 1) {
+    //         break;
+    //     }
+    // }
     Stop(500);
+    Paw_open();
+    Stop(500);
+    Camera_down();
+    Stop(900);
     Catch();
 }
-
-
 
 /**
  * @brief 卡时间后退抓宝
- * 
+ *
  */
-void Catch_Time(int t){
-    run_delay(-20,-20,t);
+void Catch_Time(int t)
+{
+    run_delay(-20, -20, t);
     Stop(500);
     Catch();
 }
-
 
 /**
  * @brief 低速下平台
@@ -275,6 +316,7 @@ void UP_Tai2_6_noline(void)
     while (hwr != 0) {
         slow_run(50);
     } // 红外不扫到前铲就一直走
+    Front_mid(); // 悬空前铲
 
     while (1) {
         slow_run(50);
@@ -286,8 +328,8 @@ void UP_Tai2_6_noline(void)
             break;
         }
     }
-    Front_mid();        // 悬空前铲
-    Run_delay(45, 400); // 卡时间盲走
+    Front_mid();            // 悬空前铲
+    run_delay(47, 45, 350); // 卡时间盲走
     Stop(40);
     Tai1_6_zhuan();
 }
@@ -316,12 +358,13 @@ void UP_Tai2(void)
     }
 
     Front_mid();
-    run_delay(45,45, 100);
+    run_delay(35, 35, 100);
     Front_down();
+    Stop(200);
     Start_QR_Detection();
-    Run_delay(45, 150);
+    Check_QR_Status();
     while (1) {
-        run(47, 45);
+        run(35, 32);
 
         if (hdxl == 0 || hdxr == 0) {
             break;
@@ -342,8 +385,11 @@ void UP_Tai2(void)
             break;
         }
     }
+    stop();
     Check_QR_Status();
     Check_QR_Again();
+    LED_Blink();
+    Stop(600);
 
     // Tai1_6_zhuan(); // 低平台转180度
 }
@@ -503,23 +549,36 @@ void Down_Tai8(void)
     }
     Front_mid();
 }
-
+/**
+ * @brief 长桥行走
+ *
+ */
 void Bridge_Travel(void)
 {
     while (hwr != 0) {
         slow_run(60);
     }
     Front_down();
-    Reset_bridge(700, 65, 1);
-    Reset_bridge(150, 90, 1);
-    Reset_bridge(200, 120, 1);
-    Reset_bridge(140, 80, 1);
-    // while (hwr != 0) {
-    //     bridge_PD(50, 1);
-    // }
-    // Front_mid();
-    // Reset(300, 60);
-
+    Run_delay(60, 800);
+    Reset_bridge(750, 65, 1);
+    while (hwr != 0) {
+        run(50, 50);
+    }
+    Front_mid();
+    Reset(300, 60);
+}
+/**
+ * @brief 长桥行走，去
+ *
+ */
+void Bridge_Travel_go(void)
+{
+    while (hwr != 0) {
+        slow_run(60);
+    }
+    Front_down();
+    run_delay(60,58, 800);
+    Reset_bridge(750, 65, 1);
     while (hwr != 0) {
         run(50, 50);
     }
@@ -750,14 +809,14 @@ void Seesaw_with_Adjustion(int time_stop, int time_Seesaw)
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (1) {
         get_huidu_va();
-        Run(65);
+        Run(60);
         /*循环修正*/
         if (hwr == 1 && hwl == 1) {
-            run(40, 65);
+            run(40, 55);//run(40, 65);
             Delay_ms(5);
             count_turn += 3;
         } else if (hwr == 1 && hwl == 0) {
-            run(65, 40);
+            run(60, 40);
             Delay_ms(5);
             count_turn += 3;
         } else if (cnt_whiteline == 0 && hwr == 0) {
@@ -925,16 +984,26 @@ void Land_Protect_adjust(void)
  */
 void Back_BLB1(void)
 {
-    while (hdxr != 0) {
-        slow_run45();
-    }
+
     t7_i = 0;
     TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
     do {
         slow_run45();
-    } while (t7_i < 1500);
+    } while (t7_i < 2600);
     TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
     t7_i = 0;
+
+    // while (hdxr != 0) {
+    //     slow_run45();
+    // }
+
+    // t7_i = 0;
+    // TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
+    // do {
+    //     slow_run45();
+    // } while (t7_i < 700);
+    // TIM_ITConfig(TIM7, TIM_IT_Update, DISABLE);
+    // t7_i = 0;
 }
 /**
  * @brief 回程过波浪板
@@ -980,11 +1049,11 @@ void txs(void)
 void Go_BLB(void)
 {
     // 巡线直到扫到黄线
-    while (hdxl != 0) {
-        slow_run(45);
-    }
-    // 过波浪板
-    Reset(1600, 45);
+    // while (hdxl != 0) {
+    //     slow_run45();
+    // }
+    // // 过波浪板
+    Reset(2600, 45);
 }
 /**
  * @brief 获取目标宝物颜色信息
@@ -1051,7 +1120,7 @@ void Get_Now_Color(void)
         } else if (openmv[2] == 6) {
             b++;
         }
-        delay_ms(5);
+        delay_ms(2);
         if (t3_i > 3000) {
             break;
         }
@@ -1160,7 +1229,7 @@ void Get_QR(void)
 void Check_QR_Again(void)
 {
     if (qr_flag == 0) {
-        run_delay(-30, -30, 300);
+        run_delay(-30, -30, 400);
         stop();
 
         t3_i = 0;
@@ -1178,13 +1247,14 @@ void Check_QR_Again(void)
         }
         TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
         t3_i = 0;
-         Run_delay(45, 100);
-    while (1) {
-        run(30,30);
+        Run_delay(45, 150);
+        while (1) {
+            run(30, 30);
 
-        if (hdxl == 0 || hdxr == 0) {
-            break;
+            if (hdxl == 0 || hdxr == 0) {
+                stop();
+                break;
+            }
         }
-    }
     }
 }

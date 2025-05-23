@@ -19,7 +19,7 @@ void TurnRight_135_home(void)
     // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
     while (1) {
         slow_run(45);
-        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
+        if (Huidu_va(1) > 250 || Huidu_va(0) > 250) {
             break;
         }
     }
@@ -137,9 +137,13 @@ void Tai1_6_zhuan(void)
     Front_up();
     Stop(400);
     Deg_IN();
-    for (int x = 70; x < 110; x++) {
-        run(x * 0.86, -x * 0.94);
-        Delay_ms(12); // 加速
+    for (int x = 70; x < 100; x++) {//110
+        run(x * 0.82, -x * 0.98);//0.86,0.94
+        Delay_ms(8); // 加速
+    }
+     for (int x = 100; x > 70; x--) {//110
+        run(x * 0.82, -x * 0.98);
+        Delay_ms(9); // 加速
     }
     // for (int x = 110; x > 60; x--) {
     //     run(x * 0.86, -x * 0.94);
@@ -149,7 +153,67 @@ void Tai1_6_zhuan(void)
 
     pid_Turn(800);
     // Stop(50);
-    // Front_down();
+
+}
+/**
+ * @brief 转圈后精确
+ * @param N 面朝角度
+ */
+void turn_around_repair(int N)
+{
+    
+    int g = 0; // 偏差值  
+    Stop(300);
+    while(JD < (N - 3) || JD > (N + 3)){
+        g = N - JD;
+        g = g > 0 ? g + 20 : g - 20;
+        // 保护机制
+        if(g > 100){
+            g = 60;
+        }
+        else if(g < -100){
+            g = -60;
+        }
+        run(-g, g);
+    }
+    
+}
+/**
+ * @brief 旋转180度 
+ */
+void turn_around_180(void)
+{
+    int g = 0;   // 是否进行了旋转
+    int angle_now = 0; // 当前角度，初始化为0
+    Front_up();
+    Stop(300);
+    angle_now = compass_b();    //获取当前角度
+    while (g < 1)
+{
+if (angle_now >= 0 && angle_now < 180)
+{
+run_delay(-70, 70, 500);
+while (compass_b() < (165 + angle_now))
+{
+run(-45, 45);
+}
+g++;
+}
+else if (angle_now >= 180 && angle_now < 360)
+{
+run_delay(70, -70, 500);
+while (compass_b() > (angle_now - 162))
+{
+run(45, -45);
+}
+g++;
+}
+}
+    turn_around_repair(180);
+    turn_around_repair(180);
+    Front_mid();
+    Stop(400);
+
 }
 /**
  * @brief 低平台转180度
@@ -168,31 +232,6 @@ void Tai1_6_zhuan1(void)
     // pid_Turn(800);
 }
 
-void turn_around_180(void)
-{
-    int g         = 0; // 是否进行了旋转
-    int angle_now = 0; // 当前角度，初始化为0
-    Front_up_High();
-    Stop(300);
-    angle_now = compass_b(); // 获取当前角度
-    while (g < 1) {
-        if (angle_now >= 0 && angle_now < 180) {
-            run_delay(-75, 75, 600);
-            while (compass_b() < (165 + angle_now)) {
-                run(-50, 50);
-            }
-            g++;
-        } else if (angle_now >= 180 && angle_now < 360) {
-            run_delay(60, -60, 600);
-            while (compass_b() > (angle_now - 162)) {
-                run(40, -40);
-            }
-            g++;
-        }
-    }
-    Front_mid();
-    Stop(400);
-}
 
 /**
  * @brief 台2转九十度1
@@ -486,7 +525,7 @@ void TurnRight_90_Rdetect_3_indoor1(void)
             break;
         }
     }
-    run_delay(76, -75, 50);
+    run_delay(76, -75, 90);
     // 左转，扫到第二根白线停止
     while (1) {
         run(76, -75);

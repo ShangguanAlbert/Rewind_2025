@@ -12,5 +12,8 @@
 #define LED6_BLUE_TOGGLE (GPIO_ToggleBits(GPIOD, GPIO_Pin_0)) 
 
 void LED_Init(void);
+void LED_ON(void);
+void LED_OFF(void);
+void LED_Blink(void);
 
 #endif
