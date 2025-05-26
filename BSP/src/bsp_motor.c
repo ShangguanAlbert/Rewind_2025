@@ -164,7 +164,7 @@ void set_pwm(uint8_t port, int speed, int set_speed)
 float m_diff(int speed)
 {
     if (speed <= 50) {
-        mdif_res = 0.958; //
+        mdif_res = 0.965; //
     } else if (speed > 50 && speed <= 60) {
         mdif_res = 0.96;
     } else if (speed > 60 && speed <= 75) {
@@ -178,7 +178,7 @@ float m_diff(int speed)
     } else if (speed > 95 && speed <= 105) {
         mdif_res = 0.965;
     } else if (speed > 105 && speed < 120) {
-        mdif_res = 0.96;
+        mdif_res = 0.965;
     } else if (speed >= 120 && speed <= 130) {
         mdif_res = 0.958;
     } else if (speed > 130 && speed <= 140) {

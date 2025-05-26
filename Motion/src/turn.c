@@ -14,6 +14,29 @@
  * @brief 右转135°后进长桥（用于回家和台2-台3）
  *
  */
+void TurnRight_135_home(void)
+{
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
+    while (1) {
+        slow_run(45);
+        if (Huidu_va(1) > 250 || Huidu_va(0) > 250) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 115, 5);
+    Right_Speed_Down(50, -85, 4);
+    while (1) {
+        // 左右轮设定不同速度，直到灰度4，5扫到白线
+        run(85, -65);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
+/**
+ * @brief 右转135°后进长桥（用于回家和台2-台3）
+ *
+ */
 void TurnRight_135_Longline(void)
 {
     // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
@@ -23,7 +46,7 @@ void TurnRight_135_Longline(void)
             break;
         }
     }
-    Left_Speed_Up(50, 115, 3);
+    Left_Speed_Up(50, 115, 4);
     Right_Speed_Down(50, -90, 4);
     while (1) {
         // 左右轮设定不同速度，直到灰度4，5扫到白线
@@ -33,7 +56,29 @@ void TurnRight_135_Longline(void)
         }
     }
 }
-
+/**
+ * @brief 右转135°后进圆圈
+ *
+ */
+void TurnRight_135_Circle(void)
+{
+    // 低速巡线，当灰度0，1扫到白线时候跳出循环，开始转弯
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(1) > white[1] || Huidu_va(0) > white[0]) {
+            break;
+        }
+    }
+    Left_Speed_Up(50, 115, 4);
+    Right_Speed_Down(50, -90, 4);
+    while (1) {
+        // 左右轮设定不同速度，直到灰度4，5扫到白线
+        run(85, -65);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+}
 /**
  * @brief 左转135度（进台八回家的翘翘板）
  *
@@ -92,9 +137,13 @@ void Tai1_6_zhuan(void)
     Front_up();
     Stop(400);
     Deg_IN();
-    for (int x = 70; x < 110; x++) {
-        run(x * 0.86, -x * 0.94);
-        Delay_ms(12); // 加速
+    for (int x = 70; x < 100; x++) {//110
+        run(x * 0.82, -x * 0.98);//0.86,0.94
+        Delay_ms(8); // 加速
+    }
+     for (int x = 100; x > 70; x--) {//110
+        run(x * 0.82, -x * 0.98);
+        Delay_ms(9); // 加速
     }
     // for (int x = 110; x > 60; x--) {
     //     run(x * 0.86, -x * 0.94);
@@ -104,7 +153,67 @@ void Tai1_6_zhuan(void)
 
     pid_Turn(800);
     // Stop(50);
-    // Front_down();
+
+}
+/**
+ * @brief 转圈后精确
+ * @param N 面朝角度
+ */
+void turn_around_repair(int N)
+{
+    
+    int g = 0; // 偏差值  
+    Stop(300);
+    while(JD < (N - 3) || JD > (N + 3)){
+        g = N - JD;
+        g = g > 0 ? g + 20 : g - 20;
+        // 保护机制
+        if(g > 100){
+            g = 60;
+        }
+        else if(g < -100){
+            g = -60;
+        }
+        run(-g, g);
+    }
+    
+}
+/**
+ * @brief 旋转180度 
+ */
+void turn_around_180(void)
+{
+    int g = 0;   // 是否进行了旋转
+    int angle_now = 0; // 当前角度，初始化为0
+    Front_up();
+    Stop(300);
+    angle_now = compass_b();    //获取当前角度
+    while (g < 1)
+{
+if (angle_now >= 0 && angle_now < 180)
+{
+run_delay(-70, 70, 500);
+while (compass_b() < (165 + angle_now))
+{
+run(-45, 45);
+}
+g++;
+}
+else if (angle_now >= 180 && angle_now < 360)
+{
+run_delay(70, -70, 500);
+while (compass_b() > (angle_now - 162))
+{
+run(45, -45);
+}
+g++;
+}
+}
+    turn_around_repair(180);
+    turn_around_repair(180);
+    Front_mid();
+    Stop(400);
+
 }
 /**
  * @brief 低平台转180度
@@ -119,34 +228,10 @@ void Tai1_6_zhuan1(void)
     Stop(400);
     Deg_IN();
     run_delay(150, -150, 200);
-    pid_Turn(800);
+    Stop(300);
+    // pid_Turn(800);
 }
 
-void turn_around_180(void)
-{
-    int g         = 0; // 是否进行了旋转
-    int angle_now = 0; // 当前角度，初始化为0
-    Front_up_High();
-    Stop(300);
-    angle_now = compass_b(); // 获取当前角度
-    while (g < 1) {
-        if (angle_now >= 0 && angle_now < 180) {
-            run_delay(-75, 75, 600);
-            while (compass_b() < (165 + angle_now)) {
-                run(-50, 50);
-            }
-            g++;
-        } else if (angle_now >= 180 && angle_now < 360) {
-            run_delay(60, -60, 600);
-            while (compass_b() > (angle_now - 162)) {
-                run(40, -40);
-            }
-            g++;
-        }
-    }
-    Front_mid();
-    Stop(400);
-}
 
 /**
  * @brief 台2转九十度1
@@ -160,13 +245,15 @@ void Tai2_zhuan90_1(void)
     Front_up_High();
     Deg_IN();
     for (int x = 55; x < 85; x++) {
-        run(x * 0.90, -x * 0.89); // 98
+        run(x * 0.93, -x * 0.89); // 98
         Delay_ms(8);              //
     }
     pid_Turn_Right90(500);
     Stop(50);
     // Front_down();
 }
+
+
 /**
  * @brief 台2转九十度2
  *
@@ -266,12 +353,12 @@ void Tai7_zhuan(void)
     // Front_down();
 
     Front_up_High();
-    Stop(100);
+    Stop(500);
     HWT101_to_0();
     Stop(250);
     Deg_IN();
-    for (int x = 55; x < 110; x++) {
-        run(x * 0.86, -x * 0.94);
+    for (int x = 55; x < 115; x++) {
+        run(x * 0.84, -x * 0.96);
         Delay_ms(8); //
     }
     pid_Turn(500);
@@ -304,13 +391,13 @@ void Tai8_zhuan(void)
     // Stop(300);
 
     Front_up_High();
-    Stop(100);
+    Stop(300);
     HWT101_to_0();
     Stop(250);
     Deg_IN();
-    for (int x = 60; x < 110; x++) {
-        run(x * 0.86, -x * 0.90);
-        Delay_ms(5);
+    for (int x = 50; x < 125; x++) {
+        run(-x * 0.98, x * 1.02);
+        Delay_ms(4);//4
     }
     pid_Turn(800);
     Stop(50);
@@ -415,6 +502,41 @@ void TurnRight_90_Ldetect_3(void)
         }
     }
 }
+
+/**
+ * @brief 右转90度,右灰度
+ */
+void TurnRight_90_Rdetect_3_indoor1(void)
+{
+    // 低速巡线，当灰度0,1扫到白线时候跳出循环，开始转弯
+    while (1) {
+        slow_run(50);
+        if (Huidu_va(0) > white[0] || Huidu_va(1) > white[1] ) {
+            break;
+        }
+    }
+    // 转弯
+    Left_Speed_Up(50, 85, 5);
+    Right_Speed_Down(50, -75, 5);
+    while (1) {
+        run(75, -70);
+        // 检测停止
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+    run_delay(76, -75, 90);
+    // 左转，扫到第二根白线停止
+    while (1) {
+        run(76, -75);
+        if (Huidu_va(4) > white[4] || Huidu_va(5) > white[5]) {
+            break;
+        }
+    }
+
+}
+
+
 /**
  * @brief 左转90度 左灰度检测
  *        用于台5左转上梯形山
@@ -542,7 +664,7 @@ void TurnLeft_90_Ldetect_4(void)
             break;
         }
     }
-    run_delay(-75, 76, 50);
+    run_delay(-75, 76, 100);
     // 左转，扫到第二根白线停止
     while (1) {
         run(-75, 76);
@@ -566,7 +688,7 @@ void TurnLeft_90_Ldetect_5(void)
         }
     }
     // 左转检测到第一条白线继续转
-    Right_Speed_Up(50, 80, 5);
+    Right_Speed_Up(50, 95, 5);
     Left_Speed_Down(50, -80, 5);
     while (1) {
         run(-75, 70);

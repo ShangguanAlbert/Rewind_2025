@@ -237,7 +237,7 @@ void slow_run(int N)
         KD = 0.005;
     } else if (speed >= 70 && speed < 80) { // 70
         KP = 0.00400;
-        KD = 0.00558;
+        KD = 0.02;                          // 0.00558
     } else if (speed >= 80 && speed < 90) { // 80
         KP = 0.0041;
         KD = 0.005;
@@ -257,6 +257,18 @@ void slow_run1(int N)
     speed = N;
     KP    = 0.01;
     KD    = 0.2;
+    Trace();
+}
+/**
+ * @brief 低速巡线
+ * @param N 设定的速度
+ */
+void slow_run45(void)
+{
+    get_huidu_va();
+    speed = 45;
+    KP    = 0.077;
+    KD    = 0.5;
     Trace();
 }
 /**
@@ -316,10 +328,23 @@ void speed_up(int start, int end)
     for (; start < end; start++) {
         if (speed <= 100) {
             KP = 0.003;
-            KD = 0.16;
-        } else {
+            KD = 0.24;//0.16
+        } else if (speed <= 140){
             KP = 0.0016;
-            KD = 0.15;
+            KD = 0.27;//0.15//0.3
+        }
+        else if (speed <= 160)
+        {
+            KP = 0.0012;
+            KD = 0.6;
+        }
+        else if(speed <= 180){
+            KP = 0.0013;
+            KD = 0.8;
+        }
+        else{
+            KP = 0.0014;
+            KD = 0.9;
         }
         speed = start;
         // KP    = 0.0016;
@@ -371,10 +396,10 @@ void speed_down(int high, int low)
         speed = high;
         if (speed <= 100) {
             KP = 0.002;
-            KD = 0.16;
+            KD = 0.15;//0.16
         } else {
             KP = 0.0012;
-            KD = 0.12;
+            KD = 0.11;//0.12
         }
         get_huidu_va();
         if (high % 2 == 0) Trace_transVelocity();
@@ -512,32 +537,47 @@ void bridge_PD(int N, uint8_t mode)
         KD = 0.15;
     } else if (mode == 2) {
         KP = 0.009;
-        KD = 0.2;
+        KD = 0.2;//0.2
     }
     bridge_Trace(mode);
 }
 /**
  * @brief 无线直走函数
+ * @param angle  目标角度
  */
-void Straight_run(int speed)
+void Straight_run(int angle, int speed)
 {
     if (JD > 180) {
         JD = JD - 360;
     }
-    if (-2 < JD && JD < 2) {
+    if (-2 < JD - angle && JD - angle < 2) {
         Run(speed);
-    } else if (JD > 0) {
-        if (JD < 6) {
+    } else if (JD - angle > 0) {
+        if (JD - angle < 5) {
             run(speed + 3, speed);
-        } else if (JD < 10) {
+        } else if (JD - angle < 10) {
             run(speed + 10, speed);
         }
-    } else if (JD < 0) {
-        if (JD > -6) {
+        else if (JD - angle < 15){
+            run(speed + 15, speed);
+        }
+        else{
+            run(speed + 20, speed);
+        }
+    } else if (JD - angle < 0) {
+        if (JD - angle > -5) {
             run(speed, speed + 3);
-        } else if (JD > -10) {
+        } else if (JD - angle > -10) {
             run(speed, speed + 10);
         }
+        else if (JD - angle > -15)
+        {
+           run(speed, speed + 15);
+        }
+        else{
+            run(speed, speed + 20);
+        }
+        
     }
 }
 
@@ -554,12 +594,14 @@ void Straight_run_back(int speed)
         } else if (JD < 10) {
             run(-speed - 10, -speed);
         }
+        else{run(-speed - 15, -speed);}
     } else if (JD < 0) {
         if (JD > -5) {
             run(-speed, -speed - 3);
         } else if (JD > -10) {
             run(-speed, -speed - 10);
         }
+        else{run(-speed , -speed-15);}
     }
 }
 
@@ -574,7 +616,7 @@ void Straight(int time)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        Straight_run(50);
+        Straight_run(0, 50);
     } while (Huidu_va(10) < white[10] || Huidu_va(11) < white[11] || t3_i > time);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
@@ -590,7 +632,7 @@ void Straight_back(void)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     while (t3_i < 800) {
-        Straight_run_back(45);
+        Straight_run_back(37);
         if (hdxl == 0 || hdxr == 0) break;
     }
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
@@ -599,12 +641,12 @@ void Straight_back(void)
     t3_i = 0;
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     do {
-        Straight_run_back(45);
+        Straight_run_back(37);
         // if(hdxl == 0 || hdxr == 0) break;
     } while (t3_i < 300);
     TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
     t3_i = 0;
-    stop();
+    Stop(500);
 }
 
 void txs_trace(void)

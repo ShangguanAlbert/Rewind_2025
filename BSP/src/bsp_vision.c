@@ -153,6 +153,21 @@ void Detect_Color(void)
 }
 
 /**
+ * @brief 发送指令：识别目标宝物位置
+ */
+void Locate_target_treasure(void)
+{
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb3);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0xb2);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5, 0x11);
+    while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
+    USART_SendData(UART5,0Xb5);
+}
+
+/**
  * @brief 发送指令：识别宝物位置
  */
 void Locate_treasure(void)
@@ -162,7 +177,7 @@ void Locate_treasure(void)
     while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
     USART_SendData(UART5, 0xb2);
     while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
-    USART_SendData(UART5, 0x11);
+    USART_SendData(UART5, 0x33);
     while (USART_GetFlagStatus(UART5, USART_FLAG_TC) == RESET);
     USART_SendData(UART5,0Xb5);
 }

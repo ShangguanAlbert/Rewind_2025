@@ -2,6 +2,7 @@
 
 uint8_t res_hw;
 uint8_t res_hdlr;
+uint8_t res_sebr;
 
 /**
  * @brief 红外初始化 左红外PE0
@@ -22,6 +23,7 @@ void GPIO_HW_Init(void)
     GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
+
 /**
  * @brief 读取红外数字电平
  *
@@ -38,6 +40,46 @@ uint8_t HW(uint8_t LR)
     }
     return res_hw;
 }
+
+/**
+ * @brief 爪子色标初始化 PB6 PC12
+ * 
+ */
+void GPIO_SeB_Init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IPD;    // 下拉输入
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // 速度选择
+    // 初始化 PB6 引脚
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    // 初始化 PC12 引脚
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+}
+
+
+
+/**
+ * @brief 读取色标信号
+ *
+ * @param[in] LR 1-左;2-右.
+ * @return uint8_t 数字电平
+ */
+uint8_t SeB(uint8_t LR)
+{
+    if (LR == 1) {
+        res_sebr = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6);
+    }
+    if (LR == 2) {
+        res_sebr = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
+    }
+    return res_sebr;
+}
+
 /**
  * @brief 左右灰度初始化
  *
@@ -71,4 +113,20 @@ uint8_t HDLR(uint8_t LR)
         res_hdlr = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_2);
     }
     return res_hdlr;
+}
+
+/**
+ * @brief LED
+ *
+ */
+void GPIO_LED_Init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
+
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;    // 推挽输出
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; // 速度选择
+    // 初始化 PE0 引脚
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
 }

@@ -59,7 +59,8 @@ void TIM2_Servo_Init(void)
     TIM_Cmd(TIM2, ENABLE);
 
     // 使能PWM输出
-    TIM2->CCR1 = 1200;//抓夹舵机 500
+   
+    TIM2->CCR1 = 1200;
     TIM2->CCR3 =2500;//夹子舵机 张开最大2500
     TIM2->CCR4 = 2145;//前铲舵机
 
